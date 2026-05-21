@@ -1,11 +1,13 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-
-import { loginUser } from "../api/authApi"
+import { useDispatch } from "react-redux"
+import { getMyProfile, loginUser } from "../api/authApi"
 import AuthCard from "../components/layout/AuthCard"
+import { setCredentials, setCurrentUser } from "../redux/authSlice"
 
 function LoginPage() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const [formData, setFormData] = useState({
     email: "",
@@ -33,6 +35,18 @@ function LoginPage() {
     loginUser(formData)
       .then((data) => {
         localStorage.setItem("accessToken", data.accessToken)
+
+        dispatch(
+          setCredentials({
+            accessToken: data.accessToken,
+            user: null,
+          }),
+        )
+
+        return getMyProfile()
+      })
+      .then((profile) => {
+        dispatch(setCurrentUser(profile))
         navigate("/")
       })
       .catch((error) => {
