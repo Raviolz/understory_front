@@ -1,5 +1,5 @@
-import Globe from "react-globe.gl"
 import { useEffect, useState } from "react"
+import Globe from "react-globe.gl"
 
 const countriesUrl = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson"
 
@@ -14,13 +14,21 @@ const DarkGlobe = () => {
   }, [])
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center">
+    <div className="w-full min-h-screen flex items-center justify-center bg-transparent p-4">
       <Globe
         width={600}
         height={600}
-        globeImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg"
-        polygonsData={countries}
         backgroundColor="rgba(0,0,0,0)"
+        globeImageUrl={null}
+        bumpImageUrl={null}
+        globeColor="#06040a"
+        showAtmosphere={false}
+        polygonsData={countries}
+        polygonCapColor={() => "rgba(245, 222, 179, 0.01)"}
+        polygonSideColor={() => "rgba(0,0,0,0)"}
+        polygonStrokeColor={() => "rgba(212, 163, 89, 0.28)"}
+        polygonAltitude={0.01}
+        showGraticules={false}
       />
     </div>
   )
