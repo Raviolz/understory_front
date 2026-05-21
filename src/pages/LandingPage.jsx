@@ -1,5 +1,11 @@
+import DarkGlobe from "../components/DarkGlobe"
+
 const LandingPage = () => {
-  return <></>
+  return (
+    <>
+      <DarkGlobe />
+    </>
+  )
 }
 
 export default LandingPage
