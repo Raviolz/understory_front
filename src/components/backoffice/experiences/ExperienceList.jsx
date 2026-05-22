@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeExperiences } from "../../api/backofficeApi"
+import { getBackofficeExperiences } from "../../../api/backofficeApi"
 
-function BoExperiencesPage() {
+function ExperienceList() {
   const [experiences, setExperiences] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -113,4 +113,4 @@ function BoExperiencesPage() {
   )
 }
 
-export default BoExperiencesPage
+export default ExperienceList

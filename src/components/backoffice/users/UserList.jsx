@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeUsers } from "../../api/backofficeApi"
+import { getBackofficeUsers } from "../../../api/backofficeApi"
 
-function BoUsersPage() {
+function UserList() {
   const [users, setUsers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -94,4 +94,4 @@ function BoUsersPage() {
   )
 }
 
-export default BoUsersPage
+export default UserList

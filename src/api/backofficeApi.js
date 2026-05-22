@@ -4,6 +4,13 @@ export function getBackofficeCities() {
   return authenticatedRequest("/backoffice/cities")
 }
 
+export function createBackofficeCity(cityData) {
+  return authenticatedRequest("/backoffice/cities", {
+    method: "POST",
+    body: JSON.stringify(cityData),
+  })
+}
+
 export function getBackofficePoints() {
   return authenticatedRequest("/backoffice/points")
 }

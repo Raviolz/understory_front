@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeCities } from "../../api/backofficeApi"
+import { getBackofficeCities } from "../../../api/backofficeApi"
 
-function BoCitiesPage() {
+function CityList() {
   const [cities, setCities] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -96,4 +96,4 @@ function BoCitiesPage() {
   )
 }
 
-export default BoCitiesPage
+export default CityList

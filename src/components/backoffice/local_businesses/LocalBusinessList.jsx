@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeLocalBusinesses } from "../../api/backofficeApi"
+import { getBackofficeLocalBusinesses } from "../../../api/backofficeApi"
 
-function BoLocalBusinessesPage() {
+function LocalBusinessList() {
   const [businesses, setBusinesses] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -115,4 +115,4 @@ function BoLocalBusinessesPage() {
   )
 }
 
-export default BoLocalBusinessesPage
+export default LocalBusinessList

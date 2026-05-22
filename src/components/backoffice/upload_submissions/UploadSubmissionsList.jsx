@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeUploadSubmissions } from "../../api/backofficeApi"
+import { getBackofficeUploadSubmissions } from "../../../api/backofficeApi"
 
-function BoUploadSubmissionsPage() {
+function UploadSubmissionsList() {
   const [submissions, setSubmissions] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -103,4 +103,4 @@ function BoUploadSubmissionsPage() {
   )
 }
 
-export default BoUploadSubmissionsPage
+export default UploadSubmissionsList

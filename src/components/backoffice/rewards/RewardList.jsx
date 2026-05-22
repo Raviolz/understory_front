@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeRewards } from "../../api/backofficeApi"
+import { getBackofficeRewards } from "../../../api/backofficeApi"
 
-function BoRewardsPage() {
+function RewardList() {
   const [rewards, setRewards] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -111,4 +111,4 @@ function BoRewardsPage() {
   )
 }
 
-export default BoRewardsPage
+export default RewardList

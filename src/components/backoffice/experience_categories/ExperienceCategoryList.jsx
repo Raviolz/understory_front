@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeExperienceCategories } from "../../api/backofficeApi"
+import { getBackofficeExperienceCategories } from "../../../api/backofficeApi"
 
-function BoExperienceCategoriesPage() {
+function BoExperienceCategoryList() {
   const [categories, setCategories] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -95,4 +95,4 @@ function BoExperienceCategoriesPage() {
   )
 }
 
-export default BoExperienceCategoriesPage
+export default BoExperienceCategoryList

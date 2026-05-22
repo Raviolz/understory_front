@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeQuizGames, getBackofficeUploadGames } from "../../api/backofficeApi"
+import { getBackofficeQuizGames, getBackofficeUploadGames } from "../../../api/backofficeApi"
 
-function BoGamesPage() {
+function GameList() {
   const [quizGames, setQuizGames] = useState([])
   const [uploadGames, setUploadGames] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -150,4 +150,4 @@ function BoGamesPage() {
   )
 }
 
-export default BoGamesPage
+export default GameList

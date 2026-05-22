@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficePoints } from "../../api/backofficeApi"
+import { getBackofficeBusinessCategories } from "../../../api/backofficeApi"
 
-function BoPointsPage() {
-  const [points, setPoints] = useState([])
+function BusinessCategoryList() {
+  const [categories, setCategories] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    getBackofficePoints()
+    getBackofficeBusinessCategories()
       .then((data) => {
-        setPoints(data.content || [])
+        setCategories(data.content || [])
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare i punti di interesse.")
+        setError("Non riesco a caricare le categorie business.")
       })
       .finally(() => {
         setIsLoading(false)
@@ -22,7 +22,7 @@ function BoPointsPage() {
   }, [])
 
   if (isLoading) {
-    return <p className="text-muted">Caricamento punti di interesse...</p>
+    return <p className="text-muted">Caricamento categorie business...</p>
   }
 
   if (error) {
@@ -39,16 +39,16 @@ function BoPointsPage() {
         <div>
           <p className="text-sm tracking-[0.25em] text-accent">Backoffice</p>
 
-          <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Points of Interest</h1>
+          <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Business Categories</h1>
 
-          <p className="mt-5 max-w-2xl text-sm leading-7 text-muted md:text-base">Gestisci i luoghi fisici collegati alle città dell’archivio.</p>
+          <p className="mt-5 max-w-2xl text-sm leading-7 text-muted md:text-base">Gestisci le categorie usate per classificare le attività locali.</p>
         </div>
 
         <Link
-          to="/backoffice/points/new"
+          to="/backoffice/business-categories/new"
           className="inline-flex rounded-full border border-accent-soft px-5 py-3 text-sm text-accent transition hover:border-accent hover:bg-accent hover:text-canvas"
         >
-          Create point
+          Create category
         </Link>
       </div>
 
@@ -56,41 +56,33 @@ function BoPointsPage() {
         <table className="w-full border-collapse text-left text-sm">
           <thead className="border-b border-border-soft text-muted">
             <tr>
-              <th className="px-4 py-3 font-normal">Name</th>
-              <th className="px-4 py-3 font-normal">City</th>
-              <th className="px-4 py-3 font-normal">Status</th>
-              <th className="px-4 py-3 font-normal">Coordinates</th>
+              <th className="px-4 py-3 font-normal">Label</th>
+              <th className="px-4 py-3 font-normal">Code</th>
+              <th className="px-4 py-3 font-normal">Icon</th>
+              <th className="px-4 py-3 font-normal">Description</th>
               <th className="px-4 py-3 font-normal">Actions</th>
             </tr>
           </thead>
 
           <tbody>
-            {points.map((point) => (
-              <tr key={point.id} className="border-b border-border-soft last:border-b-0">
-                <td className="px-4 py-4 text-ink">{point.name}</td>
-
-                <td className="px-4 py-4 text-muted">{point.cityName}</td>
-
+            {categories.map((category) => (
+              <tr key={category.id} className="border-b border-border-soft last:border-b-0">
+                <td className="px-4 py-4 text-ink">{category.label}</td>
+                <td className="px-4 py-4 text-muted">{category.code}</td>
+                <td className="px-4 py-4 text-muted">{category.icon}</td>
+                <td className="px-4 py-4 text-muted">{category.description}</td>
                 <td className="px-4 py-4">
-                  <span className={point.active ? "text-accent" : "text-muted"}>{point.active ? "Published" : "Draft"}</span>
-                </td>
-
-                <td className="px-4 py-4 text-muted">
-                  {point.latitude}, {point.longitude}
-                </td>
-
-                <td className="px-4 py-4">
-                  <Link to={`/backoffice/points/${point.id}/edit`} className="text-accent hover:text-ink">
+                  <Link to={`/backoffice/business-categories/${category.id}/edit`} className="text-accent hover:text-ink">
                     Edit
                   </Link>
                 </td>
               </tr>
             ))}
 
-            {points.length === 0 && (
+            {categories.length === 0 && (
               <tr>
                 <td colSpan="5" className="px-4 py-8 text-center text-muted">
-                  Nessun punto di interesse presente.
+                  Nessuna categoria business presente.
                 </td>
               </tr>
             )}
@@ -101,4 +93,4 @@ function BoPointsPage() {
   )
 }
 
-export default BoPointsPage
+export default BusinessCategoryList
