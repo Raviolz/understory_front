@@ -18,7 +18,18 @@ import ProfilePage from "./pages/ProfilePage"
 import NotFoundPage from "./pages/NotFoundPage"
 import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
-import BackofficePage from "./pages/BackofficePage"
+
+import BoCitiesPage from "./pages/backoffice/BoCitiesPage"
+import BackofficePage from "./pages/backoffice/BackofficePage"
+import BoPointsPage from "./pages/backoffice/BoPointsPage"
+import BoExperiencesPage from "./pages/backoffice/BoExperiencesPage"
+import BoExperienceCategoriesPage from "./pages/backoffice/BoExperienceCategoriesPage"
+import BoGamesPage from "./pages/backoffice/BoGamesPage"
+import BoBusinessCategoriesPage from "./pages/backoffice/BoBusinessCategoriesPage"
+import BoLocalBusinessesPage from "./pages/backoffice/BoLocalBusinessesPage"
+import BoRewardsPage from "./pages/backoffice/BoRewardsPage"
+import BoUploadSubmissionsPage from "./pages/backoffice/BoUploadSubmissionsPage"
+import BoUsersPage from "./pages/backoffice/BoUserPage"
 
 function App() {
   const dispatch = useDispatch()
@@ -51,6 +62,16 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/backoffice" element={<BackofficePage />} />
+            <Route path="/backoffice/cities" element={<BoCitiesPage />} />
+            <Route path="/backoffice/points" element={<BoPointsPage />} />
+            <Route path="/backoffice/experience-categories" element={<BoExperienceCategoriesPage />} />
+            <Route path="/backoffice/experiences" element={<BoExperiencesPage />} />
+            <Route path="/backoffice/games" element={<BoGamesPage />} />
+            <Route path="/backoffice/upload-submissions" element={<BoUploadSubmissionsPage />} />
+            <Route path="/backoffice/business-categories" element={<BoBusinessCategoriesPage />} />
+            <Route path="/backoffice/local-businesses" element={<BoLocalBusinessesPage />} />
+            <Route path="/backoffice/rewards" element={<BoRewardsPage />} />
+            <Route path="/backoffice/users" element={<BoUsersPage />} />
             <Route path="/explore" element={<ExplorePage />} />
             <Route path="/journal" element={<JournalPage />} />
             <Route path="/profile" element={<ProfilePage />} />
