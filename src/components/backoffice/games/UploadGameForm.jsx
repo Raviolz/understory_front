@@ -44,7 +44,7 @@ function UploadGameForm({ experiences = [], initialValues = emptyForm, submitLab
     onSubmit(uploadData)
       .catch((error) => {
         console.error(error)
-        setError(error.message || "Non riesco a salvare l’upload game. Controlla i dati inseriti.")
+        setError(error.message || "Non riesco a salvare l'upload game. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)
@@ -55,7 +55,7 @@ function UploadGameForm({ experiences = [], initialValues = emptyForm, submitLab
     <form onSubmit={handleSubmit} className="mt-8 max-w-4xl rounded-2xl border border-border-soft bg-surface p-6">
       <h2 className="font-serif text-2xl text-ink">{submitLabel}</h2>
 
-      <p className="mt-3 text-sm leading-6 text-muted">Collega il task di upload a un’esperienza di tipo UPLOAD.</p>
+      <p className="mt-3 text-sm leading-6 text-muted">Collega il task di upload a un'esperienza di tipo UPLOAD.</p>
 
       <div className="mt-6">
         <label htmlFor="experienceId" className="mb-2 block text-sm text-muted">

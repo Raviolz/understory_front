@@ -62,7 +62,7 @@ function RewardForm({ businesses = [], cities = [], initialValues = emptyForm, s
     <form onSubmit={handleSubmit} className="mt-8 max-w-4xl rounded-2xl border border-border-soft bg-surface p-6">
       <h2 className="font-serif text-2xl text-ink">{submitLabel}</h2>
 
-      <p className="mt-3 text-sm leading-6 text-muted">Collega la ricompensa a una città e a un’attività locale.</p>
+      <p className="mt-3 text-sm leading-6 text-muted">Collega la ricompensa a una città e a un'attività locale.</p>
 
       <div className="mt-6 grid gap-5 md:grid-cols-2">
         <div>

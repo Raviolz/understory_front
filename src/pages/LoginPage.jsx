@@ -59,7 +59,7 @@ function LoginPage() {
   }
 
   return (
-    <AuthCard label="Understory Archive" title="Accesso archivio" description="Inserisci le tue credenziali per riaprire il tuo percorso nell’archivio.">
+    <AuthCard label="Understory Archive" title="Accesso archivio" description="Inserisci le tue credenziali per riaprire il tuo percorso nell'archivio.">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="email" className="mb-2 block text-sm text-muted">
@@ -100,7 +100,7 @@ function LoginPage() {
           disabled={isLoading}
           className="w-full rounded-full border border-accent-soft px-5 py-3 text-sm text-accent transition hover:border-accent hover:bg-accent hover:text-canvas disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isLoading ? "Accesso in corso..." : "Entra nell’archivio"}
+          {isLoading ? "Accesso in corso..." : "Entra nell'archivio"}
         </button>
 
         <p className="text-center text-sm text-muted">

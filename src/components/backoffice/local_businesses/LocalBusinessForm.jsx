@@ -54,7 +54,7 @@ function LocalBusinessForm({ cities = [], businessCategories = [], initialValues
     onSubmit(businessData)
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a salvare l’attività locale. Controlla i dati inseriti.")
+        setError("Non riesco a salvare l'attività locale. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)
@@ -65,7 +65,7 @@ function LocalBusinessForm({ cities = [], businessCategories = [], initialValues
     <form onSubmit={handleSubmit} className="mt-8 max-w-3xl rounded-2xl border border-border-soft bg-surface p-6">
       <h2 className="font-serif text-2xl text-ink">{submitLabel}</h2>
 
-      <p className="mt-3 text-sm leading-6 text-muted">Collega l’attività locale a una città e a una categoria business.</p>
+      <p className="mt-3 text-sm leading-6 text-muted">Collega l'attività locale a una città e a una categoria business.</p>
 
       <div className="mt-6 grid gap-5 md:grid-cols-2">
         <div>

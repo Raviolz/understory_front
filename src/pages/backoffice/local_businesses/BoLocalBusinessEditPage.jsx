@@ -22,7 +22,7 @@ function BoLocalBusinessEditPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare l’attività locale.")
+        setError("Non riesco a caricare l'attività locale.")
       })
       .finally(() => {
         setIsLoading(false)
@@ -54,7 +54,7 @@ function BoLocalBusinessEditPage() {
 
         <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Edit local business</h1>
 
-        <p className="mt-5 max-w-2xl text-sm leading-7 text-muted md:text-base">Modifica l’attività locale selezionata.</p>
+        <p className="mt-5 max-w-2xl text-sm leading-7 text-muted md:text-base">Modifica l'attività locale selezionata.</p>
       </div>
 
       <LocalBusinessForm

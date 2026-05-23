@@ -1,11 +1,33 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeRewards } from "../../../api/backofficeApi"
+import { getBackofficeRewards, publishBackofficeReward, unpublishBackofficeReward } from "../../../api/backofficeApi"
 
 function RewardList() {
   const [rewards, setRewards] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  function handlePublish(rewardId) {
+    publishBackofficeReward(rewardId)
+      .then((updatedReward) => {
+        setRewards((currentRewards) => currentRewards.map((reward) => (reward.id === updatedReward.id ? updatedReward : reward)))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non riesco a pubblicare la ricompensa.")
+      })
+  }
+
+  function handleUnpublish(rewardId) {
+    unpublishBackofficeReward(rewardId)
+      .then((updatedReward) => {
+        setRewards((currentRewards) => currentRewards.map((reward) => (reward.id === updatedReward.id ? updatedReward : reward)))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non riesco a rimettere la ricompensa in bozza.")
+      })
+  }
 
   useEffect(() => {
     getBackofficeRewards()
@@ -89,10 +111,22 @@ function RewardList() {
                   <span className={reward.active ? "text-accent" : "text-muted"}>{reward.active ? "Published" : "Draft"}</span>
                 </td>
 
-                <td className="px-4 py-4">
-                  <Link to={`/backoffice/rewards/${reward.id}/edit`} className="text-accent hover:text-ink">
-                    Edit
-                  </Link>
+                <td className="w-[180px] px-4 py-4">
+                  <div className="flex flex-wrap gap-3">
+                    <Link to={`/backoffice/rewards/${reward.id}/edit`} className="text-accent hover:text-ink">
+                      Edit
+                    </Link>
+
+                    {reward.active ? (
+                      <button type="button" onClick={() => handleUnpublish(reward.id)} className="text-muted hover:text-ink">
+                        Unpublish
+                      </button>
+                    ) : (
+                      <button type="button" onClick={() => handlePublish(reward.id)} className="text-muted hover:text-ink">
+                        Publish
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

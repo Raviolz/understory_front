@@ -1,11 +1,33 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeCities } from "../../../api/backofficeApi"
+import { getBackofficeCities, publishBackofficeCity, unpublishBackofficeCity } from "../../../api/backofficeApi"
 
 function CityList() {
   const [cities, setCities] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  function handlePublish(cityId) {
+    publishBackofficeCity(cityId)
+      .then((updatedCity) => {
+        setCities((currentCities) => currentCities.map((city) => (city.id === updatedCity.id ? updatedCity : city)))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non riesco a pubblicare la città.")
+      })
+  }
+
+  function handleUnpublish(cityId) {
+    unpublishBackofficeCity(cityId)
+      .then((updatedCity) => {
+        setCities((currentCities) => currentCities.map((city) => (city.id === updatedCity.id ? updatedCity : city)))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non riesco a rimettere la città in bozza.")
+      })
+  }
 
   useEffect(() => {
     getBackofficeCities()
@@ -40,7 +62,7 @@ function CityList() {
 
           <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Cities</h1>
 
-          <p className="mt-5 max-w-2xl text-sm leading-7 text-muted md:text-base">Gestisci città pubblicate e bozze dell’archivio.</p>
+          <p className="mt-5 max-w-2xl text-sm leading-7 text-muted md:text-base">Gestisci città pubblicate e bozze dell'archivio.</p>
         </div>
 
         <Link
@@ -67,17 +89,33 @@ function CityList() {
             {cities.map((city) => (
               <tr key={city.id} className="border-b border-border-soft last:border-b-0">
                 <td className="px-4 py-4 text-ink">{city.name}</td>
+
                 <td className="px-4 py-4 text-muted">{city.country}</td>
+
                 <td className="px-4 py-4">
                   <span className={city.active ? "text-accent" : "text-muted"}>{city.active ? "Published" : "Draft"}</span>
                 </td>
+
                 <td className="px-4 py-4 text-muted">
                   {city.latitude}, {city.longitude}
                 </td>
+
                 <td className="px-4 py-4">
-                  <Link to={`/backoffice/cities/${city.id}/edit`} className="text-accent hover:text-ink">
-                    Edit
-                  </Link>
+                  <div className="flex flex-wrap gap-3">
+                    <Link to={`/backoffice/cities/${city.id}/edit`} className="text-accent hover:text-ink">
+                      Edit
+                    </Link>
+
+                    {city.active ? (
+                      <button type="button" onClick={() => handleUnpublish(city.id)} className="text-muted hover:text-ink">
+                        Unpublish
+                      </button>
+                    ) : (
+                      <button type="button" onClick={() => handlePublish(city.id)} className="text-muted hover:text-ink">
+                        Publish
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

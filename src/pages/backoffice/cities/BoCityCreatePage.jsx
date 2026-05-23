@@ -22,7 +22,7 @@ function BoCityCreatePage() {
 
         <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Create city</h1>
 
-        <p className="mt-5 max-w-2xl text-sm leading-7 text-muted md:text-base">Crea una nuova città dell’archivio. Verrà salvata come bozza.</p>
+        <p className="mt-5 max-w-2xl text-sm leading-7 text-muted md:text-base">Crea una nuova città dell'archivio. Verrà salvata come bozza.</p>
       </div>
 
       <CityForm submitLabel="Create city" onSubmit={handleCreate} onCancel={() => navigate("/backoffice/cities")} />

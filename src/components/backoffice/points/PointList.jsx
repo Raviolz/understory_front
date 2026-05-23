@@ -1,11 +1,33 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficePoints } from "../../../api/backofficeApi"
+import { getBackofficePoints, publishBackofficePoint, unpublishBackofficePoint } from "../../../api/backofficeApi"
 
 function PointList() {
   const [points, setPoints] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  function handlePublish(pointId) {
+    publishBackofficePoint(pointId)
+      .then((updatedPoint) => {
+        setPoints((currentPoints) => currentPoints.map((point) => (point.id === updatedPoint.id ? updatedPoint : point)))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non riesco a pubblicare il punto di interesse.")
+      })
+  }
+
+  function handleUnpublish(pointId) {
+    unpublishBackofficePoint(pointId)
+      .then((updatedPoint) => {
+        setPoints((currentPoints) => currentPoints.map((point) => (point.id === updatedPoint.id ? updatedPoint : point)))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non riesco a rimettere il punto di interesse in bozza.")
+      })
+  }
 
   useEffect(() => {
     getBackofficePoints()
@@ -41,7 +63,7 @@ function PointList() {
 
           <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Points of Interest</h1>
 
-          <p className="mt-5 max-w-2xl text-sm leading-7 text-muted md:text-base">Gestisci i luoghi fisici collegati alle città dell’archivio.</p>
+          <p className="mt-5 max-w-2xl text-sm leading-7 text-muted md:text-base">Gestisci i luoghi fisici collegati alle città dell'archivio.</p>
         </div>
 
         <Link
@@ -60,7 +82,7 @@ function PointList() {
               <th className="px-4 py-3 font-normal">City</th>
               <th className="px-4 py-3 font-normal">Status</th>
               <th className="px-4 py-3 font-normal">Coordinates</th>
-              <th className="px-4 py-3 font-normal">Actions</th>
+              <th className="w-[180px] px-4 py-3 font-normal">Actions</th>
             </tr>
           </thead>
 
@@ -71,7 +93,7 @@ function PointList() {
 
                 <td className="px-4 py-4 text-muted">{point.cityName}</td>
 
-                <td className="px-4 py-4">
+                <td className="w-[180px] px-4 py-4">
                   <span className={point.active ? "text-accent" : "text-muted"}>{point.active ? "Published" : "Draft"}</span>
                 </td>
 
@@ -80,9 +102,21 @@ function PointList() {
                 </td>
 
                 <td className="px-4 py-4">
-                  <Link to={`/backoffice/points/${point.id}/edit`} className="text-accent hover:text-ink">
-                    Edit
-                  </Link>
+                  <div className="flex flex-wrap gap-3">
+                    <Link to={`/backoffice/points/${point.id}/edit`} className="text-accent hover:text-ink">
+                      Edit
+                    </Link>
+
+                    {point.active ? (
+                      <button type="button" onClick={() => handleUnpublish(point.id)} className="text-muted hover:text-ink">
+                        Unpublish
+                      </button>
+                    ) : (
+                      <button type="button" onClick={() => handlePublish(point.id)} className="text-muted hover:text-ink">
+                        Publish
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

@@ -49,7 +49,7 @@ function BoPointCreatePage() {
 
         <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Create point</h1>
 
-        <p className="mt-5 max-w-2xl text-sm leading-7 text-muted md:text-base">Crea un nuovo punto di interesse collegato a una città dell’archivio.</p>
+        <p className="mt-5 max-w-2xl text-sm leading-7 text-muted md:text-base">Crea un nuovo punto di interesse collegato a una città dell'archivio.</p>
       </div>
 
       <PointForm cities={cities} submitLabel="Create point" onSubmit={handleCreate} onCancel={() => navigate("/backoffice/points")} />

@@ -55,7 +55,7 @@ function QuizGameForm({ experiences = [], initialValues = emptyForm, submitLabel
     <form onSubmit={handleSubmit} className="mt-8 max-w-4xl rounded-2xl border border-border-soft bg-surface p-6">
       <h2 className="font-serif text-2xl text-ink">{submitLabel}</h2>
 
-      <p className="mt-3 text-sm leading-6 text-muted">Collega il quiz a un’esperienza e imposta domanda, risposte e spiegazione.</p>
+      <p className="mt-3 text-sm leading-6 text-muted">Collega il quiz a un'esperienza e imposta domanda, risposte e spiegazione.</p>
 
       <div className="mt-6">
         <label htmlFor="experienceId" className="mb-2 block text-sm text-muted">

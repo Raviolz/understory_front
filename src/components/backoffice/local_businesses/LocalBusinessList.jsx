@@ -1,11 +1,33 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeLocalBusinesses } from "../../../api/backofficeApi"
+import { getBackofficeLocalBusinesses, publishBackofficeLocalBusiness, unpublishBackofficeLocalBusiness } from "../../../api/backofficeApi"
 
 function LocalBusinessList() {
   const [businesses, setBusinesses] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  function handlePublish(businessId) {
+    publishBackofficeLocalBusiness(businessId)
+      .then((updatedBusiness) => {
+        setBusinesses((currentBusinesses) => currentBusinesses.map((business) => (business.id === updatedBusiness.id ? updatedBusiness : business)))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non riesco a pubblicare l'attività locale.")
+      })
+  }
+
+  function handleUnpublish(businessId) {
+    unpublishBackofficeLocalBusiness(businessId)
+      .then((updatedBusiness) => {
+        setBusinesses((currentBusinesses) => currentBusinesses.map((business) => (business.id === updatedBusiness.id ? updatedBusiness : business)))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non riesco a rimettere l'attività locale in bozza.")
+      })
+  }
 
   useEffect(() => {
     getBackofficeLocalBusinesses()
@@ -93,10 +115,22 @@ function LocalBusinessList() {
                   <span className={business.active ? "text-accent" : "text-muted"}>{business.active ? "Published" : "Draft"}</span>
                 </td>
 
-                <td className="px-4 py-4">
-                  <Link to={`/backoffice/local-businesses/${business.id}/edit`} className="text-accent hover:text-ink">
-                    Edit
-                  </Link>
+                <td className="w-[180px] px-4 py-4">
+                  <div className="flex flex-wrap gap-3">
+                    <Link to={`/backoffice/local-businesses/${business.id}/edit`} className="text-accent hover:text-ink">
+                      Edit
+                    </Link>
+
+                    {business.active ? (
+                      <button type="button" onClick={() => handleUnpublish(business.id)} className="text-muted hover:text-ink">
+                        Unpublish
+                      </button>
+                    ) : (
+                      <button type="button" onClick={() => handlePublish(business.id)} className="text-muted hover:text-ink">
+                        Publish
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

@@ -59,7 +59,7 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
     onSubmit(experienceData)
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a salvare l’esperienza. Controlla i dati inseriti.")
+        setError("Non riesco a salvare l'esperienza. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)
@@ -70,7 +70,7 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
     <form onSubmit={handleSubmit} className="mt-8 max-w-4xl rounded-2xl border border-border-soft bg-surface p-6">
       <h2 className="font-serif text-2xl text-ink">{submitLabel}</h2>
 
-      <p className="mt-3 text-sm leading-6 text-muted">Collega l’esperienza a un punto di interesse e a una categoria narrativa.</p>
+      <p className="mt-3 text-sm leading-6 text-muted">Collega l'esperienza a un punto di interesse e a una categoria narrativa.</p>
 
       <div className="mt-6 grid gap-5 md:grid-cols-2">
         <div>

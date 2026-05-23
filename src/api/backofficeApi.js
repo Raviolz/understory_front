@@ -24,6 +24,18 @@ export function updateBackofficeCity(cityId, cityData) {
   })
 }
 
+export function publishBackofficeCity(cityId) {
+  return authenticatedRequest(`/backoffice/cities/${cityId}/publish`, {
+    method: "PATCH",
+  })
+}
+
+export function unpublishBackofficeCity(cityId) {
+  return authenticatedRequest(`/backoffice/cities/${cityId}/unpublish`, {
+    method: "PATCH",
+  })
+}
+
 // POINTS
 
 export function getBackofficePoints() {
@@ -48,6 +60,17 @@ export function updateBackofficePoint(pointId, pointData) {
   })
 }
 
+export function publishBackofficePoint(pointId) {
+  return authenticatedRequest(`/backoffice/points/${pointId}/publish`, {
+    method: "PATCH",
+  })
+}
+
+export function unpublishBackofficePoint(pointId) {
+  return authenticatedRequest(`/backoffice/points/${pointId}/unpublish`, {
+    method: "PATCH",
+  })
+}
 // EXPERIENCES
 
 export function getBackofficeExperiences() {
@@ -58,6 +81,18 @@ export function createBackofficeExperience(experienceData) {
   return authenticatedRequest("/backoffice/experiences", {
     method: "POST",
     body: JSON.stringify(experienceData),
+  })
+}
+
+export function publishBackofficeExperience(experienceId) {
+  return authenticatedRequest(`/backoffice/experiences/${experienceId}/publish`, {
+    method: "PATCH",
+  })
+}
+
+export function unpublishBackofficeExperience(experienceId) {
+  return authenticatedRequest(`/backoffice/experiences/${experienceId}/unpublish`, {
+    method: "PATCH",
   })
 }
 
@@ -192,6 +227,18 @@ export function updateBackofficeLocalBusiness(businessId, businessData) {
   })
 }
 
+export function publishBackofficeLocalBusiness(businessId) {
+  return authenticatedRequest(`/backoffice/local-businesses/${businessId}/publish`, {
+    method: "PATCH",
+  })
+}
+
+export function unpublishBackofficeLocalBusiness(businessId) {
+  return authenticatedRequest(`/backoffice/local-businesses/${businessId}/unpublish`, {
+    method: "PATCH",
+  })
+}
+
 // REWARDS
 
 export function getBackofficeRewards() {
@@ -215,6 +262,18 @@ export function updateBackofficeReward(rewardId, rewardData) {
     body: JSON.stringify(rewardData),
   })
 }
+
+export function publishBackofficeReward(rewardId) {
+  return authenticatedRequest(`/backoffice/rewards/${rewardId}/publish`, {
+    method: "PATCH",
+  })
+}
+
+export function unpublishBackofficeReward(rewardId) {
+  return authenticatedRequest(`/backoffice/rewards/${rewardId}/unpublish`, {
+    method: "PATCH",
+  })
+}
 // UPLOAD SUBMISSIONS
 export function getBackofficeUploadSubmissions() {
   return authenticatedRequest("/backoffice/upload-submissions")
@@ -223,4 +282,16 @@ export function getBackofficeUploadSubmissions() {
 // USERS
 export function getBackofficeUsers() {
   return authenticatedRequest("/backoffice/users")
+}
+
+export function promoteBackofficeUser(userId) {
+  return authenticatedRequest(`/backoffice/users/${userId}/admin`, {
+    method: "PATCH",
+  })
+}
+
+export function downgradeBackofficeUser(userId) {
+  return authenticatedRequest(`/backoffice/users/${userId}/user`, {
+    method: "PATCH",
+  })
 }

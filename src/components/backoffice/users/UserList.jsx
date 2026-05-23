@@ -1,11 +1,33 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeUsers } from "../../../api/backofficeApi"
+import { getBackofficeUsers, promoteBackofficeUser, downgradeBackofficeUser } from "../../../api/backofficeApi"
 
 function UserList() {
   const [users, setUsers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  function handlePromote(userId) {
+    promoteBackofficeUser(userId)
+      .then((updatedUser) => {
+        setUsers((currentUsers) => currentUsers.map((user) => (user.userId === updatedUser.userId ? updatedUser : user)))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non riesco a promuovere l'utente ad admin.")
+      })
+  }
+
+  function handleDowngrade(userId) {
+    downgradeBackofficeUser(userId)
+      .then((updatedUser) => {
+        setUsers((currentUsers) => currentUsers.map((user) => (user.userId === updatedUser.userId ? updatedUser : user)))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non riesco a riportare l'utente a user.")
+      })
+  }
 
   useEffect(() => {
     getBackofficeUsers()
@@ -76,7 +98,23 @@ function UserList() {
 
                 <td className="px-4 py-4 text-muted">{user.level}</td>
 
-                <td className="px-4 py-4 text-muted">—</td>
+                <td className=" px-4 py-4">
+                  {user.role === "SUPER_ADMIN" ? (
+                    <span className="text-muted">Protected</span>
+                  ) : (
+                    <div className="flex flex-wrap gap-3">
+                      {user.role === "ADMIN" ? (
+                        <button type="button" onClick={() => handleDowngrade(user.userId)} className="text-muted hover:text-ink">
+                          Downgrade
+                        </button>
+                      ) : (
+                        <button type="button" onClick={() => handlePromote(user.userId)} className="text-accent hover:text-ink">
+                          Promote
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </td>
               </tr>
             ))}
 

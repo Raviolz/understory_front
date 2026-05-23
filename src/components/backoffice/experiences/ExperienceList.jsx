@@ -1,11 +1,37 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeExperiences } from "../../../api/backofficeApi"
+import { getBackofficeExperiences, publishBackofficeExperience, unpublishBackofficeExperience } from "../../../api/backofficeApi"
 
 function ExperienceList() {
   const [experiences, setExperiences] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  function handlePublish(experienceId) {
+    publishBackofficeExperience(experienceId)
+      .then((updatedExperience) => {
+        setExperiences((currentExperiences) =>
+          currentExperiences.map((experience) => (experience.id === updatedExperience.id ? updatedExperience : experience)),
+        )
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non riesco a pubblicare l'esperienza.")
+      })
+  }
+
+  function handleUnpublish(experienceId) {
+    unpublishBackofficeExperience(experienceId)
+      .then((updatedExperience) => {
+        setExperiences((currentExperiences) =>
+          currentExperiences.map((experience) => (experience.id === updatedExperience.id ? updatedExperience : experience)),
+        )
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non riesco a rimettere l'esperienza in bozza.")
+      })
+  }
 
   useEffect(() => {
     getBackofficeExperiences()
@@ -92,9 +118,20 @@ function ExperienceList() {
                 </td>
 
                 <td className="px-4 py-4">
-                  <Link to={`/backoffice/experiences/${experience.id}/edit`} className="text-accent hover:text-ink">
-                    Edit
-                  </Link>
+                  <div className="flex flex-wrap gap-3">
+                    <Link to={`/backoffice/experiences/${experience.id}/edit`} className="text-accent hover:text-ink">
+                      Edit
+                    </Link>
+                    {experience.active ? (
+                      <button type="button" onClick={() => handleUnpublish(experience.id)} className="text-muted hover:text-ink">
+                        Unpublish
+                      </button>
+                    ) : (
+                      <button type="button" onClick={() => handlePublish(experience.id)} className="text-muted hover:text-ink">
+                        Publish
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

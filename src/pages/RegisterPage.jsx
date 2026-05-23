@@ -46,7 +46,7 @@ function RegisterPage() {
   }
 
   return (
-    <AuthCard label="Understory Archive" title="Richiedi accesso" description="Crea il tuo profilo per iniziare a consultare l’archivio.">
+    <AuthCard label="Understory Archive" title="Richiedi accesso" description="Crea il tuo profilo per iniziare a consultare l'archivio.">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="username" className="mb-2 block text-sm text-muted">
@@ -139,7 +139,7 @@ function RegisterPage() {
         <p className="text-center text-sm text-muted">
           Hai già un accesso?{" "}
           <Link to="/login" className="text-accent hover:text-ink">
-            Entra nell’archivio
+            Entra nell'archivio
           </Link>
         </p>
       </form>
