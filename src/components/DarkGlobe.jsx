@@ -60,6 +60,13 @@ const DarkGlobe = () => {
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-transparent p-4">
       <div ref={containerRef} className="relative flex items-center justify-center w-full max-w-[650px] aspect-square">
+        <div
+          className="dark-globe-glow"
+          style={{
+            width: `${dimensions.width - 10}px`,
+            height: `${dimensions.height - 10}px`,
+          }}
+        />
         <Globe
           ref={globeRef}
           width={dimensions.width}
@@ -75,6 +82,13 @@ const DarkGlobe = () => {
           polygonStrokeColor={() => "rgba(212, 163, 89, 0.28)"}
           polygonAltitude={0.01}
           showGraticules={false}
+        />
+        <div
+          className="dark-globe-vignette"
+          style={{
+            width: `${dimensions.width}px`,
+            height: `${dimensions.height}px`,
+          }}
         />
       </div>
     </div>
