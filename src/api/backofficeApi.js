@@ -37,6 +37,17 @@ export function createBackofficePoint(pointData) {
   })
 }
 
+export function getBackofficePointById(pointId) {
+  return authenticatedRequest(`/backoffice/points/${pointId}`)
+}
+
+export function updateBackofficePoint(pointId, pointData) {
+  return authenticatedRequest(`/backoffice/points/${pointId}`, {
+    method: "PUT",
+    body: JSON.stringify(pointData),
+  })
+}
+
 // EXPERIENCES
 
 export function getBackofficeExperiences() {
@@ -46,6 +57,17 @@ export function getBackofficeExperiences() {
 export function createBackofficeExperience(experienceData) {
   return authenticatedRequest("/backoffice/experiences", {
     method: "POST",
+    body: JSON.stringify(experienceData),
+  })
+}
+
+export function getBackofficeExperienceById(experienceId) {
+  return authenticatedRequest(`/backoffice/experiences/${experienceId}`)
+}
+
+export function updateBackofficeExperience(experienceId, experienceData) {
+  return authenticatedRequest(`/backoffice/experiences/${experienceId}`, {
+    method: "PUT",
     body: JSON.stringify(experienceData),
   })
 }
@@ -63,6 +85,17 @@ export function createBackofficeExperienceCategory(categoryData) {
   })
 }
 
+export function getBackofficeExperienceCategoryById(categoryId) {
+  return authenticatedRequest(`/backoffice/experience-categories/${categoryId}`)
+}
+
+export function updateBackofficeExperienceCategory(categoryId, categoryData) {
+  return authenticatedRequest(`/backoffice/experience-categories/${categoryId}`, {
+    method: "PUT",
+    body: JSON.stringify(categoryData),
+  })
+}
+
 // QUIZ GAMES
 
 export function getBackofficeQuizGames() {
@@ -72,6 +105,17 @@ export function getBackofficeQuizGames() {
 export function createBackofficeQuizGame(quizData) {
   return authenticatedRequest("/backoffice/quiz-games", {
     method: "POST",
+    body: JSON.stringify(quizData),
+  })
+}
+
+export function getBackofficeQuizGameById(quizGameId) {
+  return authenticatedRequest(`/backoffice/quiz-games/${quizGameId}`)
+}
+
+export function updateBackofficeQuizGame(quizGameId, quizData) {
+  return authenticatedRequest(`/backoffice/quiz-games/${quizGameId}`, {
+    method: "PUT",
     body: JSON.stringify(quizData),
   })
 }
@@ -89,6 +133,17 @@ export function createBackofficeUploadGame(uploadData) {
   })
 }
 
+export function getBackofficeUploadGameById(uploadGameId) {
+  return authenticatedRequest(`/backoffice/upload-games/${uploadGameId}`)
+}
+
+export function updateBackofficeUploadGame(uploadGameId, uploadData) {
+  return authenticatedRequest(`/backoffice/upload-games/${uploadGameId}`, {
+    method: "PUT",
+    body: JSON.stringify(uploadData),
+  })
+}
+
 // BUSINESS CATEGORIES
 
 export function getBackofficeBusinessCategories() {
@@ -98,6 +153,17 @@ export function getBackofficeBusinessCategories() {
 export function createBackofficeBusinessCategory(categoryData) {
   return authenticatedRequest("/backoffice/business-categories", {
     method: "POST",
+    body: JSON.stringify(categoryData),
+  })
+}
+
+export function getBackofficeBusinessCategoryById(categoryId) {
+  return authenticatedRequest(`/backoffice/business-categories/${categoryId}`)
+}
+
+export function updateBackofficeBusinessCategory(categoryId, categoryData) {
+  return authenticatedRequest(`/backoffice/business-categories/${categoryId}`, {
+    method: "PUT",
     body: JSON.stringify(categoryData),
   })
 }
@@ -115,6 +181,17 @@ export function createBackofficeLocalBusiness(businessData) {
   })
 }
 
+export function getBackofficeLocalBusinessById(businessId) {
+  return authenticatedRequest(`/backoffice/local-businesses/${businessId}`)
+}
+
+export function updateBackofficeLocalBusiness(businessId, businessData) {
+  return authenticatedRequest(`/backoffice/local-businesses/${businessId}`, {
+    method: "PUT",
+    body: JSON.stringify(businessData),
+  })
+}
+
 // REWARDS
 
 export function getBackofficeRewards() {
@@ -128,10 +205,22 @@ export function createBackofficeReward(rewardData) {
   })
 }
 
+export function getBackofficeRewardById(rewardId) {
+  return authenticatedRequest(`/backoffice/rewards/${rewardId}`)
+}
+
+export function updateBackofficeReward(rewardId, rewardData) {
+  return authenticatedRequest(`/backoffice/rewards/${rewardId}`, {
+    method: "PUT",
+    body: JSON.stringify(rewardData),
+  })
+}
+// UPLOAD SUBMISSIONS
 export function getBackofficeUploadSubmissions() {
   return authenticatedRequest("/backoffice/upload-submissions")
 }
 
+// USERS
 export function getBackofficeUsers() {
   return authenticatedRequest("/backoffice/users")
 }

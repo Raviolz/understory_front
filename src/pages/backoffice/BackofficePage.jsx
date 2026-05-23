@@ -17,11 +17,13 @@ function BackofficePage() {
 
         <BackofficeSectionCard to="/backoffice/points" title="Points of Interest" description="Gestisci i luoghi fisici collegati alle città." />
 
-        <BackofficeSectionCard
-          to="/backoffice/experience-categories"
-          title="Experience Categories"
-          description="Gestisci le categorie narrative usate per classificare le esperienze."
-        />
+        {isSuperAdmin && (
+          <BackofficeSectionCard
+            to="/backoffice/experience-categories"
+            title="Experience Categories"
+            description="Gestisci le categorie narrative delle esperienze."
+          />
+        )}
 
         <BackofficeSectionCard to="/backoffice/experiences" title="Experiences" description="Gestisci esperienze narrative, difficoltà, XP e categorie." />
 
@@ -33,11 +35,9 @@ function BackofficePage() {
           description="Revisiona le immagini inviate dagli utenti per completare le esperienze upload."
         />
 
-        <BackofficeSectionCard
-          to="/backoffice/business-categories"
-          title="Business Categories"
-          description="Gestisci le categorie usate per classificare le attività locali."
-        />
+        {isSuperAdmin && (
+          <BackofficeSectionCard to="/backoffice/business-categories" title="Business Categories" description="Gestisci le categorie delle attività locali." />
+        )}
 
         <BackofficeSectionCard
           to="/backoffice/local-businesses"
