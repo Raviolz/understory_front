@@ -279,6 +279,22 @@ export function getBackofficeUploadSubmissions() {
   return authenticatedRequest("/backoffice/upload-submissions")
 }
 
+export function approveBackofficeUploadSubmission(submissionId) {
+  return authenticatedRequest(`/backoffice/upload-submissions/${submissionId}/approve`, {
+    method: "PATCH",
+  })
+}
+
+export function rejectBackofficeUploadSubmission(submissionId) {
+  return authenticatedRequest(`/backoffice/upload-submissions/${submissionId}/reject`, {
+    method: "PATCH",
+  })
+}
+
+export function getBackofficeUploadSubmissionsByStatus(status) {
+  return authenticatedRequest(`/backoffice/upload-submissions/status/${status}`)
+}
+
 // USERS
 export function getBackofficeUsers() {
   return authenticatedRequest("/backoffice/users")
