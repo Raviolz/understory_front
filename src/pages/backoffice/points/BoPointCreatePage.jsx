@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { createBackofficePoint, getBackofficeCities } from "../../../api/backofficeApi"
+import { createBackofficePoint, getBackofficeCities, uploadBackofficePointImage } from "../../../api/backofficeApi"
 import PointForm from "../../../components/backoffice/points/PointForm"
 
 function BoPointCreatePage() {
@@ -24,10 +24,18 @@ function BoPointCreatePage() {
       })
   }, [])
 
-  function handleCreate(pointData) {
-    return createBackofficePoint(pointData).then(() => {
-      navigate("/backoffice/points")
-    })
+  function handleCreate(pointData, imageFile) {
+    return createBackofficePoint(pointData)
+      .then((createdPoint) => {
+        if (!imageFile) {
+          return createdPoint
+        }
+
+        return uploadBackofficePointImage(createdPoint.id, imageFile)
+      })
+      .then(() => {
+        navigate("/backoffice/points")
+      })
   }
 
   if (isLoading) {

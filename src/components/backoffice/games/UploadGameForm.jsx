@@ -5,7 +5,6 @@ const emptyForm = {
   promptText: "",
   validationHint: "",
   targetDescription: "",
-  referenceImageUrl: "",
 }
 
 function UploadGameForm({ experiences = [], initialValues = emptyForm, submitLabel, onSubmit, onCancel }) {
@@ -14,11 +13,11 @@ function UploadGameForm({ experiences = [], initialValues = emptyForm, submitLab
     promptText: initialValues.promptText || "",
     validationHint: initialValues.validationHint || "",
     targetDescription: initialValues.targetDescription || "",
-    referenceImageUrl: initialValues.referenceImageUrl || "",
   })
 
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
+  const [imageFile, setImageFile] = useState(null)
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -38,10 +37,9 @@ function UploadGameForm({ experiences = [], initialValues = emptyForm, submitLab
     const uploadData = {
       ...formData,
       validationHint: formData.validationHint || null,
-      referenceImageUrl: formData.referenceImageUrl || null,
     }
 
-    onSubmit(uploadData)
+    onSubmit(uploadData, imageFile)
       .catch((error) => {
         console.error(error)
         setError(error.message || "Non riesco a salvare l'upload game. Controlla i dati inseriti.")
@@ -128,18 +126,25 @@ function UploadGameForm({ experiences = [], initialValues = emptyForm, submitLab
       </div>
 
       <div className="mt-5">
-        <label htmlFor="referenceImageUrl" className="mb-2 block text-sm text-muted">
-          Reference image URL
+        <label htmlFor="referenceImageFile" className="mb-2 block text-sm text-muted">
+          Reference image
         </label>
 
+        {initialValues.referenceImageUrl && (
+          <a href={initialValues.referenceImageUrl} target="_blank" rel="noreferrer" className="mb-3 inline-block text-sm text-accent hover:text-ink">
+            Open current reference image
+          </a>
+        )}
+
         <input
-          id="referenceImageUrl"
-          name="referenceImageUrl"
-          type="url"
-          value={formData.referenceImageUrl}
-          onChange={handleChange}
-          className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
+          id="referenceImageFile"
+          type="file"
+          accept="image/*"
+          onChange={(event) => setImageFile(event.target.files[0] || null)}
+          className="block w-full text-sm text-muted file:mr-4 file:rounded-full file:border file:border-accent-soft file:bg-transparent file:px-4 file:py-2 file:text-sm file:text-accent"
         />
+
+        <p className="mt-2 text-xs text-muted">Se selezioni un file, verrà caricato dopo il salvataggio dell’upload game.</p>
       </div>
 
       {error && <p className="mt-5 text-sm text-arcane">{error}</p>}

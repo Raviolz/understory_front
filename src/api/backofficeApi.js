@@ -36,6 +36,16 @@ export function unpublishBackofficeCity(cityId) {
   })
 }
 
+export function uploadBackofficeCityCoverImage(cityId, file) {
+  const formData = new FormData()
+  formData.append("file", file)
+
+  return authenticatedRequest(`/backoffice/cities/${cityId}/cover-image`, {
+    method: "PATCH",
+    body: formData,
+  })
+}
+
 // POINTS
 
 export function getBackofficePoints() {
@@ -71,6 +81,16 @@ export function unpublishBackofficePoint(pointId) {
     method: "PATCH",
   })
 }
+
+export function uploadBackofficePointImage(pointId, file) {
+  const formData = new FormData()
+  formData.append("file", file)
+
+  return authenticatedRequest(`/backoffice/points/${pointId}/image`, {
+    method: "PATCH",
+    body: formData,
+  })
+}
 // EXPERIENCES
 
 export function getBackofficeExperiences() {
@@ -104,6 +124,16 @@ export function updateBackofficeExperience(experienceId, experienceData) {
   return authenticatedRequest(`/backoffice/experiences/${experienceId}`, {
     method: "PUT",
     body: JSON.stringify(experienceData),
+  })
+}
+
+export function uploadBackofficeExperienceRevealImage(experienceId, file) {
+  const formData = new FormData()
+  formData.append("file", file)
+
+  return authenticatedRequest(`/backoffice/experiences/${experienceId}/reveal-image`, {
+    method: "PATCH",
+    body: formData,
   })
 }
 
@@ -179,6 +209,16 @@ export function updateBackofficeUploadGame(uploadGameId, uploadData) {
   })
 }
 
+export function uploadBackofficeUploadGameReferenceImage(uploadGameId, file) {
+  const formData = new FormData()
+  formData.append("file", file)
+
+  return authenticatedRequest(`/backoffice/upload-games/${uploadGameId}/reference-image`, {
+    method: "PATCH",
+    body: formData,
+  })
+}
+
 // BUSINESS CATEGORIES
 
 export function getBackofficeBusinessCategories() {
@@ -236,6 +276,16 @@ export function publishBackofficeLocalBusiness(businessId) {
 export function unpublishBackofficeLocalBusiness(businessId) {
   return authenticatedRequest(`/backoffice/local-businesses/${businessId}/unpublish`, {
     method: "PATCH",
+  })
+}
+
+export function uploadBackofficeLocalBusinessImage(businessId, file) {
+  const formData = new FormData()
+  formData.append("file", file)
+
+  return authenticatedRequest(`/backoffice/local-businesses/${businessId}/image`, {
+    method: "PATCH",
+    body: formData,
   })
 }
 

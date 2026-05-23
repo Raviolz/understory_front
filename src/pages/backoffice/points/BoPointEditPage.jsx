@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { getBackofficeCities, getBackofficePointById, updateBackofficePoint } from "../../../api/backofficeApi"
+import { getBackofficeCities, getBackofficePointById, updateBackofficePoint, uploadBackofficePointImage } from "../../../api/backofficeApi"
 import PointForm from "../../../components/backoffice/points/PointForm"
 
 function BoPointEditPage() {
@@ -27,10 +27,18 @@ function BoPointEditPage() {
       })
   }, [pointId])
 
-  function handleUpdate(pointData) {
-    return updateBackofficePoint(pointId, pointData).then(() => {
-      navigate("/backoffice/points")
-    })
+  function handleUpdate(pointData, imageFile) {
+    return updateBackofficePoint(pointId, pointData)
+      .then(() => {
+        if (!imageFile) {
+          return null
+        }
+
+        return uploadBackofficePointImage(pointId, imageFile)
+      })
+      .then(() => {
+        navigate("/backoffice/points")
+      })
   }
 
   if (isLoading) {

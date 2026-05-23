@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { createBackofficeUploadGame, getBackofficeExperiences } from "../../../api/backofficeApi"
+import { createBackofficeUploadGame, getBackofficeExperiences, uploadBackofficeUploadGameReferenceImage } from "../../../api/backofficeApi"
 import UploadGameForm from "../../../components/backoffice/games/UploadGameForm"
 
 function BoUploadGameCreatePage() {
@@ -26,12 +26,19 @@ function BoUploadGameCreatePage() {
       })
   }, [])
 
-  function handleCreate(uploadData) {
-    return createBackofficeUploadGame(uploadData).then(() => {
-      navigate("/backoffice/games")
-    })
-  }
+  function handleCreate(uploadData, imageFile) {
+    return createBackofficeUploadGame(uploadData)
+      .then((createdUploadGame) => {
+        if (!imageFile) {
+          return createdUploadGame
+        }
 
+        return uploadBackofficeUploadGameReferenceImage(createdUploadGame.id, imageFile)
+      })
+      .then(() => {
+        navigate("/backoffice/games")
+      })
+  }
   if (isLoading) {
     return <p className="text-muted">Caricamento form...</p>
   }

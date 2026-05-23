@@ -7,7 +7,6 @@ const emptyForm = {
   address: "",
   description: "",
   websiteUrl: "",
-  imageUrl: "",
   longitude: "",
   latitude: "",
 }
@@ -20,13 +19,13 @@ function LocalBusinessForm({ cities = [], businessCategories = [], initialValues
     address: initialValues.address || "",
     description: initialValues.description || "",
     websiteUrl: initialValues.websiteUrl || "",
-    imageUrl: initialValues.imageUrl || "",
     longitude: initialValues.longitude ?? "",
     latitude: initialValues.latitude ?? "",
   })
 
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
+  const [imageFile, setImageFile] = useState(null)
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -46,12 +45,11 @@ function LocalBusinessForm({ cities = [], businessCategories = [], initialValues
     const businessData = {
       ...formData,
       websiteUrl: formData.websiteUrl || null,
-      imageUrl: formData.imageUrl || null,
       longitude: Number(formData.longitude),
       latitude: Number(formData.latitude),
     }
 
-    onSubmit(businessData)
+    onSubmit(businessData, imageFile)
       .catch((error) => {
         console.error(error)
         setError("Non riesco a salvare l'attività locale. Controlla i dati inseriti.")
@@ -201,18 +199,25 @@ function LocalBusinessForm({ cities = [], businessCategories = [], initialValues
       </div>
 
       <div className="mt-5">
-        <label htmlFor="imageUrl" className="mb-2 block text-sm text-muted">
-          Image URL
+        <label htmlFor="businessImageFile" className="mb-2 block text-sm text-muted">
+          Business image
         </label>
 
+        {initialValues.imageUrl && (
+          <a href={initialValues.imageUrl} target="_blank" rel="noreferrer" className="mb-3 inline-block text-sm text-accent hover:text-ink">
+            Open current image
+          </a>
+        )}
+
         <input
-          id="imageUrl"
-          name="imageUrl"
-          type="url"
-          value={formData.imageUrl}
-          onChange={handleChange}
-          className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
+          id="businessImageFile"
+          type="file"
+          accept="image/*"
+          onChange={(event) => setImageFile(event.target.files[0] || null)}
+          className="block w-full text-sm text-muted file:mr-4 file:rounded-full file:border file:border-accent-soft file:bg-transparent file:px-4 file:py-2 file:text-sm file:text-accent"
         />
+
+        <p className="mt-2 text-xs text-muted">Se selezioni un file, verrà caricato dopo il salvataggio dell’attività locale.</p>
       </div>
 
       <div className="mt-5">

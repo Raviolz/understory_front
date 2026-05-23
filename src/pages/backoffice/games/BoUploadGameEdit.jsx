@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { getBackofficeExperiences, getBackofficeUploadGameById, updateBackofficeUploadGame } from "../../../api/backofficeApi"
+import {
+  getBackofficeExperiences,
+  getBackofficeUploadGameById,
+  updateBackofficeUploadGame,
+  uploadBackofficeUploadGameReferenceImage,
+} from "../../../api/backofficeApi"
 import UploadGameForm from "../../../components/backoffice/games/UploadGameForm"
 
 function BoUploadGameEditPage() {
@@ -29,10 +34,18 @@ function BoUploadGameEditPage() {
       })
   }, [uploadGameId])
 
-  function handleUpdate(uploadData) {
-    return updateBackofficeUploadGame(uploadGameId, uploadData).then(() => {
-      navigate("/backoffice/games")
-    })
+  function handleUpdate(uploadData, imageFile) {
+    return updateBackofficeUploadGame(uploadGameId, uploadData)
+      .then(() => {
+        if (!imageFile) {
+          return null
+        }
+
+        return uploadBackofficeUploadGameReferenceImage(uploadGameId, imageFile)
+      })
+      .then(() => {
+        navigate("/backoffice/games")
+      })
   }
 
   if (isLoading) {

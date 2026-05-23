@@ -6,7 +6,6 @@ const emptyForm = {
   longitude: "",
   latitude: "",
   description: "",
-  coverImageUrl: "",
 }
 
 function CityForm({ initialValues = emptyForm, submitLabel, onSubmit, onCancel }) {
@@ -16,11 +15,11 @@ function CityForm({ initialValues = emptyForm, submitLabel, onSubmit, onCancel }
     longitude: initialValues.longitude ?? "",
     latitude: initialValues.latitude ?? "",
     description: initialValues.description || "",
-    coverImageUrl: initialValues.coverImageUrl || "",
   })
 
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
+  const [imageFile, setImageFile] = useState(null)
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -39,15 +38,14 @@ function CityForm({ initialValues = emptyForm, submitLabel, onSubmit, onCancel }
 
     const cityData = {
       ...formData,
-      longitude: Number(formData.longitude),
       latitude: Number(formData.latitude),
-      coverImageUrl: formData.coverImageUrl || null,
+      longitude: Number(formData.longitude),
     }
 
-    onSubmit(cityData)
+    onSubmit(cityData, imageFile)
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a salvare la città. Controlla i dati inseriti.")
+        setError(error.message || "Non riesco a salvare la città. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)
@@ -131,22 +129,25 @@ function CityForm({ initialValues = emptyForm, submitLabel, onSubmit, onCancel }
           />
         </div>
       </div>
-
       <div className="mt-5">
-        <label htmlFor="coverImageUrl" className="mb-2 block text-sm text-muted">
-          Cover image URL
+        <label htmlFor="coverImageFile" className="mb-2 block text-sm text-muted">
+          Cover image file
         </label>
-
+        {initialValues.coverImageUrl && (
+          <a href={initialValues.coverImageUrl} target="_blank" rel="noreferrer" className="mb-3 inline-block text-sm text-accent hover:text-ink">
+            Open current cover image
+          </a>
+        )}
         <input
-          id="coverImageUrl"
-          name="coverImageUrl"
-          type="url"
-          value={formData.coverImageUrl}
-          onChange={handleChange}
-          className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
+          id="coverImageFile"
+          type="file"
+          accept="image/*"
+          onChange={(event) => setImageFile(event.target.files[0] || null)}
+          className="block w-full text-sm text-muted file:mr-4 file:rounded-full file:border file:border-accent-soft file:bg-transparent file:px-4 file:py-2 file:text-sm file:text-accent"
         />
-      </div>
 
+        <p className="mt-2 text-xs text-muted">Se selezioni un file, verrà caricato dopo il salvataggio della città.</p>
+      </div>
       <div className="mt-5">
         <label htmlFor="description" className="mb-2 block text-sm text-muted">
           Description

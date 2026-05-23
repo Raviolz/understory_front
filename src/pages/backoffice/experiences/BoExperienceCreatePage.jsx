@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { createBackofficeExperience, getBackofficeExperienceCategories, getBackofficePoints } from "../../../api/backofficeApi"
+import {
+  createBackofficeExperience,
+  getBackofficeExperienceCategories,
+  getBackofficePoints,
+  uploadBackofficeExperienceRevealImage,
+} from "../../../api/backofficeApi"
 import ExperienceForm from "../../../components/backoffice/experiences/ExperienceForm"
 
 function BoExperienceCreatePage() {
@@ -26,10 +31,18 @@ function BoExperienceCreatePage() {
       })
   }, [])
 
-  function handleCreate(experienceData) {
-    return createBackofficeExperience(experienceData).then(() => {
-      navigate("/backoffice/experiences")
-    })
+  function handleCreate(experienceData, imageFile) {
+    return createBackofficeExperience(experienceData)
+      .then((createdExperience) => {
+        if (!imageFile) {
+          return createdExperience
+        }
+
+        return uploadBackofficeExperienceRevealImage(createdExperience.id, imageFile)
+      })
+      .then(() => {
+        navigate("/backoffice/experiences")
+      })
   }
 
   if (isLoading) {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { getBackofficeCityById, updateBackofficeCity } from "../../../api/backofficeApi"
+import { getBackofficeCityById, updateBackofficeCity, uploadBackofficeCityCoverImage } from "../../../api/backofficeApi"
 import CityForm from "../../../components/backoffice/cities/CityForm"
 
 function BoCityEditPage() {
@@ -25,10 +25,18 @@ function BoCityEditPage() {
       })
   }, [cityId])
 
-  function handleUpdate(cityData) {
-    return updateBackofficeCity(cityId, cityData).then(() => {
-      navigate("/backoffice/cities")
-    })
+  function handleUpdate(cityData, imageFile) {
+    return updateBackofficeCity(cityId, cityData)
+      .then(() => {
+        if (!imageFile) {
+          return null
+        }
+
+        return uploadBackofficeCityCoverImage(cityId, imageFile)
+      })
+      .then(() => {
+        navigate("/backoffice/cities")
+      })
   }
 
   if (isLoading) {

@@ -1,14 +1,22 @@
 import { useNavigate } from "react-router-dom"
-import { createBackofficeCity } from "../../../api/backofficeApi"
+import { createBackofficeCity, uploadBackofficeCityCoverImage } from "../../../api/backofficeApi"
 import CityForm from "../../../components/backoffice/cities/CityForm"
 
 function BoCityCreatePage() {
   const navigate = useNavigate()
 
-  function handleCreate(cityData) {
-    return createBackofficeCity(cityData).then(() => {
-      navigate("/backoffice/cities")
-    })
+  function handleCreate(cityData, imageFile) {
+    return createBackofficeCity(cityData)
+      .then((createdCity) => {
+        if (!imageFile) {
+          return createdCity
+        }
+
+        return uploadBackofficeCityCoverImage(createdCity.id, imageFile)
+      })
+      .then(() => {
+        navigate("/backoffice/cities")
+      })
   }
 
   return (

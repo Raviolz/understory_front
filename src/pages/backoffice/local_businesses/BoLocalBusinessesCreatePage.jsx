@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { createBackofficeLocalBusiness, getBackofficeBusinessCategories, getBackofficeCities } from "../../../api/backofficeApi"
+import {
+  createBackofficeLocalBusiness,
+  getBackofficeBusinessCategories,
+  getBackofficeCities,
+  uploadBackofficeLocalBusinessImage,
+} from "../../../api/backofficeApi"
 import LocalBusinessForm from "../../../components/backoffice/local_businesses/LocalBusinessForm"
 
 function BoLocalBusinessCreatePage() {
@@ -26,10 +31,18 @@ function BoLocalBusinessCreatePage() {
       })
   }, [])
 
-  function handleCreate(businessData) {
-    return createBackofficeLocalBusiness(businessData).then(() => {
-      navigate("/backoffice/local-businesses")
-    })
+  function handleCreate(businessData, imageFile) {
+    return createBackofficeLocalBusiness(businessData)
+      .then((createdBusiness) => {
+        if (!imageFile) {
+          return createdBusiness
+        }
+
+        return uploadBackofficeLocalBusinessImage(createdBusiness.id, imageFile)
+      })
+      .then(() => {
+        navigate("/backoffice/local-businesses")
+      })
   }
 
   if (isLoading) {

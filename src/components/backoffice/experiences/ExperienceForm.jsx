@@ -8,7 +8,6 @@ const emptyForm = {
   hookText: "",
   introText: "",
   revealTitle: "",
-  revealImageUrl: "",
   revealText: "",
   journalText: "",
   xpReward: "",
@@ -24,7 +23,6 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
     hookText: initialValues.hookText || "",
     introText: initialValues.introText || "",
     revealTitle: initialValues.revealTitle || "",
-    revealImageUrl: initialValues.revealImageUrl || "",
     revealText: initialValues.revealText || "",
     journalText: initialValues.journalText || "",
     xpReward: initialValues.xpReward ?? "",
@@ -33,6 +31,7 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
 
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
+  const [imageFile, setImageFile] = useState(null)
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -51,12 +50,11 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
 
     const experienceData = {
       ...formData,
-      revealImageUrl: formData.revealImageUrl || null,
       xpReward: Number(formData.xpReward),
       difficulty: Number(formData.difficulty),
     }
 
-    onSubmit(experienceData)
+    onSubmit(experienceData, imageFile)
       .catch((error) => {
         console.error(error)
         setError("Non riesco a salvare l'esperienza. Controlla i dati inseriti.")
@@ -242,18 +240,25 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
       </div>
 
       <div className="mt-5">
-        <label htmlFor="revealImageUrl" className="mb-2 block text-sm text-muted">
-          Reveal image URL
+        <label htmlFor="revealImageFile" className="mb-2 block text-sm text-muted">
+          Reveal image
         </label>
 
+        {initialValues.revealImageUrl && (
+          <a href={initialValues.revealImageUrl} target="_blank" rel="noreferrer" className="mb-3 inline-block text-sm text-accent hover:text-ink">
+            Open current reveal image
+          </a>
+        )}
+
         <input
-          id="revealImageUrl"
-          name="revealImageUrl"
-          type="url"
-          value={formData.revealImageUrl}
-          onChange={handleChange}
-          className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
+          id="revealImageFile"
+          type="file"
+          accept="image/*"
+          onChange={(event) => setImageFile(event.target.files[0] || null)}
+          className="block w-full text-sm text-muted file:mr-4 file:rounded-full file:border file:border-accent-soft file:bg-transparent file:px-4 file:py-2 file:text-sm file:text-accent"
         />
+
+        <p className="mt-2 text-xs text-muted">Se selezioni un file, verrà caricato dopo il salvataggio dell’esperienza.</p>
       </div>
 
       <div className="mt-5">

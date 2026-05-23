@@ -4,7 +4,6 @@ const emptyForm = {
   cityId: "",
   name: "",
   shortDescription: "",
-  imageUrl: "",
   longitude: "",
   latitude: "",
 }
@@ -14,13 +13,13 @@ function PointForm({ cities = [], initialValues = emptyForm, submitLabel, onSubm
     cityId: initialValues.cityId || "",
     name: initialValues.name || "",
     shortDescription: initialValues.shortDescription || "",
-    imageUrl: initialValues.imageUrl || "",
     longitude: initialValues.longitude ?? "",
     latitude: initialValues.latitude ?? "",
   })
 
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
+  const [imageFile, setImageFile] = useState(null)
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -41,10 +40,9 @@ function PointForm({ cities = [], initialValues = emptyForm, submitLabel, onSubm
       ...formData,
       longitude: Number(formData.longitude),
       latitude: Number(formData.latitude),
-      imageUrl: formData.imageUrl || null,
     }
 
-    onSubmit(pointData)
+    onSubmit(pointData, imageFile)
       .catch((error) => {
         console.error(error)
         setError("Non riesco a salvare il punto di interesse. Controlla i dati inseriti.")
@@ -139,18 +137,25 @@ function PointForm({ cities = [], initialValues = emptyForm, submitLabel, onSubm
       </div>
 
       <div className="mt-5">
-        <label htmlFor="imageUrl" className="mb-2 block text-sm text-muted">
-          Image URL
+        <label htmlFor="pointImageFile" className="mb-2 block text-sm text-muted">
+          Point image
         </label>
 
+        {initialValues.imageUrl && (
+          <a href={initialValues.imageUrl} target="_blank" rel="noreferrer" className="mb-3 inline-block text-sm text-accent hover:text-ink">
+            Open current image
+          </a>
+        )}
+
         <input
-          id="imageUrl"
-          name="imageUrl"
-          type="url"
-          value={formData.imageUrl}
-          onChange={handleChange}
-          className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
+          id="pointImageFile"
+          type="file"
+          accept="image/*"
+          onChange={(event) => setImageFile(event.target.files[0] || null)}
+          className="block w-full text-sm text-muted file:mr-4 file:rounded-full file:border file:border-accent-soft file:bg-transparent file:px-4 file:py-2 file:text-sm file:text-accent"
         />
+
+        <p className="mt-2 text-xs text-muted">Se selezioni un file, verrà caricato dopo il salvataggio del punto.</p>
       </div>
 
       <div className="mt-5">

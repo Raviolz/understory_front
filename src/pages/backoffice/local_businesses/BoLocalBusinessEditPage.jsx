@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { getBackofficeBusinessCategories, getBackofficeCities, getBackofficeLocalBusinessById, updateBackofficeLocalBusiness } from "../../../api/backofficeApi"
+import {
+  getBackofficeBusinessCategories,
+  getBackofficeCities,
+  getBackofficeLocalBusinessById,
+  updateBackofficeLocalBusiness,
+  uploadBackofficeLocalBusinessImage,
+} from "../../../api/backofficeApi"
 import LocalBusinessForm from "../../../components/backoffice/local_businesses/LocalBusinessForm"
 
 function BoLocalBusinessEditPage() {
@@ -29,12 +35,19 @@ function BoLocalBusinessEditPage() {
       })
   }, [businessId])
 
-  function handleUpdate(businessData) {
-    return updateBackofficeLocalBusiness(businessId, businessData).then(() => {
-      navigate("/backoffice/local-businesses")
-    })
-  }
+  function handleUpdate(businessData, imageFile) {
+    return updateBackofficeLocalBusiness(businessId, businessData)
+      .then(() => {
+        if (!imageFile) {
+          return null
+        }
 
+        return uploadBackofficeLocalBusinessImage(businessId, imageFile)
+      })
+      .then(() => {
+        navigate("/backoffice/local-businesses")
+      })
+  }
   if (isLoading) {
     return <p className="text-muted">Caricamento attività locale...</p>
   }
