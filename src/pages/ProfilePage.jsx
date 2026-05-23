@@ -1,9 +1,37 @@
 import { Navigate } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { uploadMyAvatar } from "../api/authApi"
+import { setCurrentUser } from "../redux/authSlice"
+import { useRef, useState } from "react"
 
 function ProfilePage() {
   const accessToken = useSelector((state) => state.auth.accessToken)
   const currentUser = useSelector((state) => state.auth.currentUser)
+  const dispatch = useDispatch()
+  const avatarInputRef = useRef(null)
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
+  const [avatarError, setAvatarError] = useState(null)
+
+  function handleAvatarUpload(file) {
+    if (!file) {
+      return
+    }
+
+    setIsUploadingAvatar(true)
+    setAvatarError(null)
+
+    uploadMyAvatar(file)
+      .then((updatedUser) => {
+        dispatch(setCurrentUser(updatedUser))
+      })
+      .catch((error) => {
+        console.error(error)
+        setAvatarError("Non riesco a caricare l’avatar.")
+      })
+      .finally(() => {
+        setIsUploadingAvatar(false)
+      })
+  }
 
   if (accessToken && !currentUser) {
     return <p className="text-muted">Caricamento profilo...</p>
@@ -21,8 +49,37 @@ function ProfilePage() {
 
       <div className="mt-8 rounded-3xl border border-border-soft bg-surface p-6 md:p-8">
         <div className="flex items-center gap-5">
-          <div className="h-20 w-20 overflow-hidden rounded-full border border-accent-soft bg-surface-soft">
-            {currentUser.avatarUrl && <img src={currentUser.avatarUrl} alt={currentUser.username} className="h-full w-full object-cover" />}
+          <div>
+            <button
+              type="button"
+              onClick={() => avatarInputRef.current?.click()}
+              disabled={isUploadingAvatar}
+              className="group relative h-24 w-24 overflow-hidden rounded-full border border-border-soft bg-canvas disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              {currentUser?.avatarUrl ? (
+                <img src={currentUser.avatarUrl} alt={currentUser.username} className="h-full w-full object-cover" />
+              ) : (
+                <span className="flex h-full w-full items-center justify-center text-sm text-muted">No avatar</span>
+              )}
+
+              <span className="absolute inset-0 flex items-center justify-center bg-black/45 text-xs text-white opacity-0 transition group-hover:opacity-100">
+                {isUploadingAvatar ? "Uploading..." : "Modifica"}
+              </span>
+            </button>
+
+            <input
+              ref={avatarInputRef}
+              type="file"
+              accept="image/*"
+              onChange={(event) => {
+                const file = event.target.files[0]
+                handleAvatarUpload(file)
+                event.target.value = ""
+              }}
+              className="hidden"
+            />
+
+            {avatarError && <p className="mt-2 text-xs text-arcane">{avatarError}</p>}
           </div>
 
           <div>

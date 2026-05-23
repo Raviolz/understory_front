@@ -17,3 +17,13 @@ export function loginUser(credentials) {
 export function getMyProfile() {
   return authenticatedRequest("/me/profile")
 }
+
+export function uploadMyAvatar(file) {
+  const formData = new FormData()
+  formData.append("file", file)
+
+  return authenticatedRequest("/me/avatar", {
+    method: "PATCH",
+    body: formData,
+  })
+}
