@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { getPublishedCityById, getPublishedPointsByCity } from "../api/publicApi"
 import PointPreviewCard from "../components/PointPreviewCard"
+import CityMap from "./CityMap"
 
 function CityDetailPage() {
   const { cityId } = useParams()
@@ -10,6 +11,19 @@ function CityDetailPage() {
   const [points, setPoints] = useState([])
   const [selectedPoint, setSelectedPoint] = useState(null)
   const [error, setError] = useState(null)
+
+  const pointCardRefs = useRef({})
+
+  function handleSelectPoint(point) {
+    setSelectedPoint(point)
+
+    requestAnimationFrame(() => {
+      pointCardRefs.current[point.id]?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      })
+    })
+  }
 
   useEffect(() => {
     if (!cityId) return
@@ -70,31 +84,42 @@ function CityDetailPage() {
         <p className="mt-6 max-w-2xl text-sm leading-7 text-muted md:text-base">{city.description}</p>
       </section>
 
-      <section className="mt-12">
-        <div className="rounded-3xl border border-border-soft bg-surface-soft/40 p-6">
-          <p className="text-sm uppercase tracking-[0.25em] text-accent">City map</p>
+      <section className="mt-12 grid gap-8 lg:grid-cols-[320px_1fr] xl:grid-cols-[360px_1fr]">
+        <aside className="lg:sticky lg:top-8 lg:self-start">
+          <div className="rounded-3xl border border-border-soft bg-surface-soft/40 p-5">
+            <p className="text-sm uppercase tracking-[0.25em] text-accent">City map</p>
 
-          <div className="mt-4 flex min-h-[320px] items-center justify-center rounded-2xl border border-border-soft bg-canvas text-sm text-muted">MAPBOX</div>
-        </div>
-      </section>
+            <div className="mt-4">
+              <CityMap city={city} points={points} selectedPoint={selectedPoint} onSelectPoint={handleSelectPoint} />
+            </div>
+          </div>
+        </aside>
 
-      <section className="mt-12">
-        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.25em] text-accent">Points of interest</p>
-            <h2 className="mt-3 font-serif text-3xl text-ink">Choose your entry point</h2>
+        <section>
+          <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-sm uppercase tracking-[0.25em] text-accent">Points of interest</p>
+              <h2 className="mt-3 font-serif text-3xl text-ink">Choose your entry point</h2>
+            </div>
+
+            <p className="text-sm text-muted">{points.length} published points</p>
           </div>
 
-          <p className="text-sm text-muted">{points.length} published points</p>
-        </div>
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            {points.map((point) => (
+              <div
+                key={point.id}
+                ref={(element) => {
+                  pointCardRefs.current[point.id] = element
+                }}
+              >
+                <PointPreviewCard point={point} isSelected={selectedPoint?.id === point.id} onSelect={() => handleSelectPoint(point)} />
+              </div>
+            ))}
 
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {points.map((point) => (
-            <PointPreviewCard key={point.id} point={point} isSelected={selectedPoint?.id === point.id} onSelect={() => setSelectedPoint(point)} />
-          ))}
-
-          {points.length === 0 && <p className="text-muted">Nessun point pubblicato per questa città.</p>}
-        </div>
+            {points.length === 0 && <p className="text-muted">Nessun point pubblicato per questa città.</p>}
+          </div>
+        </section>
       </section>
     </main>
   )
