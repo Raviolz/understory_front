@@ -2,8 +2,8 @@ import { authenticatedRequest } from "./apiClient"
 
 // CITIES
 
-export function getBackofficeCities() {
-  return authenticatedRequest("/backoffice/cities")
+export function getBackofficeCities({ page = 0, size = 100, sortBy = "name" } = {}) {
+  return authenticatedRequest(`/backoffice/cities?page=${page}&size=${size}&sortBy=${sortBy}`)
 }
 
 export function getBackofficeCityById(cityId) {
@@ -48,8 +48,8 @@ export function uploadBackofficeCityCoverImage(cityId, file) {
 
 // POINTS
 
-export function getBackofficePoints() {
-  return authenticatedRequest("/backoffice/points")
+export function getBackofficePoints({ page = 0, size = 100, sortBy = "name" } = {}) {
+  return authenticatedRequest(`/backoffice/points?page=${page}&size=${size}&sortBy=${sortBy}`)
 }
 
 export function createBackofficePoint(pointData) {
