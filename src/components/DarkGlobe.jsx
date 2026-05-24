@@ -68,17 +68,6 @@ const DarkGlobe = () => {
       .then((data) => {
         const publishedCities = data.content ?? []
 
-        console.table(
-          publishedCities.map((city) => ({
-            name: city.name,
-            longitude: city.longitude,
-            latitude: city.latitude,
-            category: city.dominantCategoryCode,
-            color: city.dominantCategoryColor,
-            icon: city.dominantCategoryIcon,
-          })),
-        )
-
         setCities(publishedCities)
         setSelectedCity(null)
       })
@@ -91,6 +80,14 @@ const DarkGlobe = () => {
   return (
     <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-transparent p-4">
       <div ref={containerRef} className="relative flex aspect-square w-full max-w-[650px] items-center justify-center">
+        <div
+          className="dark-globe-glow"
+          style={{
+            width: `${dimensions.width - 10}px`,
+            height: `${dimensions.height - 10}px`,
+          }}
+        />
+
         <Globe
           ref={globeRef}
           width={dimensions.width}
@@ -109,18 +106,10 @@ const DarkGlobe = () => {
           htmlElementsData={cities}
           htmlLat="latitude"
           htmlLng="longitude"
-          htmlAltitude={0.012}
+          htmlAltitude={0.1}
           htmlElement={(city) => {
             const isSelected = selectedCity?.id === city.id
             const markerColor = city.dominantCategoryColor || "#d4a359"
-
-            const categorySymbols = {
-              HIDDEN_HISTORY: "☩",
-              URBAN_MYSTERY: "⧋",
-              BURIED_FOLKLORE: "❦",
-            }
-
-            const markerSymbol = categorySymbols[city.dominantCategoryCode] || "●"
             const el = document.createElement("div")
 
             el.innerHTML = `
@@ -129,9 +118,7 @@ const DarkGlobe = () => {
                   class="${isSelected ? "dark-globe-marker-dot dark-globe-marker-dot-selected" : "dark-globe-marker-dot"}"
                   style="color: ${markerColor};"
                 >
-                  <span class="dark-globe-marker-symbol">
-                    ${markerSymbol}
-                  </span>
+                  <span class="dark-globe-marker-light"></span>
                 </div>
 
                 <div class="${isSelected ? "dark-globe-marker-label dark-globe-marker-label-selected" : "dark-globe-marker-label"}">
@@ -156,6 +143,14 @@ const DarkGlobe = () => {
             return el
           }}
         />
+
+        <div
+          className="dark-globe-vignette"
+          style={{
+            width: `${dimensions.width}px`,
+            height: `${dimensions.height}px`,
+          }}
+        />
       </div>
 
       {selectedCity && (
@@ -170,28 +165,3 @@ const DarkGlobe = () => {
 }
 
 export default DarkGlobe
-
-// VIGNETTE INTORNO DI TEST DA DECIDERMI
-
-{
-  /* 
-<div
-className="dark-globe-glow"
-style={{
-  width: `${dimensions.width - 10}px`,
-  height: `${dimensions.height - 10}px`,
-}}
-/> 
-*/
-}
-{
-  /* 
-<div
-  className="dark-globe-vignette"
-  style={{
-    width: `${dimensions.width}px`,
-    height: `${dimensions.height}px`,
-  }}
-/> 
-*/
-}
