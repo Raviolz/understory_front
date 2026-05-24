@@ -66,15 +66,17 @@ function CityMap({ city, points = [], selectedPoint, onSelectPoint }) {
 
     points.forEach((point) => {
       const isSelected = selectedPoint?.id === point.id
+      const markerColor = point.primaryExperienceCategoryColor || "#d6ae62"
 
       const markerElement = document.createElement("button")
       markerElement.type = "button"
       markerElement.className = isSelected ? "city-map-marker city-map-marker-selected" : "city-map-marker"
       markerElement.setAttribute("aria-label", point.name)
+      markerElement.style.setProperty("--marker-color", markerColor)
 
       markerElement.innerHTML = `
-        <span class="city-map-marker-core"></span>
-      `
+    <span class="city-map-marker-core"></span>
+  `
 
       markerElement.addEventListener("click", () => {
         onSelectPoint(point)

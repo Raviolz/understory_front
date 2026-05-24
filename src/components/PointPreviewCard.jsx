@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 function PointPreviewCard({ point, isSelected = false, onSelect }) {
   return (
     <article
@@ -27,8 +29,18 @@ function PointPreviewCard({ point, isSelected = false, onSelect }) {
             <p className="text-xs text-muted">
               {point.latitude}, {point.longitude}
             </p>
+            {isSelected && point.primaryExperienceTitle && <p className="mt-3 text-sm leading-6 text-accent">{point.primaryExperienceTitle}</p>}
 
-            <p className="mt-3 text-sm text-accent">{isSelected ? "Selected point" : "Reveal point"}</p>
+            {isSelected && point.primaryExperienceId ? (
+              <Link
+                to={`/experiences/${point.primaryExperienceId}`}
+                className="mt-4 inline-flex w-full justify-center rounded-full border border-accent-soft px-4 py-2 text-sm text-accent transition hover:border-accent hover:bg-accent hover:text-canvas"
+              >
+                Start experience
+              </Link>
+            ) : (
+              <p className="mt-3 text-sm text-accent">{isSelected ? "No experience available" : "Reveal point"}</p>
+            )}
           </div>
         </div>
       </button>

@@ -20,6 +20,7 @@ import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
 import BackofficeRoutes from "./routes/BackofficeRoutes"
 import CityDetailPage from "./components/CityDetailPage"
+import ExperienceDetailPage from "./pages/ExperienceDetailsPage"
 
 function App() {
   const dispatch = useDispatch()
@@ -56,7 +57,7 @@ function App() {
             <Route path="/journal" element={<JournalPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/cities/:cityId" element={<CityDetailPage />} />
-
+            <Route path="/experiences/:experienceId" element={<ExperienceDetailPage />} />
             <Route path="/404" element={<NotFoundPage />} />
             <Route path="*" element={<Navigate to="/404" replace />} />
           </Routes>
