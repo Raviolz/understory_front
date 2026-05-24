@@ -40,9 +40,99 @@ body {
   color: var(--ink);
 }
 
-/* Dark Globe visual layers */
+/* GLOBE */
 
-.dark-globe-glow {
+.dark-globe-marker {
+  position: relative;
+  width: 0;
+  height: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dark-globe-marker-dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  background: rgba(6, 4, 10, 0.92);
+  border: 1px solid currentColor;
+  border-radius: 9999px;
+  color: #d4a359;
+  opacity: 0.85;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.dark-globe-marker-symbol {
+  display: block;
+  color: currentColor;
+  opacity: 0.6;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 8px;
+  line-height: 1;
+  font-weight: 700;
+  transform: translateY(-0.5px);
+  transition: all 0.3s ease;
+}
+
+.dark-globe-marker-label {
+  position: absolute;
+  left: 0;
+  top: 14px;
+  transform: translateX(-50%) translateY(-2px);
+  color: #f4eccd;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  text-shadow:
+    2px 2px 4px #000,
+    -2px -2px 4px #000;
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+
+/* STATI DEI MARKERs */
+
+.dark-globe-marker:hover .dark-globe-marker-dot {
+  width: 18px;
+  height: 18px;
+  border-color: rgba(214, 174, 98, 0.95);
+  box-shadow: 0 0 14px rgba(214, 174, 98, 0.6);
+}
+
+.dark-globe-marker:hover .dark-globe-marker-symbol {
+  opacity: 0.9;
+}
+
+.dark-globe-marker:hover .dark-globe-marker-label,
+.dark-globe-marker-label-selected {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dark-globe-marker-dot-selected {
+  width: 20px;
+  height: 20px;
+  border-color: rgba(214, 174, 98, 0.95);
+  box-shadow: 0 0 16px rgba(214, 174, 98, 0.8);
+}
+
+.dark-globe-marker-label-selected {
+  font-size: 11px;
+  font-weight: bold;
+}
+
+/* 
+Vignette da considerare */
+
+/* .dark-globe-glow {
   pointer-events: none;
   position: absolute;
   border-radius: 9999px;
@@ -60,4 +150,4 @@ body {
     inset -45px -45px 90px rgba(0, 0, 0, 0.98),
     inset 35px 35px 70px rgba(212, 163, 89, 0.07),
     inset 0 0 25px rgba(147, 51, 234, 0.08);
-}
+} */

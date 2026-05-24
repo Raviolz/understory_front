@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import Globe from "react-globe.gl"
+import { getPublishedCities } from "../api/publicApi"
+import CityPreviewCard from "./CityPreviewCard"
 
 const countriesUrl = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson"
 
@@ -12,6 +14,10 @@ const DarkGlobe = () => {
     width: 600,
     height: 600,
   })
+
+  const [cities, setCities] = useState([])
+  const [selectedCity, setSelectedCity] = useState(null)
+  const [citiesError, setCitiesError] = useState(null)
 
   useEffect(() => {
     fetch(countriesUrl)
@@ -57,16 +63,34 @@ const DarkGlobe = () => {
     )
   }, [countries])
 
+  useEffect(() => {
+    getPublishedCities({ size: 50 })
+      .then((data) => {
+        const publishedCities = data.content ?? []
+
+        console.table(
+          publishedCities.map((city) => ({
+            name: city.name,
+            longitude: city.longitude,
+            latitude: city.latitude,
+            category: city.dominantCategoryCode,
+            color: city.dominantCategoryColor,
+            icon: city.dominantCategoryIcon,
+          })),
+        )
+
+        setCities(publishedCities)
+        setSelectedCity(null)
+      })
+      .catch((err) => {
+        console.error(err)
+        setCitiesError("Impossibile caricare le città")
+      })
+  }, [])
+
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-transparent p-4">
-      <div ref={containerRef} className="relative flex items-center justify-center w-full max-w-[650px] aspect-square">
-        <div
-          className="dark-globe-glow"
-          style={{
-            width: `${dimensions.width - 10}px`,
-            height: `${dimensions.height - 10}px`,
-          }}
-        />
+    <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-transparent p-4">
+      <div ref={containerRef} className="relative flex aspect-square w-full max-w-[650px] items-center justify-center">
         <Globe
           ref={globeRef}
           width={dimensions.width}
@@ -82,17 +106,92 @@ const DarkGlobe = () => {
           polygonStrokeColor={() => "rgba(212, 163, 89, 0.28)"}
           polygonAltitude={0.01}
           showGraticules={false}
-        />
-        <div
-          className="dark-globe-vignette"
-          style={{
-            width: `${dimensions.width}px`,
-            height: `${dimensions.height}px`,
+          htmlElementsData={cities}
+          htmlLat="latitude"
+          htmlLng="longitude"
+          htmlAltitude={0.012}
+          htmlElement={(city) => {
+            const isSelected = selectedCity?.id === city.id
+            const markerColor = city.dominantCategoryColor || "#d4a359"
+
+            const categorySymbols = {
+              HIDDEN_HISTORY: "☩",
+              URBAN_MYSTERY: "⧋",
+              BURIED_FOLKLORE: "❦",
+            }
+
+            const markerSymbol = categorySymbols[city.dominantCategoryCode] || "●"
+            const el = document.createElement("div")
+
+            el.innerHTML = `
+              <div class="dark-globe-marker">
+                <div
+                  class="${isSelected ? "dark-globe-marker-dot dark-globe-marker-dot-selected" : "dark-globe-marker-dot"}"
+                  style="color: ${markerColor};"
+                >
+                  <span class="dark-globe-marker-symbol">
+                    ${markerSymbol}
+                  </span>
+                </div>
+
+                <div class="${isSelected ? "dark-globe-marker-label dark-globe-marker-label-selected" : "dark-globe-marker-label"}">
+                  ${city.name}
+                </div>
+              </div>
+            `
+
+            el.onclick = () => {
+              setSelectedCity(city)
+
+              globeRef.current?.pointOfView(
+                {
+                  lat: city.latitude,
+                  lng: city.longitude,
+                  altitude: 1.75,
+                },
+                900,
+              )
+            }
+
+            return el
           }}
         />
       </div>
-    </div>
+
+      {selectedCity && (
+        <div className="pointer-events-auto absolute bottom-6 left-1/2 z-10 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 lg:bottom-auto lg:left-auto lg:right-10 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-0">
+          <CityPreviewCard city={selectedCity} onClose={() => setSelectedCity(null)} />
+        </div>
+      )}
+
+      {citiesError && <p className="absolute bottom-4 left-4 text-sm text-arcane">{citiesError}</p>}
+    </section>
   )
 }
 
 export default DarkGlobe
+
+// VIGNETTE INTORNO DI TEST DA DECIDERMI
+
+{
+  /* 
+<div
+className="dark-globe-glow"
+style={{
+  width: `${dimensions.width - 10}px`,
+  height: `${dimensions.height - 10}px`,
+}}
+/> 
+*/
+}
+{
+  /* 
+<div
+  className="dark-globe-vignette"
+  style={{
+    width: `${dimensions.width}px`,
+    height: `${dimensions.height}px`,
+  }}
+/> 
+*/
+}

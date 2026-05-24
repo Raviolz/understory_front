@@ -19,6 +19,7 @@ import NotFoundPage from "./pages/NotFoundPage"
 import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
 import BackofficeRoutes from "./routes/BackofficeRoutes"
+import CityDetailPage from "./components/CityDetailPage"
 
 function App() {
   const dispatch = useDispatch()
@@ -54,6 +55,7 @@ function App() {
             <Route path="/explore" element={<ExplorePage />} />
             <Route path="/journal" element={<JournalPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/cities/:cityId" element={<CityDetailPage />} />
 
             <Route path="/404" element={<NotFoundPage />} />
             <Route path="*" element={<Navigate to="/404" replace />} />
