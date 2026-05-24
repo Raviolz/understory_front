@@ -47,6 +47,19 @@ function CityMap({ city, points = [], selectedPoint, onSelectPoint }) {
 
   useEffect(() => {
     if (!mapRef.current) return
+    if (!selectedPoint) return
+
+    mapRef.current.flyTo({
+      center: [selectedPoint.longitude, selectedPoint.latitude],
+      zoom: 15,
+      pitch: 55,
+      bearing: -15,
+      duration: 900,
+    })
+  }, [selectedPoint])
+
+  useEffect(() => {
+    if (!mapRef.current) return
 
     markersRef.current.forEach((marker) => marker.remove())
     markersRef.current = []
@@ -65,14 +78,6 @@ function CityMap({ city, points = [], selectedPoint, onSelectPoint }) {
 
       markerElement.addEventListener("click", () => {
         onSelectPoint(point)
-
-        mapRef.current?.flyTo({
-          center: [point.longitude, point.latitude],
-          zoom: 15,
-          pitch: 55,
-          bearing: -15,
-          duration: 900,
-        })
       })
 
       const marker = new mapboxgl.Marker({

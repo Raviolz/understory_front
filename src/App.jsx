@@ -12,7 +12,7 @@ import Footer from "./components/layout/Footer"
 import MobileBottomNav from "./components/layout/MobileBottomNav"
 
 import LandingPage from "./pages/LandingPage"
-import ExplorePage from "./pages/ExplorePage"
+
 import JournalPage from "./pages/JournalPage"
 import ProfilePage from "./pages/ProfilePage"
 import NotFoundPage from "./pages/NotFoundPage"
@@ -52,7 +52,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/backoffice/*" element={<BackofficeRoutes />} />
-            <Route path="/explore" element={<ExplorePage />} />
+            <Route path="/explore" element={<LandingPage />} />
             <Route path="/journal" element={<JournalPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/cities/:cityId" element={<CityDetailPage />} />
