@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { getPublishedCityById, getPublishedPointsByCity } from "../api/publicApi"
 import PointPreviewCard from "../components/PointPreviewCard"
-import CityMap from "./CityMap"
+import CityMap from "../components/CityMap"
 
 function CityDetailPage() {
   const { cityId } = useParams()

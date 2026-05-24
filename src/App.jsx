@@ -19,7 +19,7 @@ import NotFoundPage from "./pages/NotFoundPage"
 import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
 import BackofficeRoutes from "./routes/BackofficeRoutes"
-import CityDetailPage from "./components/CityDetailPage"
+import CityDetailPage from "./pages/CityDetailPage"
 import ExperienceDetailPage from "./pages/ExperienceDetailsPage"
 
 function App() {

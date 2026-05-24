@@ -1,4 +1,4 @@
-import DarkGlobe from "../components/DarkGlobe"
+import DarkGlobe from "../components/explore/DarkGlobe"
 
 const LandingPage = () => {
   return (
