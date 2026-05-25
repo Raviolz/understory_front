@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { getPublishedExperienceById } from "../api/publicApi"
 import QuizExperienceGame from "../components/experiences/QuizExperienceGame"
@@ -8,7 +8,7 @@ function ExperienceDetailsPage() {
   const { experienceId } = useParams()
 
   const [experience, setExperience] = useState(null)
-  const [phase, setPhase] = useState("intro")
+  const [storyStep, setStoryStep] = useState(0)
   const [error, setError] = useState(null)
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function ExperienceDetailsPage() {
     getPublishedExperienceById(experienceId)
       .then((data) => {
         setExperience(data)
-        setPhase("intro")
+        setStoryStep(0)
         setError(null)
       })
       .catch((error) => {
@@ -26,6 +26,44 @@ function ExperienceDetailsPage() {
         setError("Non riesco a caricare l’esperienza.")
       })
   }, [experienceId])
+
+  const storyPages = useMemo(() => {
+    if (!experience) return []
+
+    return [
+      {
+        eyebrow: experience.experienceCategoryLabel,
+        title: experience.title,
+        text: experience.hookText,
+      },
+      {
+        eyebrow: "Archive fragment",
+        title: "Before you begin",
+        text: experience.introText,
+      },
+      {
+        eyebrow: "Hidden context",
+        title: "What the city remembers",
+        text: experience.contextText,
+      },
+      {
+        eyebrow: "Threshold",
+        title: "Follow the trace",
+        text: experience.leadInText,
+      },
+    ].filter((page) => page.text && page.text.trim() !== "")
+  }, [experience])
+
+  const isGameStep = storyStep >= storyPages.length
+  const currentStoryPage = storyPages[storyStep]
+
+  function goNext() {
+    setStoryStep((currentStep) => currentStep + 1)
+  }
+
+  function goBack() {
+    setStoryStep((currentStep) => Math.max(currentStep - 1, 0))
+  }
 
   if (!experience && !error) {
     return (
@@ -58,32 +96,49 @@ function ExperienceDetailsPage() {
       </Link>
 
       <section className="mx-auto mt-10 max-w-3xl">
-        <p className="text-sm uppercase tracking-[0.25em] text-accent">{experience.experienceCategoryLabel}</p>
-
-        <h1 className="mt-4 font-serif text-4xl md:text-5xl">{experience.title}</h1>
-
-        <div className="mt-5 flex flex-wrap gap-3 text-xs uppercase tracking-[0.18em] text-muted">
+        <div className="flex flex-wrap gap-3 text-xs uppercase tracking-[0.18em] text-muted">
           <span>{experience.gameType}</span>
           <span>XP {experience.xpReward}</span>
           <span>Difficulty {experience.difficulty}</span>
         </div>
 
-        {phase === "intro" ? (
-          <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6 md:p-8">
-            <p className="font-serif text-2xl leading-9 text-ink">{experience.hookText}</p>
+        {!isGameStep ? (
+          <article className="mt-10 rounded-3xl border border-border-soft bg-surface p-6 md:p-8">
+            <p className="text-sm uppercase tracking-[0.25em] text-accent">{currentStoryPage.eyebrow}</p>
 
-            <p className="mt-6 text-sm leading-7 text-muted md:text-base">{experience.introText}</p>
+            <h1 className="mt-4 font-serif text-4xl leading-tight text-ink md:text-5xl">{currentStoryPage.title}</h1>
 
-            <button
-              type="button"
-              onClick={() => setPhase("game")}
-              className="mt-8 inline-flex rounded-full border border-accent-soft px-6 py-3 text-sm text-accent transition hover:border-accent hover:bg-accent hover:text-canvas"
-            >
-              Begin
-            </button>
-          </div>
+            <p className="mt-8 text-base leading-8 text-muted md:text-lg">{currentStoryPage.text}</p>
+
+            <div className="mt-10 flex items-center justify-between gap-4">
+              <button
+                type="button"
+                onClick={goBack}
+                disabled={storyStep === 0}
+                className="rounded-full border border-border-soft px-5 py-3 text-sm text-muted transition hover:border-accent-soft hover:text-ink disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Back
+              </button>
+
+              <div className="text-xs uppercase tracking-[0.2em] text-muted">
+                {storyStep + 1} / {storyPages.length}
+              </div>
+
+              <button
+                type="button"
+                onClick={goNext}
+                className="rounded-full border border-accent-soft px-5 py-3 text-sm text-accent transition hover:border-accent hover:bg-accent hover:text-canvas"
+              >
+                {storyStep === storyPages.length - 1 ? "Enter the game" : "Continue"}
+              </button>
+            </div>
+          </article>
         ) : (
           <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6 md:p-8">
+            <button type="button" onClick={goBack} className="mb-6 text-sm text-muted transition hover:text-accent">
+              ← Back to story
+            </button>
+
             {experience.gameType === "QUIZ" && <QuizExperienceGame experience={experience} />}
 
             {experience.gameType === "IMAGE_UPLOAD" && <UploadExperienceGame experience={experience} />}
