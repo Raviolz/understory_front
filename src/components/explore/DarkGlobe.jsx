@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import Globe from "react-globe.gl"
 import { getPublishedCities } from "../../api/publicApi"
-import CityPreviewCard from "../CityPreviewCard"
+import CityPreviewCard from "./CityPreviewCard"
 
 const countriesUrl = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson"
 

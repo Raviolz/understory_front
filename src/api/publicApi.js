@@ -19,3 +19,15 @@ export function getPublishedPointById(pointId) {
 export function getPublishedExperiencesByPoint(pointId, { page = 0, size = 10, sortBy = "title" } = {}) {
   return apiRequest(`/points/${pointId}/experiences?page=${page}&size=${size}&sortBy=${sortBy}`)
 }
+
+export function getPublishedExperienceById(experienceId) {
+  return apiRequest(`/experiences/${experienceId}`)
+}
+
+export function getPublishedQuizGameByExperience(experienceId) {
+  return apiRequest(`/experiences/${experienceId}/quiz-game`)
+}
+
+export function getPublishedUploadGameByExperience(experienceId) {
+  return apiRequest(`/experiences/${experienceId}/upload-game`)
+}

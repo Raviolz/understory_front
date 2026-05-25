@@ -93,8 +93,8 @@ export function uploadBackofficePointImage(pointId, file) {
 }
 // EXPERIENCES
 
-export function getBackofficeExperiences() {
-  return authenticatedRequest("/backoffice/experiences")
+export function getBackofficeExperiences({ page = 0, size = 100, sortBy = "title" } = {}) {
+  return authenticatedRequest(`/backoffice/experiences?page=${page}&size=${size}&sortBy=${sortBy}`)
 }
 
 export function createBackofficeExperience(experienceData) {
