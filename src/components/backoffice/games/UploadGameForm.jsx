@@ -5,6 +5,7 @@ const emptyForm = {
   promptText: "",
   validationHint: "",
   targetDescription: "",
+  explanationText: "",
 }
 
 function UploadGameForm({ experiences = [], initialValues = emptyForm, submitLabel, onSubmit, onCancel }) {
@@ -13,6 +14,7 @@ function UploadGameForm({ experiences = [], initialValues = emptyForm, submitLab
     promptText: initialValues.promptText || "",
     validationHint: initialValues.validationHint || "",
     targetDescription: initialValues.targetDescription || "",
+    explanationText: initialValues.explanationText || "",
   })
 
   const [isSaving, setIsSaving] = useState(false)
@@ -37,6 +39,7 @@ function UploadGameForm({ experiences = [], initialValues = emptyForm, submitLab
     const uploadData = {
       ...formData,
       validationHint: formData.validationHint || null,
+      explanationText: formData.explanationText || null,
     }
 
     onSubmit(uploadData, imageFile)
@@ -120,6 +123,21 @@ function UploadGameForm({ experiences = [], initialValues = emptyForm, submitLab
           name="validationHint"
           rows="4"
           value={formData.validationHint}
+          onChange={handleChange}
+          className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
+        />
+      </div>
+
+      <div className="mt-5">
+        <label htmlFor="explanationText" className="mb-2 block text-sm text-muted">
+          Explanation text
+        </label>
+
+        <textarea
+          id="explanationText"
+          name="explanationText"
+          rows="5"
+          value={formData.explanationText}
           onChange={handleChange}
           className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
         />

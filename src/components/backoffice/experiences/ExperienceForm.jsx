@@ -7,6 +7,8 @@ const emptyForm = {
   gameType: "",
   hookText: "",
   introText: "",
+  contextText: "",
+  leadInText: "",
   revealTitle: "",
   revealText: "",
   journalText: "",
@@ -22,6 +24,8 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
     gameType: initialValues.gameType || "",
     hookText: initialValues.hookText || "",
     introText: initialValues.introText || "",
+    contextText: initialValues.contextText || "",
+    leadInText: initialValues.leadInText || "",
     revealTitle: initialValues.revealTitle || "",
     revealText: initialValues.revealText || "",
     journalText: initialValues.journalText || "",
@@ -50,6 +54,8 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
 
     const experienceData = {
       ...formData,
+      contextText: formData.contextText || null,
+      leadInText: formData.leadInText || null,
       xpReward: Number(formData.xpReward),
       difficulty: Number(formData.difficulty),
     }
@@ -221,6 +227,36 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
           onChange={handleChange}
           className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
           required
+        />
+      </div>
+
+      <div className="mt-5">
+        <label htmlFor="contextText" className="mb-2 block text-sm text-muted">
+          Context text
+        </label>
+
+        <textarea
+          id="contextText"
+          name="contextText"
+          rows="5"
+          value={formData.contextText}
+          onChange={handleChange}
+          className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
+        />
+      </div>
+
+      <div className="mt-5">
+        <label htmlFor="leadInText" className="mb-2 block text-sm text-muted">
+          Lead-in text
+        </label>
+
+        <textarea
+          id="leadInText"
+          name="leadInText"
+          rows="5"
+          value={formData.leadInText}
+          onChange={handleChange}
+          className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
         />
       </div>
 
