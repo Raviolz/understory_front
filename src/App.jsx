@@ -21,6 +21,7 @@ import RegisterPage from "./pages/RegisterPage"
 import BackofficeRoutes from "./routes/BackofficeRoutes"
 import CityDetailPage from "./pages/CityDetailPage"
 import ExperienceDetailPage from "./pages/ExperienceDetailsPage"
+import FindingsPage from "./pages/FindingsPage"
 
 function App() {
   const dispatch = useDispatch()
@@ -55,6 +56,7 @@ function App() {
             <Route path="/backoffice/*" element={<BackofficeRoutes />} />
             <Route path="/explore" element={<LandingPage />} />
             <Route path="/journal" element={<JournalPage />} />
+            <Route path="/findings" element={<FindingsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/cities/:cityId" element={<CityDetailPage />} />
             <Route path="/experiences/:experienceId" element={<ExperienceDetailPage />} />

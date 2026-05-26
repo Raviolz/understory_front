@@ -21,6 +21,7 @@ function Navbar() {
         <nav className="hidden items-center gap-8 md:flex">
           <NavItem to="/explore">Explore</NavItem>
           <NavItem to="/journal">Journal</NavItem>
+          <NavItem to="/findings">Findings</NavItem>
 
           {isAdmin && <NavItem to="/backoffice">Backoffice</NavItem>}
         </nav>

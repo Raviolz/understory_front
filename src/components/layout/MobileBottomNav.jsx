@@ -6,6 +6,7 @@ function MobileBottomNav() {
       <div className="mx-auto flex max-w-md items-center justify-around">
         <BottomNavItem to="/explore">Explore</BottomNavItem>
         <BottomNavItem to="/journal">Journal</BottomNavItem>
+        <BottomNavItem to="/findings">Findings</BottomNavItem>
       </div>
     </nav>
   )
