@@ -6,15 +6,11 @@ import MyBookingsList from "../components/findings/MyBookingsList"
 function FindingsPage() {
   const [rewards, setRewards] = useState([])
   const [bookings, setBookings] = useState([])
-  const [selectedReward, setSelectedReward] = useState(null)
   const [activeView, setActiveView] = useState("recovered")
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    setIsLoading(true)
-    setError(null)
-
     Promise.all([getMyRewards({ size: 50 }), getMyBookings({ size: 50 })])
       .then(([rewardsData, bookingsData]) => {
         setRewards(rewardsData.content ?? [])
@@ -41,16 +37,36 @@ function FindingsPage() {
     })
   }, [bookings])
 
-  function handleRequestBooking(reward) {
-    setSelectedReward(reward)
+  function handleBookingCreated(createdBooking) {
+    setBookings((currentBookings) => [createdBooking, ...currentBookings])
   }
 
   if (isLoading) {
-    return <p className="text-muted">Caricamento findings...</p>
+    return (
+      <section>
+        <p className="text-sm tracking-[0.25em] text-accent">RECOVERED FINDINGS</p>
+
+        <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Access Archive</h1>
+
+        <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
+          <p className="text-muted">Caricamento findings...</p>
+        </div>
+      </section>
+    )
   }
 
   if (error) {
-    return <p className="text-arcane">{error}</p>
+    return (
+      <section>
+        <p className="text-sm tracking-[0.25em] text-accent">RECOVERED FINDINGS</p>
+
+        <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Access Archive</h1>
+
+        <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
+          <p className="text-arcane">{error}</p>
+        </div>
+      </section>
+    )
   }
 
   return (
@@ -91,14 +107,6 @@ function FindingsPage() {
 
       {activeView === "recovered" && (
         <>
-          {selectedReward && (
-            <div className="mt-8 rounded-3xl border border-accent-soft bg-surface p-5">
-              <p className="text-sm text-accent">Selected finding</p>
-              <p className="mt-2 font-serif text-2xl text-ink">{selectedReward.rewardTitle}</p>
-              <p className="mt-1 text-sm text-muted">Booking form coming next for {selectedReward.businessName}.</p>
-            </div>
-          )}
-
           {sortedRewards.length === 0 ? (
             <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
               <p className="text-muted">Non hai ancora sbloccato nessun finding.</p>
@@ -106,7 +114,7 @@ function FindingsPage() {
           ) : (
             <div className="mt-10 grid gap-6 xl:grid-cols-2">
               {sortedRewards.map((reward) => (
-                <FindingPass key={reward.userRewardId} reward={reward} onRequestBooking={handleRequestBooking} />
+                <FindingPass key={reward.userRewardId} reward={reward} onBookingCreated={handleBookingCreated} />
               ))}
             </div>
           )}
