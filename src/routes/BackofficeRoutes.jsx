@@ -29,6 +29,7 @@ import BoExperienceEditPage from "../pages/backoffice/experiences/BoExperienceEd
 import BoQuizGameEditPage from "../pages/backoffice/games/BoQuizGameEditPage"
 import BoUploadGameEditPage from "../pages/backoffice/games/BoUploadGameEdit"
 import BoRewardEditPage from "../pages/backoffice/rewards/BoRewardEditPage"
+import BoBookingsPage from "../pages/backoffice/bookings/BoBookingsPage"
 
 function BackofficeRoutes() {
   return (
@@ -72,6 +73,9 @@ function BackofficeRoutes() {
       <Route path="rewards" element={<BoRewardsPage />} />
       <Route path="rewards/new" element={<BoRewardCreatePage />} />
       <Route path="rewards/:rewardId/edit" element={<BoRewardEditPage />} />
+
+      {/*                                                                   BOOKINGS                                           */}
+      <Route path="bookings" element={<BoBookingsPage />} />
       {/*                                                                   USERS                                            */}
       <Route path="users" element={<BoUsersPage />} />
 

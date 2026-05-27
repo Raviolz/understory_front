@@ -361,3 +361,25 @@ export function downgradeBackofficeUser(userId) {
     method: "PATCH",
   })
 }
+
+// BOOKING
+
+export function getBookings({ page = 0, size = 50, sortBy = "bookingDate" } = {}) {
+  return authenticatedRequest(`/backoffice/bookings?page=${page}&size=${size}&sortBy=${sortBy}`)
+}
+
+export function getBookingsByStatus(status, { page = 0, size = 50, sortBy = "bookingDate" } = {}) {
+  return authenticatedRequest(`/backoffice/bookings/status/${status}?page=${page}&size=${size}&sortBy=${sortBy}`)
+}
+
+export function confirmBooking(bookingId) {
+  return authenticatedRequest(`/backoffice/bookings/${bookingId}/confirm`, {
+    method: "PATCH",
+  })
+}
+
+export function rejectBooking(bookingId) {
+  return authenticatedRequest(`/backoffice/bookings/${bookingId}/reject`, {
+    method: "PATCH",
+  })
+}

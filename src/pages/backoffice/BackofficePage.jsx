@@ -44,8 +44,10 @@ function BackofficePage() {
           title="Local Businesses"
           description="Gestisci attività locali, indirizzi, città e partnership."
         />
-
         <BackofficeSectionCard to="/backoffice/rewards" title="Rewards" description="Gestisci ricompense, codici, validità e contenuti sbloccabili." />
+
+        <BackofficeSectionCard to="/backoffice/bookings" title="Bookings" description="Gestisci prenotazioni fatte dagli utenti" />
+
         {isSuperAdmin && <BackofficeSectionCard to="/backoffice/users" title="Users" description="Gestisci utenti e ruoli amministrativi." />}
       </div>
     </section>
