@@ -1,113 +1,117 @@
-import { Navigate } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
-import { uploadMyAvatar } from "../api/authApi"
-import { setCurrentUser } from "../redux/authSlice"
-import { useRef, useState } from "react"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { getMyProfile, loginUser } from "../api/authApi"
+import AuthCard from "../components/layout/AuthCard"
+import { setCredentials, setCurrentUser } from "../redux/authSlice"
 
-function ProfilePage() {
-  const accessToken = useSelector((state) => state.auth.accessToken)
-  const currentUser = useSelector((state) => state.auth.currentUser)
+function LoginPage() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
-  const avatarInputRef = useRef(null)
-  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
-  const [avatarError, setAvatarError] = useState(null)
 
-  function handleAvatarUpload(file) {
-    if (!file) {
-      return
-    }
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  })
 
-    setIsUploadingAvatar(true)
-    setAvatarError(null)
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
-    uploadMyAvatar(file)
-      .then((updatedUser) => {
-        dispatch(setCurrentUser(updatedUser))
+  function handleChange(event) {
+    const { name, value } = event.target
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault()
+
+    setIsLoading(true)
+    setError(null)
+
+    loginUser(formData)
+      .then((data) => {
+        localStorage.setItem("accessToken", data.accessToken)
+
+        dispatch(
+          setCredentials({
+            accessToken: data.accessToken,
+            user: null,
+          }),
+        )
+
+        return getMyProfile()
+      })
+      .then((profile) => {
+        dispatch(setCurrentUser(profile))
+        navigate("/")
       })
       .catch((error) => {
         console.error(error)
-        setAvatarError("Non riesco a caricare l’avatar.")
+        setError("Accesso non riuscito. Controlla email e password.")
       })
       .finally(() => {
-        setIsUploadingAvatar(false)
+        setIsLoading(false)
       })
   }
 
-  if (accessToken && !currentUser) {
-    return <p className="text-muted">Caricamento profilo...</p>
-  }
-
-  if (!currentUser) {
-    return <Navigate to="/login" replace />
-  }
-
   return (
-    <section className="mx-auto max-w-3xl">
-      <p className="text-sm tracking-[0.25em] text-accent">Archivio personale</p>
+    <AuthCard label="Understory Archive" title="Accesso archivio" description="Inserisci le tue credenziali per riaprire il tuo percorso nell'archivio.">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="email" className="mb-2 block text-sm text-muted">
+            Email
+          </label>
 
-      <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">{currentUser.username}</h1>
-
-      <div className="mt-8 rounded-3xl border border-border-soft bg-surface p-6 md:p-8">
-        <div className="flex items-center gap-5">
-          <div>
-            <button
-              type="button"
-              onClick={() => avatarInputRef.current?.click()}
-              disabled={isUploadingAvatar}
-              className="group relative h-24 w-24 overflow-hidden rounded-full border border-border-soft bg-canvas disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {currentUser?.avatarUrl ? (
-                <img src={currentUser.avatarUrl} alt={currentUser.username} className="h-full w-full object-cover" />
-              ) : (
-                <span className="flex h-full w-full items-center justify-center text-sm text-muted">No avatar</span>
-              )}
-
-              <span className="absolute inset-0 flex items-center justify-center bg-black/45 text-xs text-white opacity-0 transition group-hover:opacity-100">
-                {isUploadingAvatar ? "Uploading..." : "Modifica"}
-              </span>
-            </button>
-
-            <input
-              ref={avatarInputRef}
-              type="file"
-              accept="image/*"
-              onChange={(event) => {
-                const file = event.target.files[0]
-                handleAvatarUpload(file)
-                event.target.value = ""
-              }}
-              className="hidden"
-            />
-
-            {avatarError && <p className="mt-2 text-xs text-arcane">{avatarError}</p>}
-          </div>
-
-          <div>
-            <h2 className="font-serif text-2xl text-ink">
-              {currentUser.name} {currentUser.surname}
-            </h2>
-
-            <p className="mt-1 text-sm text-muted">{currentUser.email}</p>
-            <p className="mt-2 text-sm text-arcane">{currentUser.role}</p>
-          </div>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
+            required
+          />
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          <ProfileStat label="Insights" value={currentUser.xp} />
-          <ProfileStat label="Circle" value={currentUser.level} />
+        <div>
+          <label htmlFor="password" className="mb-2 block text-sm text-muted">
+            Password
+          </label>
+
+          <input
+            id="password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
+            required
+          />
         </div>
-      </div>
-    </section>
+
+        {error && <p className="text-sm text-arcane">{error}</p>}
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full rounded-full border border-accent-soft px-5 py-3 text-sm text-accent transition hover:border-accent hover:bg-accent hover:text-canvas disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {isLoading ? "Accesso in corso..." : "Entra nell'archivio"}
+        </button>
+
+        <p className="text-center text-sm text-muted">
+          Non hai ancora un accesso?{" "}
+          <Link to="/register" className="text-accent hover:text-ink">
+            Richiedilo qui
+          </Link>
+        </p>
+      </form>
+    </AuthCard>
   )
 }
 
-function ProfileStat({ label, value }) {
-  return (
-    <div className="rounded-2xl border border-border-soft bg-canvas p-5">
-      <p className="text-sm tracking-[0.18em] text-muted">{label}</p>
-      <p className="mt-3 font-serif text-3xl text-accent">{value}</p>
-    </div>
-  )
-}
-
-export default ProfilePage
+export default LoginPage
