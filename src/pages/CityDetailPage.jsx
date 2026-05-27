@@ -98,8 +98,8 @@ function CityDetailPage() {
         <section>
           <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.25em] text-accent">Points of interest</p>
-              <h2 className="mt-3 font-serif text-3xl text-ink">Choose your entry point</h2>
+              <p className="text-sm uppercase tracking-[0.25em] text-accent">La citta' ricorda piu' di quanto mostri</p>
+              <h2 className="mt-3 font-serif text-3xl text-ink">Scegli la tua prossima carta</h2>
             </div>
 
             <p className="text-sm text-muted">{points.length} published points</p>

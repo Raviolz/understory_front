@@ -12,6 +12,8 @@
   --accent: #d6ae62;
   --accent-soft: #8f7440;
   --arcane: #c9a6ff;
+
+  --tarot-back-image: url("./assets/tarot/tarot2.jpg");
 }
 
 @theme inline {
@@ -38,6 +40,112 @@ body {
   margin: 0;
   background: var(--canvas);
   color: var(--ink);
+}
+
+/* TAROT CARD (PointPreviewCard) */
+
+.tarot-shell {
+  min-height: 420px;
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
+  background: var(--surface);
+  transition: border-color 180ms ease;
+  perspective: 1000px;
+}
+
+.tarot-shell:hover {
+  border-color: var(--accent-soft);
+}
+
+.tarot-shell--selected {
+  border-color: var(--accent);
+}
+
+.tarot-card {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tarot-card__inner {
+  position: relative;
+  height: 100%;
+  min-height: calc(420px - 32px);
+  border-radius: 12px;
+  transform-style: preserve-3d;
+  transition: transform 600ms ease;
+}
+
+.tarot-card__inner--flipped {
+  transform: rotateY(180deg);
+}
+
+.tarot-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.tarot-face--front {
+  transform: rotateY(180deg);
+  background: var(--surface);
+}
+
+.tarot-back {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-image: var(--tarot-back-image);
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.9) contrast(1.02);
+}
+
+.tarot-back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.55));
+  pointer-events: none;
+}
+
+.tarot-front {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.tarot-front__media {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--canvas);
+}
+
+.tarot-front__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tarot-front__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
 /* GLOBE */
