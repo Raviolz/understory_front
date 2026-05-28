@@ -1,7 +1,20 @@
+import { Link } from "react-router-dom"
+
 function Footer() {
   return (
-    <footer className="hidden border-t border-border-soft bg-canvas md:block">
-      <div className="mx-auto max-w-7xl px-8 py-8 text-center text-[11px]  tracking-[0.22em] text-muted">© Understory Archives</div>
+    <footer className="app-footer">
+      <div className="app-footer__inner">
+        <Link to="/contacts" className="app-footer__contact-link" aria-label="Contatti">
+          Contatti
+        </Link>
+        <p className="app-footer__brand">UNDERSTORY ARCHIVES</p>
+        <p className="app-footer__copy"> Atlante di storie al margine</p>
+        <p className="app-footer__legal">© Understory</p>
+
+        <Link to="#" className="app-footer__dedication">
+          ✦
+        </Link>
+      </div>
     </footer>
   )
 }

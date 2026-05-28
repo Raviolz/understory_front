@@ -1,0 +1,296 @@
+/* GLOBE - LANDING */
+
+.dark-globe-marker {
+  position: relative;
+  width: 0;
+  height: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dark-globe-marker-dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  background: rgba(6, 4, 10, 0.68);
+  border: 1px solid currentColor;
+  border-radius: 9999px;
+  color: #d4a359;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px color-mix(in srgb, currentColor 45%, transparent);
+  transition: all 0.3s ease;
+}
+
+.dark-globe-marker-light {
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: currentColor;
+  box-shadow: 0 0 12px currentColor;
+}
+
+.dark-globe-marker-label {
+  position: absolute;
+  left: 0;
+  top: 14px;
+  transform: translateX(-50%) translateY(-2px);
+  color: #f4eccd;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  text-shadow:
+    2px 2px 4px #000,
+    -2px -2px 4px #000;
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+
+.dark-globe-marker:hover .dark-globe-marker-dot {
+  width: 18px;
+  height: 18px;
+  box-shadow: 0 0 18px color-mix(in srgb, currentColor 70%, transparent);
+}
+
+.dark-globe-marker:hover .dark-globe-marker-light {
+  width: 6px;
+  height: 6px;
+}
+
+.dark-globe-marker:hover .dark-globe-marker-label,
+.dark-globe-marker-label-selected {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dark-globe-marker-dot-selected {
+  width: 20px;
+  height: 20px;
+  box-shadow: 0 0 22px color-mix(in srgb, currentColor 80%, transparent);
+}
+
+.dark-globe-marker-dot-selected .dark-globe-marker-light {
+  width: 7px;
+  height: 7px;
+}
+
+.dark-globe-marker-label-selected {
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.dark-globe-glow {
+  pointer-events: none;
+  position: absolute;
+  border-radius: 9999px;
+  box-shadow:
+    0 0 60px rgba(147, 51, 234, 0.18),
+    inset 0 0 50px rgba(245, 158, 11, 0.12);
+  background: radial-gradient(circle, transparent 60%, rgba(88, 28, 135, 0.25) 100%);
+}
+
+.dark-globe-vignette {
+  pointer-events: none;
+  position: absolute;
+  border-radius: 9999px;
+  box-shadow:
+    inset -45px -45px 90px rgba(0, 0, 0, 0.98),
+    inset 35px 35px 70px rgba(212, 163, 89, 0.07),
+    inset 0 0 25px rgba(147, 51, 234, 0.08);
+}
+
+/* LANDING */
+
+.landing-page {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--canvas);
+}
+
+.landing-background-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--landing-background-image);
+  background-position: center;
+  background-size: cover;
+  opacity: 0.1;
+}
+
+.landing-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--canvas) 0%, transparent 18%, transparent 82%, var(--canvas) 100%),
+    radial-gradient(ellipse 90% 78% at 50% 48%, transparent 20%, var(--canvas) 84%);
+}
+
+.landing-page > section {
+  position: relative;
+  z-index: 2;
+}
+
+.landing-motto {
+  position: absolute;
+  left: 12rem;
+  top: 50%;
+  z-index: 1;
+  transform: translateY(-50%) rotate(180deg);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  letter-spacing: 0.32em;
+  color: color-mix(in srgb, var(--accent) 76%, var(--ink));
+  opacity: 0.65;
+  writing-mode: vertical-rl;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .landing-motto {
+    left: 50%;
+    top: auto;
+    bottom: 5.5rem;
+    transform: translateX(-50%);
+    writing-mode: horizontal-tb;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+  }
+
+  .landing-background-image {
+    mask-image: radial-gradient(ellipse 92% 62% at 50% 45%, black 20%, transparent 82%);
+    -webkit-mask-image: radial-gradient(ellipse 92% 62% at 50% 45%, black 20%, transparent 82%);
+  }
+}
+
+/* CITY PREVIEW CARD - LANDING */
+
+.city-preview-card {
+  position: relative;
+  width: 100%;
+  max-width: 24rem;
+  overflow: hidden;
+  padding: 1.4rem 1.55rem 1.55rem;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--accent-soft) 55%, var(--paper-border));
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--paper-highlight) 92%, white) 0%,
+    var(--paper) 42%,
+    color-mix(in srgb, var(--paper) 88%, var(--paper-burgundy) 12%) 100%
+  );
+  box-shadow:
+    0 22px 48px rgba(15, 13, 11, 0.5),
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.city-preview-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-noise);
+  background-size: 130px 130px;
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.city-preview-card__close {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 1;
+  border: 0;
+  background: transparent;
+  color: var(--paper-muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.city-preview-card__close:hover {
+  color: var(--accent-soft);
+}
+
+.city-preview-card__country,
+.city-preview-card__title,
+.city-preview-card__rule,
+.city-preview-card__coords,
+.city-preview-card__desc,
+.city-preview-card__action {
+  position: relative;
+  z-index: 1;
+}
+
+.city-preview-card__country {
+  padding-right: 1.5rem;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+}
+
+.city-preview-card__title {
+  margin-top: 0.5rem;
+  padding-right: 1.25rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  color: var(--paper-ink);
+}
+
+.city-preview-card__rule {
+  margin: 0.85rem 0 0.65rem;
+  height: 1px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--paper-burgundy) 35%, var(--accent-soft)), transparent 88%);
+}
+
+.city-preview-card__coords {
+  margin-bottom: 0.75rem;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper-muted);
+}
+
+.city-preview-card__desc {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--paper-muted) 92%, var(--paper-ink));
+}
+
+.city-preview-card__action {
+  display: inline-block;
+  margin-top: 1.15rem;
+  padding: 0.15rem 0 0.2rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-soft) 70%, var(--paper-border));
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+  text-decoration: none;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease;
+}
+
+.city-preview-card__action:hover {
+  border-bottom-color: var(--paper-ink);
+  color: var(--paper-ink);
+}

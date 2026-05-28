@@ -11,8 +11,8 @@ const DarkGlobe = () => {
 
   const [countries, setCountries] = useState([])
   const [dimensions, setDimensions] = useState({
-    width: 600,
-    height: 600,
+    width: 560,
+    height: 560,
   })
 
   const [cities, setCities] = useState([])
@@ -31,7 +31,9 @@ const DarkGlobe = () => {
       if (!containerRef.current) return
 
       const width = containerRef.current.offsetWidth
-      const globeSize = Math.min(width, 650)
+      const section = containerRef.current.closest("section")
+      const maxHeight = section?.clientHeight ?? window.innerHeight
+      const globeSize = Math.min(width, 600, Math.max(280, maxHeight - 52))
 
       setDimensions({
         width: globeSize,
@@ -78,8 +80,8 @@ const DarkGlobe = () => {
   }, [])
 
   return (
-    <section className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-transparent p-4">
-      <div ref={containerRef} className="relative flex aspect-square w-full max-w-[650px] items-center justify-center">
+    <section className="relative z-[2] flex h-full w-full items-start justify-center overflow-hidden bg-transparent px-2 pt-8 pb-24 lg:items-center lg:p-4">
+      <div ref={containerRef} className="relative flex aspect-square w-full max-w-[600px] items-center justify-center">
         <div
           className="dark-globe-glow"
           style={{
@@ -154,7 +156,7 @@ const DarkGlobe = () => {
       </div>
 
       {selectedCity && (
-        <div className="pointer-events-auto absolute bottom-6 left-1/2 z-10 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 lg:bottom-auto lg:left-auto lg:right-10 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-0">
+        <div className="pointer-events-auto absolute bottom-15 left-1/2 z-20 w-[calc(100%-2.5rem)] max-w-[14.5rem] -translate-x-1/2 md:bottom-6 md:max-w-[18rem] lg:bottom-auto lg:left-1/2 lg:right-auto lg:top-1/2 lg:max-w-xs lg:translate-x-[8rem] lg:-translate-y-1/2 2xl:translate-x-[12rem]">
           <CityPreviewCard city={selectedCity} onClose={() => setSelectedCity(null)} />
         </div>
       )}

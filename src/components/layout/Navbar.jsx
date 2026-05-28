@@ -1,59 +1,46 @@
-import { Link, NavLink, useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { logout } from "../../redux/authSlice"
+import { Link, NavLink } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 function Navbar() {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-
   const currentUser = useSelector((state) => state.auth.currentUser)
 
   const isAdmin = currentUser?.role === "ADMIN" || currentUser?.role === "SUPER_ADMIN"
 
-  function handleLogout() {
-    dispatch(logout())
-    navigate("/")
-  }
-
   return (
-    <header className="sticky top-0 z-40 border-b border-border-soft bg-canvas backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:h-20 md:px-8">
-        <nav className="hidden items-center gap-8 md:flex">
-          <NavItem to="/explore">Explore</NavItem>
-          <NavItem to="/journal">Journal</NavItem>
-          <NavItem to="/findings">Findings</NavItem>
-
-          {isAdmin && <NavItem to="/backoffice">Backoffice</NavItem>}
+    <header className="app-navbar">
+      <div className="app-navbar__inner">
+        <nav className="hidden items-center gap-7 md:flex">
+          <NavItem to="/explore">Esplora</NavItem>
+          <NavItem to="/journal">Diario</NavItem>
+          <NavItem to="/findings">Archivio</NavItem>
         </nav>
 
-        <Link to="/" className="font-serif text-xl tracking-[0.35em] text-accent md:absolute md:left-1/2 md:-translate-x-1/2 md:text-2xl">
+        <Link to="/" className="app-navbar__brand">
           UNDERSTORY
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {currentUser && (
-            <div className="hidden text-right text-xs tracking-[0.18em] md:block">
-              <p className="text-arcane">Insights {currentUser.xp}</p>
-              <p className="text-muted">Circle {currentUser.level}</p>
+            <div className="hidden text-right md:block">
+              <p className="app-navbar__meta text-accent">Intuizioni {currentUser.xp}</p>
+              <p className="app-navbar__meta">Cerchia {currentUser.level}</p>
             </div>
           )}
 
           {currentUser ? (
-            <>
-              <Link
-                to="/profile"
-                className="block h-10 w-10 overflow-hidden rounded-full border border-accent-soft bg-surface-soft transition hover:border-accent"
-                aria-label="Open profile"
-              >
-                {currentUser.avatarUrl && <img src={currentUser.avatarUrl} alt={currentUser.username} className="h-full w-full object-cover" />}
-              </Link>
-
-              <button type="button" onClick={handleLogout} className="hidden text-xs tracking-[0.18em] text-muted transition hover:text-ink md:block">
-                Logout
-              </button>
-            </>
+            <Link to="/profile" className="app-navbar__avatar" aria-label="Apri profilo">
+              {currentUser.avatarUrl && <img src={currentUser.avatarUrl} alt={currentUser.username} className="h-full w-full object-cover" />}
+            </Link>
           ) : (
-            <div className="block h-10 w-10 rounded-full border border-accent-soft bg-surface-soft" />
+            <div className="app-navbar__avatar app-navbar__avatar--empty" />
+          )}
+          {isAdmin && (
+            <NavLink
+              to="/backoffice"
+              className={({ isActive }) => (isActive ? "app-nav-link app-nav-link--active hidden md:block" : "app-nav-link hidden md:block")}
+            >
+              Backoffice
+            </NavLink>
           )}
         </div>
       </div>
@@ -61,13 +48,9 @@ function Navbar() {
   )
 }
 
-// Wrapper per i link di navigazione.
-// NavLink permette di sapere se la rotta è attiva e assegnarli classi --> Link : vai a quella pagina, NavLink vai a quella pagina e riconosci dove sei
-
 function NavItem({ to, children }) {
-  // children e' una props speciale di React --> e' quello che scrivo dentro al componente
   return (
-    <NavLink to={to} className={({ isActive }) => ["text-xs tracking-[0.22em] transition", isActive ? "text-accent" : "text-muted hover:text-ink"].join(" ")}>
+    <NavLink to={to} className={({ isActive }) => (isActive ? "app-nav-link app-nav-link--active" : "app-nav-link")}>
       {children}
     </NavLink>
   )

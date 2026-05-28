@@ -1,0 +1,51 @@
+:root {
+  --canvas: #0f0d0b;
+  --surface: #171411;
+  --surface-soft: #1c1815;
+  --border-soft: #2f2924;
+
+  --ink: #e7d8c7;
+  --muted: #9c8b7e;
+
+  --accent: #b08a5a;
+  --accent-soft: #8b6848;
+
+  --arcane: #7c5aa3;
+
+  /* Carta chiara per anteprima citta' */
+  --paper: #cdb79e;
+  --paper-highlight: #d8c5ab;
+  --paper-ink: #5a4635;
+  --paper-muted: #7a6556;
+  --paper-border: #a89278;
+  --paper-burgundy: #4b2e46;
+
+  --grain-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --landing-background-image: url("../assets/landing/landing.jfif");
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-border-soft: var(--border-soft);
+
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-arcane: var(--arcane);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+}
