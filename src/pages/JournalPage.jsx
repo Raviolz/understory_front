@@ -52,7 +52,7 @@ function JournalPage() {
     setSavingNoteId(entry.progressId)
     setError(null)
 
-    updateMyProgressNote(entry.progressId, noteDrafts[entry.progressId] || "")
+    return updateMyProgressNote(entry.progressId, noteDrafts[entry.progressId] || "")
       .then((updatedProgress) => {
         setEntries((currentEntries) =>
           currentEntries.map((currentEntry) =>
@@ -68,6 +68,7 @@ function JournalPage() {
       .catch((error) => {
         console.error(error)
         setError("Non riesco a salvare la nota.")
+        throw error
       })
       .finally(() => {
         setSavingNoteId(null)
@@ -83,33 +84,33 @@ function JournalPage() {
   }
 
   return (
-    <section>
-      <p className="text-sm tracking-[0.25em] text-accent">PERSONAL ARCHIVE</p>
+    <section className="journal-page">
+      <div className="journal-page__panel">
+        <div className="mx-auto max-w-7xl">
+          <p className="journal-page__title">Archivio Personale</p>
 
-      <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Journal</h1>
+          <p className="journal-page__intro">Appunti di viaggio e tracce raccolte lungo il percorso</p>
 
-      <p className="mt-4 max-w-2xl text-sm leading-7 text-muted md:text-base">
-        A collection of the places you uncovered, the traces you followed, and the notes you chose to keep.
-      </p>
-
-      {sortedEntries.length === 0 ? (
-        <div className="mt-10">
-          <p className="text-muted">Non hai ancora completato nessuna esperienza.</p>
+          {sortedEntries.length === 0 ? (
+            <div className="journal-page__empty mt-10">
+              <p className="text-muted">Non hai ancora completato nessuna esperienza.</p>
+            </div>
+          ) : (
+            <div className="journal-page__grid mt-10 grid grid-cols-[repeat(auto-fit,minmax(420px,520px))] justify-center gap-x-20 gap-y-32 max-[460px]:grid-cols-[minmax(0,1fr)]">
+              {sortedEntries.map((entry) => (
+                <JournalEntryCard
+                  key={entry.progressId}
+                  entry={entry}
+                  noteValue={noteDrafts[entry.progressId] || ""}
+                  isSaving={savingNoteId === entry.progressId}
+                  onNoteChange={handleNoteChange}
+                  onSaveNote={handleSaveNote}
+                />
+              ))}
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="mt-10 grid grid-cols-[repeat(auto-fit,minmax(420px,520px))] justify-center gap-x-20 gap-y-32 max-[460px]:grid-cols-[minmax(0,1fr)]">
-          {sortedEntries.map((entry) => (
-            <JournalEntryCard
-              key={entry.progressId}
-              entry={entry}
-              noteValue={noteDrafts[entry.progressId] || ""}
-              isSaving={savingNoteId === entry.progressId}
-              onNoteChange={handleNoteChange}
-              onSaveNote={handleSaveNote}
-            />
-          ))}
-        </div>
-      )}
+      </div>
     </section>
   )
 }

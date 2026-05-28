@@ -26,6 +26,7 @@ import FindingsPage from "./pages/FindingsPage"
 function AppShell() {
   const location = useLocation()
   const isLanding = location.pathname === "/" || location.pathname === "/explore"
+  const isJournal = location.pathname === "/journal"
 
   return (
     <div className={isLanding ? "flex h-dvh flex-col overflow-hidden bg-canvas text-ink" : "min-h-screen bg-canvas text-ink"}>
@@ -35,7 +36,9 @@ function AppShell() {
         className={
           isLanding
             ? "relative mx-auto min-h-0 w-full max-w-7xl flex-1 overflow-hidden"
-            : "mx-auto min-h-screen w-full max-w-7xl px-5 py-10 pb-28 md:px-8 md:py-14"
+            : isJournal
+              ? "min-h-screen w-full"
+              : "mx-auto min-h-screen w-full max-w-7xl px-5 py-10 pb-28 md:px-8 md:py-14"
         }
       >
         <Routes>

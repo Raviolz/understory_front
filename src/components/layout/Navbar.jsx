@@ -11,8 +11,8 @@ function Navbar() {
       <div className="app-navbar__inner">
         <nav className="hidden items-center gap-7 md:flex">
           <NavItem to="/explore">Esplora</NavItem>
-          <NavItem to="/journal">Diario</NavItem>
-          <NavItem to="/findings">Archivio</NavItem>
+          <NavItem to="/journal">Archivio</NavItem>
+          <NavItem to="/findings">Accessi</NavItem>
         </nav>
 
         <Link to="/" className="app-navbar__brand">
