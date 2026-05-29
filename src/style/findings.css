@@ -1,0 +1,377 @@
+/* FINDINGS / ACCESSI */
+
+.findings-page {
+  min-height: calc(100vh - 160px);
+  padding: 2.5rem 1rem 2.5rem;
+  background: #0f0d0b;
+}
+
+.findings-page__title {
+  margin-top: 0.2rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  color: color-mix(in srgb, var(--accent) 88%, var(--ink));
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 0 rgba(10, 8, 6, 0.25);
+}
+
+.findings-page__intro {
+  margin-top: 1rem;
+  max-width: 40rem;
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--muted);
+}
+.findings-page__panel {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 3rem 2rem;
+  border-radius: 1.5rem;
+  border: 2px solid rgba(71, 115, 90, 0.22);
+  background: radial-gradient(circle at 18% 8%, rgba(49, 90, 66, 0.28), transparent 34%), #071610;
+}
+
+@media (max-width: 767px) {
+  .findings-page {
+    padding: 1.5rem 0.75rem 2rem;
+  }
+
+  .findings-page__panel {
+    padding: 2rem 1rem 1.5rem;
+    border-radius: 1rem;
+  }
+}
+
+/* ACCESS TICKET */
+
+.access-ticket {
+  --stub-width: 5.25rem;
+
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--stub-width) 1fr;
+  min-height: 13rem;
+  overflow: visible;
+  color: var(--paper-ink);
+  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.26));
+}
+
+.access-ticket::before,
+.access-ticket::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--stub-width) - 1rem);
+
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 999px;
+  background: #071610;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.access-ticket::before {
+  top: -0.7rem;
+}
+
+.access-ticket::after {
+  bottom: -0.7rem;
+}
+
+.access-ticket__stub,
+.access-ticket__body {
+  position: relative;
+  background: radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.32), transparent 28%), linear-gradient(180deg, #eadcc8 0%, #dec9aa 100%);
+}
+
+.access-ticket__stub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0.55rem;
+  border-right: 1px dashed color-mix(in srgb, var(--paper-ink) 35%, transparent);
+  transform-origin: bottom right;
+  transition: transform 220ms ease;
+}
+
+.access-ticket__body {
+  padding: 1.1rem 1.25rem 1rem;
+}
+
+.access-ticket__body::after,
+.access-ticket__stub::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--grain-noise);
+  background-size: 130px 130px;
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+}
+
+/* dentellatura semplice sui lati esterni */
+.access-ticket__stub::before,
+.access-ticket__body::before {
+  content: "";
+  position: absolute;
+  top: 0.45rem;
+  bottom: 0.45rem;
+  z-index: 3;
+  width: 0.75rem;
+  pointer-events: none;
+  background: radial-gradient(circle, #071610 0 4px, transparent 4.5px) center / 0.75rem 1rem repeat-y;
+}
+
+.access-ticket__stub::before {
+  left: -0.38rem;
+}
+
+.access-ticket__body::before {
+  right: -0.38rem;
+}
+
+.access-ticket--redeemed .access-ticket__stub {
+  transform: translateY(0.18rem) rotate(-2.5deg);
+}
+
+.access-ticket__stamp {
+  display: grid;
+  width: 3.5rem;
+  height: 3.5rem;
+  place-items: center;
+  border: 2px solid color-mix(in srgb, #7a2d2d 78%, transparent);
+  border-radius: 999px;
+  color: #7a2d2d;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: rotate(-12deg);
+  opacity: 0.78;
+}
+
+.access-ticket__stamp--valid {
+  border-color: color-mix(in srgb, #2f7a51 78%, transparent);
+  color: #2f7a51;
+}
+
+.access-ticket__number {
+  font-family: monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--paper-muted) 78%, var(--paper-ink));
+}
+
+.access-ticket__date {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.6rem;
+  color: var(--paper-muted);
+}
+
+.access-ticket__header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--paper-border) 65%, transparent);
+  padding-bottom: 0.6rem;
+}
+
+.access-ticket__kicker {
+  font-size: 0.68rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--paper-muted);
+}
+
+.access-ticket__title {
+  margin-top: 0.25rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.3rem;
+  line-height: 1.1;
+  color: var(--paper-ink);
+}
+
+.access-ticket__meta {
+  text-align: right;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper-muted);
+}
+
+.access-ticket__main {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 8rem;
+  gap: 1rem;
+}
+
+.access-ticket__label {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--paper-muted);
+}
+
+.access-ticket__place {
+  margin-top: 0.35rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  color: var(--paper-ink);
+}
+
+.access-ticket__desc {
+  margin-top: 0.75rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--paper-ink) 82%, var(--paper-muted));
+}
+
+.access-ticket__box {
+  border: 1px solid color-mix(in srgb, var(--paper-border) 70%, transparent);
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.14);
+}
+.access-ticket__box-text {
+  margin-top: 0.6rem;
+  display: -webkit-box;
+  overflow: hidden;
+  color: color-mix(in srgb, var(--paper-ink) 78%, var(--paper-muted));
+  font-size: 0.78rem;
+  line-height: 1.45;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.access-ticket__code {
+  margin-top: 0.35rem;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--paper-ink);
+}
+
+.access-ticket__footer {
+  margin-top: 1rem;
+  border-top: 1px dashed color-mix(in srgb, var(--paper-ink) 38%, transparent);
+  padding-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.access-ticket__note {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--paper-muted);
+}
+
+.access-ticket__button {
+  flex-shrink: 0;
+  border: 1px solid color-mix(in srgb, var(--paper-ink) 58%, transparent);
+  padding: 0.55rem 0.8rem;
+  background: transparent;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper-ink);
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.access-ticket__button:hover {
+  background: var(--paper-ink);
+  color: var(--paper);
+}
+
+.access-ticket__footer-action {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .access-ticket {
+    grid-template-columns: 4.25rem 1fr;
+  }
+
+  .access-ticket__body {
+    padding: 1rem;
+  }
+
+  .access-ticket__main {
+    grid-template-columns: 1fr;
+  }
+
+  .access-ticket__box {
+    max-width: 12rem;
+  }
+
+  .access-ticket__footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.access-ticket__request {
+  margin-top: 1rem;
+  border-top: 1px dashed color-mix(in srgb, var(--paper-ink) 34%, transparent);
+  padding-top: 1rem;
+}
+
+.access-ticket__field {
+  margin-top: 0.4rem;
+  width: 100%;
+  border: 1px solid color-mix(in srgb, var(--paper-border) 72%, transparent);
+  background: color-mix(in srgb, var(--paper-highlight) 36%, transparent);
+  padding: 0.6rem 0.7rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--paper-ink);
+  outline: none;
+}
+
+.access-ticket__field:focus {
+  border-color: color-mix(in srgb, var(--paper-ink) 52%, transparent);
+}
+
+.access-ticket__field::placeholder {
+  color: color-mix(in srgb, var(--paper-muted) 78%, transparent);
+}
+
+.access-ticket__button--ghost {
+  border-color: color-mix(in srgb, var(--paper-border) 70%, transparent);
+  color: var(--paper-muted);
+}
+
+.access-ticket__button--ghost:hover {
+  background: transparent;
+  color: var(--paper-ink);
+  border-color: color-mix(in srgb, var(--paper-ink) 42%, transparent);
+}
+
+.access-ticket__archive-mark {
+  position: absolute;
+  right: 7.5rem;
+  bottom: 6.5rem;
+  z-index: 1;
+  display: grid;
+  width: 10rem;
+  height: 10rem;
+  place-items: center;
+  border: 2px solid color-mix(in srgb, var(--paper-ink) 24%, transparent);
+  border-radius: 999px;
+  color: rgba(105, 34, 49, 0.42);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 8rem;
+  line-height: 1;
+  transform: rotate(15deg);
+  pointer-events: none;
+}

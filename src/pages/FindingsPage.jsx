@@ -70,62 +70,61 @@ function FindingsPage() {
   }
 
   return (
-    <section>
-      <p className="text-sm tracking-[0.25em] text-accent">RECOVERED FINDINGS</p>
+    <section className="findings-page">
+      <div className="findings-page__panel">
+        <div className="mx-auto max-w-7xl">
+          <h1 className="mt-4 font-serif text-4xl text-accent md:text-5xl">Accessi recuperati</h1>
 
-      <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Access Archive</h1>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-muted md:text-base">Pass, inviti e opportunità sbloccati durante l'esplorazione.</p>
 
-      <p className="mt-4 max-w-2xl text-sm leading-7 text-muted md:text-base">
-        A collection of access passes unlocked through exploration. Each finding connects a hidden story to a real place.
-      </p>
+          <div className="mt-8 inline-flex rounded-full border border-border-soft bg-surface p-1">
+            <button
+              type="button"
+              onClick={() => setActiveView("recovered")}
+              className={
+                activeView === "recovered"
+                  ? "rounded-full bg-accent px-5 py-2 text-sm text-canvas"
+                  : "rounded-full px-5 py-2 text-sm text-muted transition hover:text-ink"
+              }
+            >
+              Recuperati {sortedRewards.length}
+            </button>
 
-      <div className="mt-8 inline-flex rounded-full border border-border-soft bg-surface p-1">
-        <button
-          type="button"
-          onClick={() => setActiveView("recovered")}
-          className={
-            activeView === "recovered"
-              ? "rounded-full bg-accent px-5 py-2 text-sm text-canvas"
-              : "rounded-full px-5 py-2 text-sm text-muted transition hover:text-ink"
-          }
-        >
-          Recovered {sortedRewards.length}
-        </button>
+            <button
+              type="button"
+              onClick={() => setActiveView("scheduled")}
+              className={
+                activeView === "scheduled"
+                  ? "rounded-full bg-accent px-5 py-2 text-sm text-canvas"
+                  : "rounded-full px-5 py-2 text-sm text-muted transition hover:text-ink"
+              }
+            >
+              Archiviati {sortedBookings.length}
+            </button>
+          </div>
+          {activeView === "recovered" && (
+            <>
+              {sortedRewards.length === 0 ? (
+                <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
+                  <p className="text-muted">Non hai ancora sbloccato nessun accesso.</p>
+                </div>
+              ) : (
+                <div className="mt-10 grid items-start gap-6 xl:grid-cols-2">
+                  {sortedRewards.map((reward) => (
+                    <FindingPass key={reward.userRewardId} reward={reward} onBookingCreated={handleBookingCreated} />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
 
-        <button
-          type="button"
-          onClick={() => setActiveView("scheduled")}
-          className={
-            activeView === "scheduled"
-              ? "rounded-full bg-accent px-5 py-2 text-sm text-canvas"
-              : "rounded-full px-5 py-2 text-sm text-muted transition hover:text-ink"
-          }
-        >
-          Scheduled {sortedBookings.length}
-        </button>
-      </div>
-
-      {activeView === "recovered" && (
-        <>
-          {sortedRewards.length === 0 ? (
-            <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
-              <p className="text-muted">Non hai ancora sbloccato nessun finding.</p>
-            </div>
-          ) : (
-            <div className="mt-10 grid gap-6 xl:grid-cols-2">
-              {sortedRewards.map((reward) => (
-                <FindingPass key={reward.userRewardId} reward={reward} onBookingCreated={handleBookingCreated} />
-              ))}
+          {activeView === "scheduled" && (
+            <div className="mt-10">
+              <MyBookingsList bookings={sortedBookings} />
             </div>
           )}
-        </>
-      )}
-
-      {activeView === "scheduled" && (
-        <div className="mt-10">
-          <MyBookingsList bookings={sortedBookings} />
         </div>
-      )}
+      </div>
     </section>
   )
 }

@@ -25,7 +25,7 @@ function BookingRequestForm({ reward, onBookingCreated, onCancel }) {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a inviare la richiesta di accesso.")
+        setError("Non riesco a inviare la richiesta di prenotazione.")
       })
       .finally(() => {
         setIsSubmitting(false)
@@ -33,13 +33,13 @@ function BookingRequestForm({ reward, onBookingCreated, onCancel }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-5 rounded-2xl border border-dashed border-accent-soft bg-canvas p-4">
-      <p className="text-xs tracking-[0.24em] text-accent">ACCESS REQUEST</p>
+    <form onSubmit={handleSubmit} className="access-ticket__request">
+      <p className="access-ticket__label">Richiesta di prenotazione</p>
 
-      <div className="mt-4 grid gap-4 md:grid-cols-2">
+      <div className="mt-3 grid gap-3 md:grid-cols-[1fr_7rem]">
         <div>
-          <label htmlFor={`booking-date-${reward.userRewardId}`} className="mb-2 block text-xs tracking-[0.18em] text-muted">
-            DATE AND TIME
+          <label htmlFor={`booking-date-${reward.userRewardId}`} className="access-ticket__label">
+            Data e ora
           </label>
 
           <input
@@ -47,14 +47,14 @@ function BookingRequestForm({ reward, onBookingCreated, onCancel }) {
             type="datetime-local"
             value={bookingDate}
             onChange={(event) => setBookingDate(event.target.value)}
-            className="w-full rounded-xl border border-border-soft bg-surface px-4 py-3 text-sm text-ink outline-none focus:border-accent"
+            className="access-ticket__field"
             required
           />
         </div>
 
         <div>
-          <label htmlFor={`people-count-${reward.userRewardId}`} className="mb-2 block text-xs tracking-[0.18em] text-muted">
-            PEOPLE
+          <label htmlFor={`people-count-${reward.userRewardId}`} className="access-ticket__label">
+            Persone
           </label>
 
           <input
@@ -63,15 +63,15 @@ function BookingRequestForm({ reward, onBookingCreated, onCancel }) {
             min="1"
             value={peopleCount}
             onChange={(event) => setPeopleCount(event.target.value)}
-            className="w-full rounded-xl border border-border-soft bg-surface px-4 py-3 text-sm text-ink outline-none focus:border-accent"
+            className="access-ticket__field"
             required
           />
         </div>
       </div>
 
-      <div className="mt-4">
-        <label htmlFor={`booking-notes-${reward.userRewardId}`} className="mb-2 block text-xs tracking-[0.18em] text-muted">
-          MESSAGE
+      <div className="mt-3">
+        <label htmlFor={`booking-notes-${reward.userRewardId}`} className="access-ticket__label">
+          Messaggio
         </label>
 
         <textarea
@@ -79,30 +79,30 @@ function BookingRequestForm({ reward, onBookingCreated, onCancel }) {
           rows="3"
           value={notes}
           onChange={(event) => setNotes(event.target.value)}
-          placeholder="Add a note for the local partner..."
-          className="w-full resize-none rounded-xl border border-border-soft bg-surface px-4 py-3 text-sm leading-6 text-ink outline-none focus:border-accent"
+          placeholder="Aggiungi una nota per il partner locale..."
+          className="access-ticket__field resize-none"
         />
       </div>
 
-      {error && <p className="mt-4 text-sm text-arcane">{error}</p>}
+      {error && <p className="mt-3 text-sm text-[#8f3a32]">{error}</p>}
 
-      <div className="mt-5 flex flex-wrap gap-3">
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="rounded-full border border-accent-soft px-5 py-2 text-sm text-accent transition hover:border-accent hover:bg-accent hover:text-canvas disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {isSubmitting ? "Sending..." : "Send request"}
-        </button>
+      <div className="access-ticket__footer mt-4">
+        <span />
 
-        <button
-          type="button"
-          onClick={onCancel}
-          disabled={isSubmitting}
-          className="rounded-full border border-border-soft px-5 py-2 text-sm text-muted transition hover:border-accent-soft hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          Cancel
-        </button>
+        <div className="access-ticket__footer-action">
+          <button type="submit" disabled={isSubmitting} className="access-ticket__button disabled:cursor-not-allowed disabled:opacity-50">
+            {isSubmitting ? "Invio..." : "Invia richiesta"}
+          </button>
+
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isSubmitting}
+            className="access-ticket__button access-ticket__button--ghost disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Annulla
+          </button>
+        </div>
       </div>
     </form>
   )

@@ -5,16 +5,25 @@ function FindingPass({ reward, onBookingCreated }) {
   const [isRequestOpen, setIsRequestOpen] = useState(false)
   const [bookingSent, setBookingSent] = useState(false)
 
-  const unlockedDate = reward.unlockedAt
-    ? new Date(reward.unlockedAt).toLocaleDateString("it-IT", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      })
-    : "Unknown date"
+  function formatDate(dateValue) {
+    if (!dateValue) return "Data sconosciuta"
+
+    return new Date(dateValue).toLocaleDateString("it-IT", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+  }
+
+  const unlockedDate = formatDate(reward.unlockedAt)
+  const validFromDate = formatDate(reward.validFrom || reward.unlockedAt)
+  const validUntilDate = reward.validUntil ? formatDate(reward.validUntil) : null
 
   const isUnlocked = reward.status === "UNLOCKED"
   const isRedeemed = reward.status === "REDEEMED"
+  const canShowCode = isRedeemed && reward.discountCode
+
+  const ticketClassName = isRedeemed ? "access-ticket access-ticket--redeemed" : "access-ticket"
 
   function handleBookingCreated(createdBooking) {
     setBookingSent(true)
@@ -23,71 +32,84 @@ function FindingPass({ reward, onBookingCreated }) {
   }
 
   return (
-    <article className="relative overflow-hidden rounded-[1.75rem] border border-border-soft bg-surface p-5 shadow-sm">
-      <div className="absolute right-5 top-5 rounded-full border border-accent-soft px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-muted">
-        {reward.status}
-      </div>
+    <article className={ticketClassName}>
+      <aside className="access-ticket__stub">
+        <span className={isRedeemed ? "access-ticket__stamp" : "access-ticket__stamp access-ticket__stamp--valid"}>{isRedeemed ? "Validato" : "Valido"}</span>
 
-      <div className="border-b border-dashed border-border-soft pb-5 pr-28">
-        <p className="text-xs tracking-[0.25em] text-accent">ARCHIVE ACCESS</p>
+        <span className="access-ticket__number">N° {String(reward.userRewardId || "000000").slice(-6)}</span>
 
-        <h2 className="mt-4 font-serif text-2xl leading-tight text-ink">{reward.rewardTitle}</h2>
+        <span className="access-ticket__date">{unlockedDate}</span>
+      </aside>
 
-        <p className="mt-2 text-sm text-muted">{reward.cityName}</p>
-      </div>
+      <div className="access-ticket__body">
+        <header className="access-ticket__header">
+          <div>
+            <p className="access-ticket__kicker">Biglietto di accesso</p>
+            <h2 className="access-ticket__title">{reward.rewardTitle}</h2>
+          </div>
 
-      <div className="mt-5 grid gap-5 md:grid-cols-[1fr_150px]">
-        <div>
-          <p className="text-xs tracking-[0.2em] text-muted">ACCESS POINT</p>
-          <p className="mt-2 font-serif text-xl text-ink">{reward.businessName}</p>
+          <div className="access-ticket__meta">
+            <p>{reward.cityName}</p>
+            <p>{reward.rewardType}</p>
+          </div>
+        </header>
 
-          <p className="mt-4 line-clamp-3 text-sm leading-7 text-muted">{reward.rewardDescription}</p>
-        </div>
+        <div className="access-ticket__main">
+          <div>
+            <p className="access-ticket__label">Destinazione</p>
+            <p className="access-ticket__place">{reward.businessName}</p>
 
-        <div className="rounded-2xl border border-border-soft bg-canvas p-4">
-          <p className="text-[10px] tracking-[0.2em] text-muted">ISSUED</p>
-          <p className="mt-2 text-sm text-accent">{unlockedDate}</p>
+            <p className="access-ticket__desc">{reward.rewardDescription}</p>
+          </div>
 
-          <div className="mt-5 border-t border-border-soft pt-4">
-            <p className="text-[10px] tracking-[0.2em] text-muted">TYPE</p>
-            <p className="mt-2 text-sm text-ink">{reward.rewardType}</p>
+          <div className="access-ticket__box">
+            <p className="access-ticket__label">Valido da / a</p>
+
+            <p className="access-ticket__code">
+              {validFromDate}
+              {validUntilDate && (
+                <>
+                  <br />
+                  {validUntilDate}
+                </>
+              )}
+            </p>
+
+            <div className="mt-4 border-t border-dashed border-[rgba(90,70,53,0.35)] pt-3">
+              <p className="access-ticket__label">Codice</p>
+              <p className="access-ticket__code">{canShowCode ? reward.discountCode : "Dopo conferma"}</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      {reward.discountCode && (
-        <div className="mt-5 rounded-2xl border border-dashed border-accent-soft bg-canvas px-4 py-3">
-          <p className="text-[10px] tracking-[0.2em] text-muted">ACCESS CODE</p>
-          <p className="mt-2 font-mono text-sm text-accent">{reward.discountCode}</p>
-        </div>
-      )}
-
-      {bookingSent && (
-        <div className="mt-5 rounded-2xl border border-accent-soft bg-canvas p-4">
-          <p className="text-sm text-accent">Request sent.</p>
-          <p className="mt-2 text-sm leading-6 text-muted">Your access request is now pending confirmation.</p>
-        </div>
-      )}
-
-      {isRequestOpen && <BookingRequestForm reward={reward} onBookingCreated={handleBookingCreated} onCancel={() => setIsRequestOpen(false)} />}
-
-      <div className="mt-5 flex items-center justify-between gap-4">
-        <p className="text-xs leading-5 text-muted">
-          {isUnlocked && !bookingSent && "Unlocked through city exploration."}
-          {isUnlocked && bookingSent && "Request pending confirmation."}
-          {isRedeemed && "This access has already been used."}
-          {!isUnlocked && !isRedeemed && "This access is no longer available."}
-        </p>
-
-        {isUnlocked && !bookingSent && (
-          <button
-            type="button"
-            onClick={() => setIsRequestOpen((currentValue) => !currentValue)}
-            className="shrink-0 rounded-full border border-accent-soft px-5 py-2 text-sm text-accent transition hover:border-accent hover:bg-accent hover:text-canvas"
-          >
-            {isRequestOpen ? "Close request" : "Request booking"}
-          </button>
+        {bookingSent && (
+          <div className="mt-4 border border-dashed border-[rgba(90,70,53,0.35)] p-3">
+            <p className="text-sm text-[#5a4635]">Richiesta inviata.</p>
+            <p className="mt-1 text-sm leading-6 text-[#7a6556]">La tua prenotazione è in attesa di conferma.</p>
+          </div>
         )}
+
+        {isRequestOpen && <BookingRequestForm reward={reward} onBookingCreated={handleBookingCreated} onCancel={() => setIsRequestOpen(false)} />}
+
+        <footer className="access-ticket__footer">
+          <span />
+
+          <div className="access-ticket__footer-action">
+            {(bookingSent || isRedeemed || (!isUnlocked && !isRedeemed)) && (
+              <p className="access-ticket__note">
+                {bookingSent && "Richiesta inviata."}
+                {isRedeemed && "Accesso confermato."}
+                {!isUnlocked && !isRedeemed && "Accesso non disponibile."}
+              </p>
+            )}
+
+            {isUnlocked && !bookingSent && (
+              <button type="button" onClick={() => setIsRequestOpen((currentValue) => !currentValue)} className="access-ticket__button">
+                {isRequestOpen ? "Chiudi" : "Richiedi prenotazione"}
+              </button>
+            )}
+          </div>
+        </footer>
       </div>
     </article>
   )
