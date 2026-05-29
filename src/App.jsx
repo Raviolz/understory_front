@@ -12,7 +12,6 @@ import Footer from "./components/layout/Footer"
 import MobileBottomNav from "./components/layout/MobileBottomNav"
 
 import LandingPage from "./pages/LandingPage"
-
 import JournalPage from "./pages/JournalPage"
 import ProfilePage from "./pages/ProfilePage"
 import NotFoundPage from "./pages/NotFoundPage"
@@ -22,11 +21,14 @@ import BackofficeRoutes from "./routes/BackofficeRoutes"
 import CityDetailPage from "./pages/CityDetailPage"
 import ExperienceDetailPage from "./pages/ExperienceDetailsPage"
 import FindingsPage from "./pages/FindingsPage"
+import ProtectedRoute from "./routes/ProtectedRoute"
 
 function AppShell() {
   const location = useLocation()
+
   const isLanding = location.pathname === "/" || location.pathname === "/explore"
-  const isPanelPage = location.pathname === "/journal" || location.pathname === "/findings"
+  const isPanelPage =
+    location.pathname === "/journal" || location.pathname === "/findings" || location.pathname === "/login" || location.pathname === "/register"
 
   return (
     <div className={isLanding ? "flex h-dvh flex-col overflow-hidden bg-canvas text-ink" : "min-h-screen bg-canvas text-ink"}>
@@ -43,15 +45,65 @@ function AppShell() {
       >
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/explore" element={<LandingPage />} />
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/backoffice/*" element={<BackofficeRoutes />} />
-          <Route path="/explore" element={<LandingPage />} />
-          <Route path="/journal" element={<JournalPage />} />
-          <Route path="/findings" element={<FindingsPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/cities/:cityId" element={<CityDetailPage />} />
-          <Route path="/experiences/:experienceId" element={<ExperienceDetailPage />} />
+
+          <Route
+            path="/backoffice/*"
+            element={
+              <ProtectedRoute requireAdmin>
+                <BackofficeRoutes />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/journal"
+            element={
+              <ProtectedRoute>
+                <JournalPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/findings"
+            element={
+              <ProtectedRoute>
+                <FindingsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/cities/:cityId"
+            element={
+              <ProtectedRoute>
+                <CityDetailPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/experiences/:experienceId"
+            element={
+              <ProtectedRoute>
+                <ExperienceDetailPage />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="/404" element={<NotFoundPage />} />
           <Route path="*" element={<Navigate to="/404" replace />} />
         </Routes>

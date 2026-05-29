@@ -1,33 +1,33 @@
-import { apiRequest } from "./apiClient"
+import { apiRequest, authenticatedRequest } from "./apiClient"
 
 export function getPublishedCities({ page = 0, size = 50, sortBy = "name" } = {}) {
   return apiRequest(`/cities?page=${page}&size=${size}&sortBy=${sortBy}`)
 }
 
 export function getPublishedCityById(cityId) {
-  return apiRequest(`/cities/${cityId}`)
+  return authenticatedRequest(`/cities/${cityId}`)
 }
 
 export function getPublishedPointsByCity(cityId, { page = 0, size = 50, sortBy = "name" } = {}) {
-  return apiRequest(`/cities/${cityId}/points?page=${page}&size=${size}&sortBy=${sortBy}`)
+  return authenticatedRequest(`/cities/${cityId}/points?page=${page}&size=${size}&sortBy=${sortBy}`)
 }
 
 export function getPublishedPointById(pointId) {
-  return apiRequest(`/points/${pointId}`)
+  return authenticatedRequest(`/points/${pointId}`)
 }
 
 export function getPublishedExperiencesByPoint(pointId, { page = 0, size = 10, sortBy = "title" } = {}) {
-  return apiRequest(`/points/${pointId}/experiences?page=${page}&size=${size}&sortBy=${sortBy}`)
+  return authenticatedRequest(`/points/${pointId}/experiences?page=${page}&size=${size}&sortBy=${sortBy}`)
 }
 
 export function getPublishedExperienceById(experienceId) {
-  return apiRequest(`/experiences/${experienceId}`)
+  return authenticatedRequest(`/experiences/${experienceId}`)
 }
 
 export function getPublishedQuizGameByExperience(experienceId) {
-  return apiRequest(`/experiences/${experienceId}/quiz-game`)
+  return authenticatedRequest(`/experiences/${experienceId}/quiz-game`)
 }
 
 export function getPublishedUploadGameByExperience(experienceId) {
-  return apiRequest(`/experiences/${experienceId}/upload-game`)
+  return authenticatedRequest(`/experiences/${experienceId}/upload-game`)
 }
