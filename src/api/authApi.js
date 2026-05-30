@@ -18,6 +18,17 @@ export function getMyProfile() {
   return authenticatedRequest("/me/profile")
 }
 
+export function updateMyProfile(profileData) {
+  return authenticatedRequest("/me/profile", {
+    method: "PATCH",
+    body: JSON.stringify(profileData),
+  })
+}
+
+export function getMyCityKnowledge() {
+  return authenticatedRequest("/me/city-knowledge")
+}
+
 export function uploadMyAvatar(file) {
   const formData = new FormData()
   formData.append("file", file)

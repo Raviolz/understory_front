@@ -1,21 +1,67 @@
 import { Navigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import { uploadMyAvatar } from "../api/authApi"
+import { getMyCityKnowledge, uploadMyAvatar, updateMyProfile } from "../api/authApi"
 import { setCurrentUser } from "../redux/authSlice"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import EditProfileForm from "../components/profile/EditProfileForm"
+
+function clampFillPercent(percentage) {
+  const value = Number(percentage) || 0
+  return Math.min(100, Math.max(0, Math.round(value)))
+}
+
+function vialToneFromCompletion(percentage) {
+  const fill = clampFillPercent(percentage)
+
+  if (fill >= 100) return "complete"
+  if (fill >= 66) return "mature"
+  if (fill >= 33) return "forming"
+  if (fill > 0) return "awakening"
+
+  return "dormant"
+}
+
+function formatRole(role) {
+  if (role === "SUPER_ADMIN") return "Custode"
+  if (role === "ADMIN") return "Archivista"
+  return "Esploratore"
+}
 
 function ProfilePage() {
   const accessToken = useSelector((state) => state.auth.accessToken)
   const currentUser = useSelector((state) => state.auth.currentUser)
   const dispatch = useDispatch()
   const avatarInputRef = useRef(null)
+
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
   const [avatarError, setAvatarError] = useState(null)
+  const [cityKnowledge, setCityKnowledge] = useState([])
+  const [isLoadingCityKnowledge, setIsLoadingCityKnowledge] = useState(true)
+
+  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [isSavingProfile, setIsSavingProfile] = useState(false)
+  const [profileEditError, setProfileEditError] = useState(null)
+
+  useEffect(() => {
+    if (!currentUser) return
+
+    setIsLoadingCityKnowledge(true)
+
+    getMyCityKnowledge()
+      .then((data) => {
+        setCityKnowledge(data)
+      })
+      .catch((error) => {
+        console.error(error)
+        setCityKnowledge([])
+      })
+      .finally(() => {
+        setIsLoadingCityKnowledge(false)
+      })
+  }, [currentUser])
 
   function handleAvatarUpload(file) {
-    if (!file) {
-      return
-    }
+    if (!file) return
 
     setIsUploadingAvatar(true)
     setAvatarError(null)
@@ -33,80 +79,220 @@ function ProfilePage() {
       })
   }
 
+  function handleProfileUpdate(profileData) {
+    setIsSavingProfile(true)
+    setProfileEditError(null)
+
+    updateMyProfile(profileData)
+      .then((updatedUser) => {
+        console.log("UPDATED USER", updatedUser)
+        dispatch(setCurrentUser(updatedUser))
+        setIsEditOpen(false)
+      })
+      .catch((error) => {
+        console.error(error)
+        setProfileEditError("Non riesco ad aggiornare il fascicolo.")
+      })
+      .finally(() => {
+        setIsSavingProfile(false)
+      })
+  }
+
   if (accessToken && !currentUser) {
-    return <p className="text-muted">Caricamento profilo...</p>
+    return <p className="profile-dossier__loading text-muted">Caricamento fascicolo…</p>
   }
 
   if (!currentUser) {
     return <Navigate to="/login" replace />
   }
 
+  const moniker = (currentUser.username || "esploratore").toUpperCase()
+
   return (
-    <section className="mx-auto max-w-3xl">
-      <p className="text-sm tracking-[0.25em] text-accent">Archivio personale</p>
+    <section className="profile-dossier" aria-labelledby="profile-dossier-title">
+      <div className="profile-dossier__folio">
+        <span className="profile-dossier__star profile-dossier__star--tl" aria-hidden="true">
+          ✦
+        </span>
 
-      <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">{currentUser.username}</h1>
+        <span className="profile-dossier__star profile-dossier__star--tr" aria-hidden="true">
+          ✦
+        </span>
 
-      <div className="mt-8 rounded-3xl border border-border-soft bg-surface p-6 md:p-8">
-        <div className="flex items-center gap-5">
-          <div>
-            <button
-              type="button"
-              onClick={() => avatarInputRef.current?.click()}
-              disabled={isUploadingAvatar}
-              className="group relative h-24 w-24 overflow-hidden rounded-full border border-border-soft bg-canvas disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {currentUser?.avatarUrl ? (
-                <img src={currentUser.avatarUrl} alt={currentUser.username} className="h-full w-full object-cover" />
-              ) : (
-                <span className="flex h-full w-full items-center justify-center text-sm text-muted">No avatar</span>
-              )}
+        <header className="profile-dossier__header">
+          <p className="profile-dossier__kicker">Fascicolo personale</p>
+          <p className="profile-dossier__folio-id">Fascicolo N. {String(currentUser.level ?? 1).padStart(2, "0")}</p>
+        </header>
 
-              <span className="absolute inset-0 flex items-center justify-center bg-black/45 text-xs text-white opacity-0 transition group-hover:opacity-100">
-                {isUploadingAvatar ? "Uploading..." : "Modifica"}
-              </span>
-            </button>
+        <div className="profile-dossier__spread">
+          <div className="profile-dossier__body">
+            <div className="profile-seal">
+              <span className="profile-seal__ring profile-seal__ring--outer" aria-hidden="true" />
+              <span className="profile-seal__ring profile-seal__ring--mid" aria-hidden="true" />
+              <span className="profile-seal__ring profile-seal__ring--inner" aria-hidden="true" />
+              <span className="profile-seal__greek" aria-hidden="true" />
 
-            <input
-              ref={avatarInputRef}
-              type="file"
-              accept="image/*"
-              onChange={(event) => {
-                const file = event.target.files[0]
-                handleAvatarUpload(file)
-                event.target.value = ""
-              }}
-              className="hidden"
-            />
+              <button
+                type="button"
+                onClick={() => avatarInputRef.current?.click()}
+                disabled={isUploadingAvatar}
+                className="profile-seal__portrait"
+                aria-label="Modifica ritratto del fascicolo"
+              >
+                {currentUser.avatarUrl ? <img src={currentUser.avatarUrl} alt="" className="profile-seal__image" /> : <span className="profile-seal__void" />}
 
-            {avatarError && <p className="mt-2 text-xs text-arcane">{avatarError}</p>}
-          </div>
+                <span className="profile-seal__veil">{isUploadingAvatar ? "…" : "Ritratto"}</span>
+              </button>
+            </div>
 
-          <div>
-            <h2 className="font-serif text-2xl text-ink">
+            <p className="profile-dossier__moniker">{moniker}</p>
+
+            <h1 id="profile-dossier-title" className="profile-dossier__ledger-title">
+              L&apos;opera prosegue nel silenzio
+            </h1>
+
+            <div className="profile-dossier__divider" aria-hidden="true">
+              <span className="profile-dossier__divider-line" />
+              <span className="profile-dossier__divider-gem">◆</span>
+              <span className="profile-dossier__divider-line" />
+            </div>
+
+            <p className="profile-dossier__name">
               {currentUser.name} {currentUser.surname}
-            </h2>
+            </p>
 
-            <p className="mt-1 text-sm text-muted">{currentUser.email}</p>
-            <p className="mt-2 text-sm text-arcane">{currentUser.role}</p>
+            <p className="profile-dossier__meta">{currentUser.email}</p>
+
+            <div className="profile-dossier__registro">
+              <div className="profile-dossier__field">
+                <span>Ruolo</span>
+                <strong>{formatRole(currentUser.role)}</strong>
+              </div>
+
+              <div className="profile-dossier__field">
+                <span>Cerchio</span>
+                <strong>{currentUser.level ?? 0}</strong>
+              </div>
+
+              <div className="profile-dossier__field">
+                <span>Intuizioni</span>
+                <strong>{currentUser.xp ?? 0}</strong>
+              </div>
+            </div>
+
+            <ProfileCityKnowledge cities={cityKnowledge} isLoading={isLoadingCityKnowledge} />
+
+            <div className="profile-dossier__actions">
+              <button type="button" className="profile-dossier__edit-note" onClick={() => setIsEditOpen((value) => !value)}>
+                {isEditOpen ? "Chiudi modifica ↑" : "Aggiorna fascicolo →"}
+              </button>
+            </div>
+
+            {isEditOpen && (
+              <EditProfileForm
+                currentUser={currentUser}
+                isSaving={isSavingProfile}
+                error={profileEditError}
+                onSubmit={handleProfileUpdate}
+                onCancel={() => {
+                  setIsEditOpen(false)
+                  setProfileEditError(null)
+                }}
+              />
+            )}
+
+            {avatarError && <p className="profile-dossier__error">{avatarError}</p>}
           </div>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          <ProfileStat label="Insights" value={currentUser.xp} />
-          <ProfileStat label="Circle" value={currentUser.level} />
-        </div>
+        <footer className="profile-dossier__footer">
+          <p className="profile-dossier__note"> — Annotazione riservata — </p>
+        </footer>
       </div>
+
+      <input
+        ref={avatarInputRef}
+        type="file"
+        accept="image/*"
+        onChange={(event) => {
+          const file = event.target.files[0]
+          handleAvatarUpload(file)
+          event.target.value = ""
+        }}
+        className="hidden"
+      />
     </section>
   )
 }
 
-function ProfileStat({ label, value }) {
+function ProfileCityKnowledge({ cities, isLoading }) {
+  const vialsRef = useRef(null)
+
+  function scrollVials(direction) {
+    vialsRef.current?.scrollBy({
+      left: direction === "left" ? -260 : 260,
+      behavior: "smooth",
+    })
+  }
+
+  if (isLoading) {
+    return <p className="profile-city-knowledge__loading">Distillazione sapere…</p>
+  }
+
+  if (cities.length === 0) {
+    return <p className="profile-city-knowledge__empty">Nessuna città distillata.</p>
+  }
+
   return (
-    <div className="rounded-2xl border border-border-soft bg-canvas p-5">
-      <p className="text-sm tracking-[0.18em] text-muted">{label}</p>
-      <p className="mt-3 font-serif text-3xl text-accent">{value}</p>
-    </div>
+    <section className="profile-city-knowledge" aria-labelledby="profile-city-knowledge-title">
+      <p id="profile-city-knowledge-title" className="profile-city-knowledge__title">
+        Ampolle del sapere
+      </p>
+
+      <p className="profile-city-knowledge__intro">Ogni ampolla raccoglie la parte di città che hai già riportato alla luce.</p>
+
+      <div className="profile-city-knowledge__carousel">
+        <button type="button" className="profile-city-knowledge__arrow" onClick={() => scrollVials("left")} aria-label="Scorri ampolle a sinistra">
+          ←
+        </button>
+
+        <ul ref={vialsRef} className="profile-city-knowledge__grid">
+          {cities.map((city) => {
+            const fill = clampFillPercent(city.percentage)
+            const tone = vialToneFromCompletion(fill)
+
+            return (
+              <li key={city.cityId} className="profile-city-knowledge__item">
+                <article
+                  className={`profile-ampoule profile-ampoule--city profile-ampoule--${tone}`}
+                  aria-label={`${city.cityName}: ${fill}%, ${city.completedExperiences}/${city.totalExperiences}`}
+                >
+                  <p className="profile-ampoule__label">{city.cityName}</p>
+
+                  <div className="profile-ampoule__vessel">
+                    <div className="profile-ampoule__bulb">
+                      <div className="profile-ampoule__fill" style={{ height: `${fill}%` }} />
+
+                      {fill > 0 && <div className="profile-ampoule__meniscus" style={{ bottom: `${fill}%` }} aria-hidden="true" />}
+                    </div>
+                  </div>
+
+                  <p className="profile-ampoule__caption">
+                    <span className="profile-ampoule__value">{fill}%</span>
+                    <span className="profile-ampoule__sep"> · </span>
+                    {city.completedExperiences}/{city.totalExperiences}
+                  </p>
+                </article>
+              </li>
+            )
+          })}
+        </ul>
+
+        <button type="button" className="profile-city-knowledge__arrow" onClick={() => scrollVials("right")} aria-label="Scorri ampolle a destra">
+          →
+        </button>
+      </div>
+    </section>
   )
 }
 
