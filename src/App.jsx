@@ -28,8 +28,12 @@ function AppShell() {
 
   const isLanding = location.pathname === "/" || location.pathname === "/explore"
   const isPanelPage =
-    location.pathname === "/journal" || location.pathname === "/findings" || location.pathname === "/login" || location.pathname === "/register"
-
+    location.pathname === "/journal" ||
+    location.pathname === "/findings" ||
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/profile" ||
+    location.pathname.startsWith("/cities/")
   return (
     <div className={isLanding ? "flex h-dvh flex-col overflow-hidden bg-canvas text-ink" : "min-h-screen bg-canvas text-ink"}>
       <Navbar />

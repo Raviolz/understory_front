@@ -48,80 +48,89 @@ function CityDetailPage() {
 
   if (!city && !error) {
     return (
-      <main className="min-h-screen bg-canvas px-6 py-10 text-ink">
-        <p className="text-muted">Caricamento città...</p>
-      </main>
+      <section className="city-detail-page">
+        <p className="city-detail-message">Caricamento città...</p>
+      </section>
     )
   }
 
   if (error) {
     return (
-      <main className="min-h-screen bg-canvas px-6 py-10 text-ink">
-        <p className="text-arcane">{error}</p>
-      </main>
+      <section className="city-detail-page">
+        <p className="city-detail-message city-detail-message--error">{error}</p>
+      </section>
     )
   }
 
   if (!city) {
     return (
-      <main className="min-h-screen bg-canvas px-6 py-10 text-ink">
-        <p className="text-muted">Città non trovata.</p>
-      </main>
+      <section className="city-detail-page">
+        <p className="city-detail-message">Città non trovata.</p>
+      </section>
     )
   }
 
   return (
-    <main className="min-h-screen bg-canvas px-6 py-10 text-ink">
-      <Link to="/" className="text-sm text-muted hover:text-accent">
-        ← Back to globe
-      </Link>
+    <section className="city-detail-page">
+      <div className="city-detail-panel">
+        <Link to="/" className="city-detail-back">
+          ← Back to globe
+        </Link>
 
-      <section className="mt-10">
-        <p className="text-sm uppercase tracking-[0.25em] text-accent">{city.country}</p>
+        <section className="city-detail-hero">
+          <p className="city-detail-kicker">{city.country}</p>
 
-        <h1 className="mt-4 font-serif text-4xl md:text-5xl">{city.name}</h1>
+          <h1 className="city-detail-title">{city.name}</h1>
 
-        <p className="mt-6 max-w-2xl text-sm leading-7 text-muted md:text-base">{city.description}</p>
-      </section>
-
-      <section className="mt-12 grid gap-8 lg:grid-cols-[320px_1fr] xl:grid-cols-[360px_1fr]">
-        <aside className="lg:sticky lg:top-8 lg:self-start">
-          <div className="rounded-3xl border border-border-soft bg-surface-soft/40 p-5">
-            <p className="text-sm uppercase tracking-[0.25em] text-accent">City map</p>
-
-            <div className="mt-4">
-              <CityMap city={city} points={points} selectedPoint={selectedPoint} onSelectPoint={handleSelectPoint} />
-            </div>
-          </div>
-        </aside>
-
-        <section>
-          <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-sm uppercase tracking-[0.25em] text-accent">La citta' ricorda piu' di quanto mostri</p>
-              <h2 className="mt-3 font-serif text-3xl text-ink">Scegli la tua prossima carta</h2>
-            </div>
-
-            <p className="text-sm text-muted">{points.length} published points</p>
-          </div>
-
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {points.map((point) => (
-              <div
-                key={point.id}
-                ref={(element) => {
-                  pointCardRefs.current[point.id] = element
-                }}
-              >
-                <PointPreviewCard point={point} isSelected={selectedPoint?.id === point.id} onSelect={() => handleSelectPoint(point)} />
-              </div>
-            ))}
-
-            {points.length === 0 && <p className="text-muted">Nessun point pubblicato per questa città.</p>}
-          </div>
+          <p className="city-detail-description">{city.description}</p>
         </section>
-      </section>
-    </main>
+
+        <section className="city-detail-layout">
+          <aside className="city-detail-map-column">
+            <div className="city-map-card">
+              <span className="city-map-card__star" aria-hidden="true">
+                ✦
+              </span>
+              <div className="city-map-card__header">
+                <p className="city-map-card__title">City map</p>
+              </div>
+
+              <div className="city-map-card__ornament" aria-hidden="true" />
+
+              <div className="city-map-card__frame">
+                <CityMap city={city} points={points} selectedPoint={selectedPoint} onSelectPoint={handleSelectPoint} />
+              </div>
+            </div>
+          </aside>
+
+          <section className="city-detail-cards">
+            <div className="city-detail-cards__header">
+              <div>
+                <p className="city-detail-kicker">La città ricorda più di quanto mostri</p>
+                <h2 className="city-detail-section-title">Scegli la tua prossima carta</h2>
+              </div>
+
+              <p className="city-detail-count">{points.length} published points</p>
+            </div>
+
+            <div className="city-detail-grid">
+              {points.map((point) => (
+                <div
+                  key={point.id}
+                  ref={(element) => {
+                    pointCardRefs.current[point.id] = element
+                  }}
+                >
+                  <PointPreviewCard point={point} isSelected={selectedPoint?.id === point.id} onSelect={() => handleSelectPoint(point)} />
+                </div>
+              ))}
+
+              {points.length === 0 && <p className="city-detail-message">Nessun point pubblicato per questa città.</p>}
+            </div>
+          </section>
+        </section>
+      </div>
+    </section>
   )
 }
 
