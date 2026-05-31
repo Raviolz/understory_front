@@ -1,23 +1,27 @@
 import { Link } from "react-router-dom"
+import notFoundImage from "../assets/city/404.jfif"
 
 function NotFoundPage() {
   return (
-    <section className="flex min-h-[65vh] items-center justify-center px-5 text-center">
-      <div className="max-w-2xl">
-        <p className="mb-4 text-sm tracking-[0.35em] text-accent">Understory Archive</p>
+    <section className="quiz-fortune">
+      <div className="quiz-fortune__booth">
+        <div className="quiz-fortune__image-frame">
+          <img src={notFoundImage} alt="" className="quiz-fortune__image" />
+        </div>
 
-        <h1 className="mb-4 font-serif text-3xl text-ink md:text-4xl">Luogo non mappato</h1>
+        <div className="quiz-fortune__window quiz-fortune__window--upload">
+          <div className="quiz-fortune__cards">
+            <article className="quiz-fortune-card quiz-fortune-card--upload quiz-fortune-card--selected">
+              <span className="quiz-fortune-card__symbol">✦</span>
 
-        <p className="mx-auto mb-8 max-w-xl text-sm leading-7 text-muted md:text-base">
-          Hai raggiunto un punto che non compare nei nostri archivi. Forse è solo un errore. O forse non era ancora il momento di trovarlo.
-        </p>
+              <span className="quiz-fortune-card__text">Nemmeno noi sappiamo ancora cosa ci sia qui.</span>
 
-        <Link
-          to="/explore"
-          className="inline-flex rounded-full border border-accent-soft px-6 py-3 text-sm tracking-[0.14em] text-accent transition hover:border-accent hover:bg-accent hover:text-canvas"
-        >
-          Torna ad esplorare sentieri sicuri
-        </Link>
+              <Link to="/explore" className="quiz-fortune-card__seal">
+                Torna su sentieri sicuri →
+              </Link>
+            </article>
+          </div>
+        </div>
       </div>
     </section>
   )
