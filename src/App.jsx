@@ -33,9 +33,10 @@ function AppShell() {
     location.pathname === "/login" ||
     location.pathname === "/register" ||
     location.pathname === "/profile" ||
-    location.pathname.startsWith("/cities/")
+    location.pathname.startsWith("/cities/") ||
+    location.pathname.startsWith("/experiences/")
   return (
-    <div className={isLanding ? "flex h-dvh flex-col overflow-hidden bg-canvas text-ink" : "min-h-screen bg-canvas text-ink"}>
+    <div className={isLanding ? "flex h-dvh flex-col overflow-hidden bg-canvas text-ink" : "flex min-h-screen flex-col bg-canvas text-ink"}>
       <Navbar />
 
       <main
@@ -43,8 +44,8 @@ function AppShell() {
           isLanding
             ? "relative mx-auto min-h-0 w-full max-w-7xl flex-1 overflow-hidden"
             : isPanelPage
-              ? "min-h-screen w-full"
-              : "mx-auto min-h-screen w-full max-w-7xl px-5 py-10 pb-28 md:px-8 md:py-14"
+              ? "w-full flex-1"
+              : "mx-auto w-full max-w-7xl flex-1 px-5 py-10 pb-28 md:px-8 md:py-14"
         }
       >
         <Routes>

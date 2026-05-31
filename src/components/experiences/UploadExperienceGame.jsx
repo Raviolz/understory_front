@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { submitUploadSubmission } from "../../api/gameplayApi"
 import { getPublishedUploadGameByExperience } from "../../api/publicApi"
+import fortuneBoothImage from "../../assets/city/fortune_teller1.jfif"
 
 function UploadExperienceGame({ experience }) {
+  const fileInputRef = useRef(null)
+
   const [uploadGame, setUploadGame] = useState(null)
   const [selectedFile, setSelectedFile] = useState(null)
   const [submission, setSubmission] = useState(null)
@@ -26,8 +29,24 @@ function UploadExperienceGame({ experience }) {
       })
   }, [experience?.id])
 
+  function handleChooseFile() {
+    if (isSubmitting) return
+    fileInputRef.current?.click()
+  }
+
+  function handleCardClick() {
+    if (isSubmitting) return
+
+    if (!selectedFile) {
+      handleChooseFile()
+      return
+    }
+
+    handleSubmitImage()
+  }
+
   function handleSubmitImage() {
-    if (!selectedFile) return
+    if (!selectedFile || isSubmitting) return
 
     setIsSubmitting(true)
     setError(null)
@@ -47,80 +66,88 @@ function UploadExperienceGame({ experience }) {
   }
 
   if (error) {
-    return <p className="text-arcane">{error}</p>
+    return <p className="experience-message experience-message--error">{error}</p>
   }
 
   if (!uploadGame) {
-    return <p className="text-muted">Caricamento upload game...</p>
+    return <p className="experience-message">Caricamento upload game...</p>
   }
 
   if (submission) {
     return (
-      <section>
-        <p className="text-sm uppercase tracking-[0.25em] text-accent">Submission received</p>
+      <section className="quiz-fortune">
+        <div className="quiz-fortune__question">
+          <span className="quiz-fortune__question-label">Traccia ricevuta</span>
+          <h2 className="quiz-fortune__question-text">La tua immagine attende il responso.</h2>
+        </div>
 
-        <h2 className="mt-4 font-serif text-3xl text-ink">Your image is waiting for review</h2>
-
-        <p className="mt-5 text-sm leading-7 text-muted md:text-base">
-          Your image has been sent successfully. Once it is approved, this experience will be completed and its reveal will be unlocked.
-        </p>
-
-        {submission.imageUrl && (
-          <div className="mt-6 overflow-hidden rounded-2xl border border-border-soft">
-            <img src={submission.imageUrl} alt="Submitted upload" className="max-h-[320px] w-full object-cover" />
+        <div className="quiz-fortune__booth">
+          <div className="quiz-fortune__image-frame">
+            <img src={fortuneBoothImage} alt="Cabina dell'oracolo" className="quiz-fortune__image" />
           </div>
-        )}
 
-        {submission.status && (
-          <p className="mt-5 text-sm text-muted">
-            Status: <span className="text-accent">{submission.status}</span>
-          </p>
-        )}
+          <div className="quiz-fortune__window">
+            <div className="quiz-fortune__cards">
+              <article className="quiz-fortune-card quiz-fortune-card--c quiz-fortune-card--selected">
+                <span className="quiz-fortune-card__symbol">✦</span>
+                <span className="quiz-fortune-card__text">
+                  Immagine inviata.
+                  {submission.status ? ` Stato: ${submission.status}` : ""}
+                </span>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        {submission.imageUrl && <p className="quiz-fortune__result">La traccia è stata consegnata. Quando sarà approvata, l’esperienza verrà completata.</p>}
       </section>
     )
   }
 
   return (
-    <section>
-      <p className="text-sm uppercase tracking-[0.25em] text-accent">Image upload</p>
+    <section className="quiz-fortune">
+      <div className="quiz-fortune__question">
+        <span className="quiz-fortune__question-label">La tua prova</span>
+        <h2 className="quiz-fortune__question-text">{uploadGame.promptText}</h2>
+      </div>
 
-      <h2 className="mt-4 font-serif text-3xl text-ink">{uploadGame.promptText}</h2>
-
-      <p className="mt-5 text-sm leading-7 text-muted md:text-base">{uploadGame.targetDescription}</p>
-
-      {uploadGame.validationHint && (
-        <p className="mt-4 rounded-2xl border border-border-soft bg-canvas p-4 text-sm leading-6 text-muted">{uploadGame.validationHint}</p>
-      )}
-
-      {uploadGame.referenceImageUrl && (
-        <div className="mt-6 overflow-hidden rounded-2xl border border-border-soft">
-          <img src={uploadGame.referenceImageUrl} alt="Reference" className="max-h-[320px] w-full object-cover" />
+      <div className="quiz-fortune__booth">
+        <div className="quiz-fortune__image-frame">
+          <img src={fortuneBoothImage} alt="Cabina dell'oracolo" className="quiz-fortune__image" />
         </div>
-      )}
 
-      <label className="mt-8 block">
-        <span className="text-sm text-accent">Upload your image</span>
+        <div className="quiz-fortune__window">
+          <div className="quiz-fortune__cards">
+            <button
+              type="button"
+              onClick={handleCardClick}
+              disabled={isSubmitting}
+              className={["quiz-fortune-card", "quiz-fortune-card--upload", selectedFile ? "quiz-fortune-card--selected" : ""].filter(Boolean).join(" ")}
+            >
+              <span className="quiz-fortune-card__symbol">☽</span>
+
+              <span className="quiz-fortune-card__text">
+                {selectedFile ? selectedFile.name : uploadGame.targetDescription || "Scegli un’immagine da consegnare."}
+              </span>
+
+              <span className="quiz-fortune-card__seal">{isSubmitting ? "Consulta…" : selectedFile ? "Sigilla →" : "Carica →"}</span>
+            </button>
+          </div>
+        </div>
 
         <input
+          ref={fileInputRef}
           type="file"
           accept="image/*"
           onChange={(event) => {
             setSelectedFile(event.target.files[0] || null)
+            event.target.value = ""
           }}
-          className="mt-3 block w-full text-sm text-muted file:mr-4 file:rounded-full file:border file:border-accent-soft file:bg-transparent file:px-4 file:py-2 file:text-sm file:text-accent"
+          className="hidden"
         />
-      </label>
+      </div>
 
-      {selectedFile && <p className="mt-3 text-xs text-muted">Selected file: {selectedFile.name}</p>}
-
-      <button
-        type="button"
-        onClick={handleSubmitImage}
-        disabled={!selectedFile || isSubmitting}
-        className="mt-8 rounded-full border border-accent-soft px-6 py-3 text-sm text-accent transition hover:border-accent hover:bg-accent hover:text-canvas disabled:cursor-not-allowed disabled:opacity-40"
-      >
-        {isSubmitting ? "Submitting..." : "Submit image"}
-      </button>
+      {uploadGame.validationHint && !selectedFile && <p className="quiz-fortune__result">{uploadGame.validationHint}</p>}
     </section>
   )
 }
