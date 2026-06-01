@@ -288,6 +288,49 @@
   color: var(--paper);
 }
 
+/* Link per shops */
+
+.access-ticket__place--link {
+  display: inline-block;
+  text-decoration: underline;
+  text-decoration-color: rgba(111, 47, 50, 0.55);
+  text-underline-offset: 0.18em;
+  transition:
+    color 160ms ease,
+    text-decoration-color 160ms ease;
+}
+
+.access-ticket__place--link:hover {
+  color: #6f2f32;
+  text-decoration-color: #6f2f32;
+}
+
+.findings-page__controls {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.findings-page__shops-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.45rem;
+  margin-left: auto;
+  border-bottom: 1px solid rgba(185, 133, 69, 0.55);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.findings-page__shops-link:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
 .access-ticket__footer-action {
   margin-left: auto;
   display: flex;

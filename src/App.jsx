@@ -19,6 +19,7 @@ import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
 import BackofficeRoutes from "./routes/BackofficeRoutes"
 import CityDetailPage from "./pages/CityDetailPage"
+import LocalShopsPage from "./pages/LocalShopsPage"
 import ExperienceDetailPage from "./pages/ExperienceDetailsPage"
 import FindingsPage from "./pages/FindingsPage"
 import ProtectedRoute from "./routes/ProtectedRoute"
@@ -33,8 +34,10 @@ function AppShell() {
     location.pathname === "/login" ||
     location.pathname === "/register" ||
     location.pathname === "/profile" ||
+    location.pathname === "/local-shops" ||
     location.pathname.startsWith("/cities/") ||
     location.pathname.startsWith("/experiences/")
+
   return (
     <div className={isLanding ? "flex h-dvh flex-col overflow-hidden bg-canvas text-ink" : "flex min-h-screen flex-col bg-canvas text-ink"}>
       <Navbar />
@@ -78,6 +81,15 @@ function AppShell() {
             element={
               <ProtectedRoute>
                 <FindingsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/local-shops"
+            element={
+              <ProtectedRoute>
+                <LocalShopsPage />
               </ProtectedRoute>
             }
           />

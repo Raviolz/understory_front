@@ -1,5 +1,6 @@
 import { useState } from "react"
 import BookingRequestForm from "./BookingRequestForm"
+import { Link } from "react-router-dom"
 
 function FindingPass({ reward, onBookingCreated }) {
   const [isRequestOpen, setIsRequestOpen] = useState(false)
@@ -57,7 +58,9 @@ function FindingPass({ reward, onBookingCreated }) {
         <div className="access-ticket__main">
           <div>
             <p className="access-ticket__label">Destinazione</p>
-            <p className="access-ticket__place">{reward.businessName}</p>
+            <Link to={`/local-shops?shop=${reward.businessId}`} className="access-ticket__place access-ticket__place--link">
+              {reward.businessName}
+            </Link>
 
             <p className="access-ticket__desc">{reward.rewardDescription}</p>
           </div>

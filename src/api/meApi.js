@@ -31,3 +31,7 @@ export function cancelMyBooking(bookingId) {
     method: "PATCH",
   })
 }
+
+export function getMyLocalShops() {
+  return authenticatedRequest("/me/local-shops")
+}

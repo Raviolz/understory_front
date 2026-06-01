@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
+import { Link } from "react-router-dom"
 import { getMyBookings, getMyRewards } from "../api/meApi"
 import FindingPass from "../components/findings/FindingPass"
 import MyBookingsList from "../components/findings/MyBookingsList"
@@ -77,31 +78,38 @@ function FindingsPage() {
 
           <p className="mt-4 max-w-2xl text-sm leading-7 text-muted md:text-base">Pass, inviti e opportunità sbloccati durante l'esplorazione.</p>
 
-          <div className="mt-8 inline-flex rounded-full border border-border-soft bg-surface p-1">
-            <button
-              type="button"
-              onClick={() => setActiveView("recovered")}
-              className={
-                activeView === "recovered"
-                  ? "rounded-full bg-accent px-5 py-2 text-sm text-canvas"
-                  : "rounded-full px-5 py-2 text-sm text-muted transition hover:text-ink"
-              }
-            >
-              Recuperati {sortedRewards.length}
-            </button>
+          <div className="findings-page__controls">
+            <div className="inline-flex rounded-full border border-border-soft bg-surface p-1">
+              <button
+                type="button"
+                onClick={() => setActiveView("recovered")}
+                className={
+                  activeView === "recovered"
+                    ? "rounded-full bg-accent px-5 py-2 text-sm text-canvas"
+                    : "rounded-full px-5 py-2 text-sm text-muted transition hover:text-ink"
+                }
+              >
+                Recuperati {sortedRewards.length}
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setActiveView("scheduled")}
-              className={
-                activeView === "scheduled"
-                  ? "rounded-full bg-accent px-5 py-2 text-sm text-canvas"
-                  : "rounded-full px-5 py-2 text-sm text-muted transition hover:text-ink"
-              }
-            >
-              Archiviati {sortedBookings.length}
-            </button>
+              <button
+                type="button"
+                onClick={() => setActiveView("scheduled")}
+                className={
+                  activeView === "scheduled"
+                    ? "rounded-full bg-accent px-5 py-2 text-sm text-canvas"
+                    : "rounded-full px-5 py-2 text-sm text-muted transition hover:text-ink"
+                }
+              >
+                Archiviati {sortedBookings.length}
+              </button>
+            </div>
+
+            <Link to="/local-shops" className="findings-page__shops-link">
+              Botteghe scoperte
+            </Link>
           </div>
+
           {activeView === "recovered" && (
             <>
               {sortedRewards.length === 0 ? (
