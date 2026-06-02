@@ -11,6 +11,10 @@ export function updateMyProgressNote(progressId, userNote) {
   })
 }
 
+export function getExperienceCompletion(experienceId) {
+  return authenticatedRequest(`/me/experiences/${experienceId}/completion`)
+}
+
 export function getMyRewards({ page = 0, size = 50, sortBy = "unlockedAt" } = {}) {
   return authenticatedRequest(`/me/rewards?page=${page}&size=${size}&sortBy=${sortBy}`)
 }

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { Link } from "react-router-dom"
 
 function JournalEntryCard({ entry, noteValue, isSaving, onNoteChange, onSaveNote }) {
   const [isEditingNote, setIsEditingNote] = useState(false)
@@ -54,11 +55,19 @@ function JournalEntryCard({ entry, noteValue, isSaving, onNoteChange, onSaveNote
       </header>
 
       <div className="journal-card__content mt-4 grid grid-cols-[120px_1fr] items-start gap-4 min-[430px]:grid-cols-[150px_1fr]">
-        <div className="journal-card__media overflow-hidden rounded-2xl border bg-canvas">
-          {entry.revealImageUrl ? (
-            <img src={entry.revealImageUrl} alt={entry.revealTitle} className="h-28 w-full object-cover" />
-          ) : (
-            <div className="flex h-28 w-full items-center justify-center px-4 text-center text-[10px] uppercase tracking-[0.2em] text-muted">No image</div>
+        <div className="journal-card__left">
+          <div className="journal-card__media overflow-hidden rounded-2xl border bg-canvas">
+            {entry.revealImageUrl ? (
+              <img src={entry.revealImageUrl} alt={entry.revealTitle} className="h-28 w-full object-cover" />
+            ) : (
+              <div className="flex h-28 w-full items-center justify-center px-4 text-center text-[10px] uppercase tracking-[0.2em] text-muted">No image</div>
+            )}
+          </div>
+
+          {entry.experienceId && (
+            <Link to={`/experiences/${entry.experienceId}?reveal=true`} className="journal-card__reveal-link">
+              ← Per ricordarti
+            </Link>
           )}
         </div>
 

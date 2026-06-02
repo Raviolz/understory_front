@@ -240,3 +240,30 @@
 .journal-note__textarea--readonly {
   color: color-mix(in srgb, #3a2a15 86%, #6f5527);
 }
+
+.journal-card__left {
+  min-width: 0;
+}
+
+.journal-card__reveal-link {
+  display: inline-flex;
+  margin-top: 1rem;
+  margin-left: 0.5rem;
+  color: #8f3547;
+  font-size: 0.68rem;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-decoration: underline;
+  text-decoration-color: rgba(143, 53, 71, 0.35);
+  text-underline-offset: 0.24em;
+  transition:
+    color 160ms ease,
+    text-decoration-color 160ms ease,
+    transform 160ms ease;
+}
+
+.journal-card__reveal-link:hover {
+  color: #6f2a38;
+  text-decoration-color: rgba(111, 42, 56, 0.85);
+  transform: translateX(2px);
+}

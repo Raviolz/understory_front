@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, useSearchParams } from "react-router-dom"
 import { getPublishedExperienceById } from "../api/publicApi"
+import { getExperienceCompletion } from "../api/meApi"
 import QuizExperienceGame from "../components/experiences/QuizExperienceGame"
 import UploadExperienceGame from "../components/experiences/UploadExperienceGame"
 import revealCircusBg from "../assets/city/backcircus.jpg"
@@ -10,11 +11,15 @@ import "../style/games.css"
 
 function ExperienceDetailsPage() {
   const { experienceId } = useParams()
+  const [searchParams] = useSearchParams()
+  const requestedRevealMode = searchParams.get("reveal") === "true"
 
   const [experience, setExperience] = useState(null)
+  const [completion, setCompletion] = useState(null)
   const [storyStep, setStoryStep] = useState(0)
   const [error, setError] = useState(null)
   const [gameResult, setGameResult] = useState(null)
+  const [isCheckingCompletion, setIsCheckingCompletion] = useState(false)
 
   function getGameLabel(gameType) {
     if (gameType === "QUIZ") return "Enigma"
@@ -29,12 +34,28 @@ function ExperienceDetailsPage() {
     return romanNumbers[difficulty] || difficulty
   }
 
+  function loadCompletion() {
+    if (!experienceId) return Promise.resolve(null)
+
+    return getExperienceCompletion(experienceId)
+      .then((data) => {
+        setCompletion(data)
+        return data
+      })
+      .catch((error) => {
+        console.error(error)
+        setCompletion(null)
+        throw error
+      })
+  }
+
   useEffect(() => {
     if (!experienceId) return
 
     getPublishedExperienceById(experienceId)
       .then((data) => {
         setExperience(data)
+        setCompletion(null)
         setStoryStep(0)
         setGameResult(null)
         setError(null)
@@ -42,9 +63,39 @@ function ExperienceDetailsPage() {
       .catch((error) => {
         console.error(error)
         setExperience(null)
+        setCompletion(null)
         setError("Non riesco a caricare l’esperienza.")
       })
   }, [experienceId])
+
+  useEffect(() => {
+    if (!requestedRevealMode || !experienceId) return
+
+    let ignore = false
+
+    setIsCheckingCompletion(true)
+    setError(null)
+
+    getExperienceCompletion(experienceId)
+      .then((data) => {
+        if (ignore) return
+        setCompletion(data)
+      })
+      .catch((error) => {
+        if (ignore) return
+        console.error(error)
+        setCompletion(null)
+        setError("Non riesco a verificare la rivelazione archiviata.")
+      })
+      .finally(() => {
+        if (ignore) return
+        setIsCheckingCompletion(false)
+      })
+
+    return () => {
+      ignore = true
+    }
+  }, [requestedRevealMode, experienceId])
 
   const storyPages = useMemo(() => {
     if (!experience) return []
@@ -73,8 +124,15 @@ function ExperienceDetailsPage() {
     ].filter((page) => page.text && page.text.trim() !== "")
   }, [experience])
 
-  const isGameStep = storyStep >= storyPages.length
+  const archivedRevealAllowed = requestedRevealMode && completion?.completed === true
+  const isGameStep = archivedRevealAllowed || storyStep >= storyPages.length
+  const isRevealStep = archivedRevealAllowed || Boolean(gameResult)
   const currentStoryPage = storyPages[storyStep]
+
+  const revealTitle = completion?.revealTitle || experience?.revealTitle || "Rivelazione"
+  const explanationText = gameResult?.explanationText || completion?.explanationText || ""
+
+  const revealXpText = gameResult ? `XP ottenuti: ${gameResult.xpAwarded}` : `XP registrati: ${experience?.xpReward ?? 0}`
 
   function goNext() {
     setStoryStep((currentStep) => currentStep + 1)
@@ -87,6 +145,26 @@ function ExperienceDetailsPage() {
     }
 
     setStoryStep((currentStep) => Math.max(currentStep - 1, 0))
+  }
+
+  function handleGameComplete(result) {
+    setGameResult(result)
+
+    loadCompletion().catch(() => {
+      setError("Esperienza completata, ma non riesco a caricare la rivelazione.")
+    })
+  }
+
+  function getRevealMessageLines() {
+    if (!gameResult?.message) {
+      return ["Scoperta archiviata."]
+    }
+
+    return gameResult.message
+      .split(".")
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => `${line}.`)
   }
 
   if (!experience && !error) {
@@ -114,6 +192,16 @@ function ExperienceDetailsPage() {
       <section className="experience-page">
         <div className="experience-panel">
           <p className="experience-message">Esperienza non trovata.</p>
+        </div>
+      </section>
+    )
+  }
+
+  if (requestedRevealMode && isCheckingCompletion) {
+    return (
+      <section className="experience-page">
+        <div className="experience-panel">
+          <p className="experience-message">Verifico la rivelazione archiviata...</p>
         </div>
       </section>
     )
@@ -160,7 +248,7 @@ function ExperienceDetailsPage() {
           ) : (
             <article className="experience-fragment experience-fragment--game">
               <div className="experience-game-stage">
-                {gameResult ? (
+                {isRevealStep ? (
                   <section className="experience-reveal">
                     <div
                       className="experience-reveal__poster"
@@ -174,11 +262,13 @@ function ExperienceDetailsPage() {
                         <div className="experience-reveal__main-cartouche-content">
                           <p className="experience-reveal__kicker">Rivelazione</p>
 
-                          <h2 className="experience-reveal__title">{experience.revealTitle}</h2>
+                          <h2 className="experience-reveal__title">{revealTitle}</h2>
 
-                          {gameResult.explanationText && <p className="experience-reveal__text">{gameResult.explanationText}</p>}
-
-                          {experience.revealText && <p className="experience-reveal__text experience-reveal__text--secondary">{experience.revealText}</p>}
+                          {explanationText ? (
+                            <p className="experience-reveal__text">{explanationText}</p>
+                          ) : (
+                            <p className="experience-reveal__text">Rivelazione archiviata nell’Archivio personale.</p>
+                          )}
                         </div>
                       </div>
 
@@ -186,23 +276,20 @@ function ExperienceDetailsPage() {
                         <img src={revealBottom} alt="" className="experience-reveal__ribbon-image" />
 
                         <div className="experience-reveal__ribbon-content">
-                          {gameResult.message && (
-                            <>
-                              <p className="experience-reveal__result-line">Correct answer.</p>
-                              <p className="experience-reveal__result-line">{gameResult.message.replace("Correct answer.", "").trim()}</p>
-                            </>
-                          )}
+                          {getRevealMessageLines().map((line) => (
+                            <p key={line}>{line}</p>
+                          ))}
 
-                          <p className="experience-reveal__result-line">XP ottenuti: {gameResult.xpAwarded}</p>
+                          <p>{revealXpText}</p>
 
-                          {gameResult.rewardUnlocked && <p className="experience-reveal__reward">Accesso sbloccato: {gameResult.rewardTitle}</p>}
+                          {gameResult?.rewardUnlocked && <p className="experience-reveal__reward">Accesso sbloccato: {gameResult.rewardTitle}</p>}
                         </div>
                       </div>
                     </div>
                   </section>
                 ) : (
                   <>
-                    {experience.gameType === "QUIZ" && <QuizExperienceGame experience={experience} onComplete={setGameResult} />}
+                    {experience.gameType === "QUIZ" && <QuizExperienceGame experience={experience} onComplete={handleGameComplete} />}
 
                     {experience.gameType === "IMAGE_UPLOAD" && <UploadExperienceGame experience={experience} />}
 
