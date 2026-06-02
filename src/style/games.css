@@ -498,6 +498,135 @@
   text-align: center;
 }
 
+.experience-reveal {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.experience-reveal__poster {
+  position: relative;
+  width: min(100%, 620px);
+  aspect-ratio: 7 / 10;
+  min-height: auto;
+  padding: clamp(0.75rem, 2vw, 1.15rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  border: 1px solid rgba(176, 138, 90, 0.36);
+  outline: none;
+  border-radius: 0.45rem;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.experience-reveal__poster::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, transparent 0 36%, rgba(18, 8, 12, 0.06) 58%, rgba(10, 5, 8, 0.24) 100%),
+    linear-gradient(180deg, rgba(255, 238, 184, 0.04), rgba(59, 16, 24, 0.1));
+  pointer-events: none;
+}
+
+.experience-reveal__main-cartouche {
+  position: relative;
+  z-index: 1;
+  width: min(78%, 440px);
+  margin: -4rem auto 0;
+  transform: none;
+}
+
+.experience-reveal__main-cartouche-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 14px 20px rgba(36, 9, 13, 0.3)) sepia(0.08) saturate(0.92);
+}
+
+.experience-reveal__main-cartouche-content {
+  position: absolute;
+  inset: 31% 15% 24%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  color: #3d2119;
+}
+
+.experience-reveal__kicker {
+  margin: 0;
+  font-size: clamp(0.48rem, 0.9vw, 0.62rem);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #8a2d28;
+}
+
+.experience-reveal__title {
+  margin: 0.35rem 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.15rem, 2.6vw, 1.8rem);
+  line-height: 0.98;
+  color: #3b1b17;
+}
+
+.experience-reveal__text {
+  max-width: 31rem;
+  margin: 0.75rem auto 0;
+  font-size: clamp(0.72rem, 1.25vw, 0.88rem);
+  line-height: 1.5;
+  color: rgba(63, 43, 32, 0.92);
+}
+
+.experience-reveal__text--secondary {
+  margin-top: 0.55rem;
+  color: rgba(63, 43, 32, 0.74);
+}
+
+.experience-reveal__ribbon {
+  position: relative;
+  z-index: 1;
+  width: min(72%, 390px);
+  margin: 0 auto -0.15rem;
+  transform: none;
+  transform: translateY(6rem);
+}
+
+.experience-reveal__ribbon-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 12px 16px rgba(36, 9, 13, 0.26)) sepia(0.08) saturate(0.88);
+}
+
+.experience-reveal__ribbon-content {
+  position: absolute;
+  inset: 45% 22% 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.08rem;
+  text-align: center;
+  font-size: clamp(0.44rem, 0.8vw, 0.6rem);
+  line-height: 1.2;
+  color: #723230;
+}
+
+.experience-reveal__ribbon-content p {
+  margin: 0;
+}
+
+.experience-reveal__reward {
+  color: #5f2b31;
+  font-weight: 600;
+}
+
 /* LARGE SCREENS */
 
 @media (min-width: 1400px) {
@@ -531,6 +660,105 @@
   .quiz-fortune-card--d {
     right: 29%;
     bottom: -12%;
+  }
+}
+
+/* TABLET REVEAL */
+
+@media (max-width: 720px) {
+  .experience-reveal__poster {
+    width: min(100%, 520px);
+    aspect-ratio: 7 / 10;
+    padding: 0.55rem;
+  }
+
+  .experience-reveal__main-cartouche {
+    width: min(82%, 420px);
+    margin: -2.35rem auto 0;
+  }
+
+  .experience-reveal__main-cartouche-content {
+    inset: 31% 16% 24%;
+  }
+
+  .experience-reveal__kicker {
+    font-size: 0.5rem;
+    letter-spacing: 0.24em;
+  }
+
+  .experience-reveal__title {
+    font-size: clamp(0.95rem, 4.2vw, 1.35rem);
+  }
+
+  .experience-reveal__text {
+    margin-top: 0.55rem;
+    font-size: clamp(0.58rem, 2.4vw, 0.72rem);
+    line-height: 1.35;
+  }
+
+  .experience-reveal__ribbon {
+    width: min(72%, 350px);
+    margin: 0 auto -0.15rem;
+    transform: translateY(4.9rem);
+  }
+
+  .experience-reveal__ribbon-content {
+    inset: 47% 22% 9%;
+    gap: 0.04rem;
+    font-size: clamp(0.38rem, 1.55vw, 0.5rem);
+    line-height: 1.12;
+  }
+}
+
+/* SMALL MOBILE REVEAL */
+
+@media (max-width: 430px) {
+  .experience-reveal__poster {
+    width: 100%;
+    aspect-ratio: 7 / 10;
+    padding: 0.4rem;
+  }
+
+  .experience-reveal__main-cartouche {
+    width: 82%;
+    margin: -1.75rem auto 0;
+  }
+
+  .experience-reveal__main-cartouche-content {
+    inset: 32% 16% 24%;
+  }
+
+  .experience-reveal__kicker {
+    font-size: 0.42rem;
+    letter-spacing: 0.22em;
+  }
+
+  .experience-reveal__title {
+    font-size: clamp(0.82rem, 5vw, 1.05rem);
+  }
+
+  .experience-reveal__text {
+    margin-top: 0.45rem;
+    font-size: 0.54rem;
+    line-height: 1.28;
+
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+  }
+
+  .experience-reveal__ribbon {
+    width: 74%;
+    margin: 0 auto -0.15rem;
+    transform: translateY(3.9rem);
+  }
+
+  .experience-reveal__ribbon-content {
+    inset: 46% 21% 8%;
+    gap: 0.03rem;
+    font-size: 0.38rem;
+    line-height: 1.08;
   }
 }
 

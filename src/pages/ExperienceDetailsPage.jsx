@@ -3,6 +3,9 @@ import { Link, useParams } from "react-router-dom"
 import { getPublishedExperienceById } from "../api/publicApi"
 import QuizExperienceGame from "../components/experiences/QuizExperienceGame"
 import UploadExperienceGame from "../components/experiences/UploadExperienceGame"
+import revealCircusBg from "../assets/city/backcircus.jpg"
+import revealMain from "../assets/city/reveal.png"
+import revealBottom from "../assets/city/cartiglionosfondo.png"
 import "../style/games.css"
 
 function ExperienceDetailsPage() {
@@ -158,20 +161,43 @@ function ExperienceDetailsPage() {
             <article className="experience-fragment experience-fragment--game">
               <div className="experience-game-stage">
                 {gameResult ? (
-                  <section>
-                    <p className="experience-kicker">Rivelazione</p>
+                  <section className="experience-reveal">
+                    <div
+                      className="experience-reveal__poster"
+                      style={{
+                        backgroundImage: `linear-gradient(rgba(37, 13, 20, 0.12), rgba(17, 10, 14, 0.2)), url(${revealCircusBg})`,
+                      }}
+                    >
+                      <div className="experience-reveal__main-cartouche">
+                        <img src={revealMain} alt="" className="experience-reveal__main-cartouche-image" />
 
-                    <h2 className="experience-title experience-title--small">{experience.revealTitle}</h2>
+                        <div className="experience-reveal__main-cartouche-content">
+                          <p className="experience-reveal__kicker">Rivelazione</p>
 
-                    {gameResult.explanationText && <p className="experience-text">{gameResult.explanationText}</p>}
+                          <h2 className="experience-reveal__title">{experience.revealTitle}</h2>
 
-                    {experience.revealText && <p className="experience-text experience-text--secondary">{experience.revealText}</p>}
+                          {gameResult.explanationText && <p className="experience-reveal__text">{gameResult.explanationText}</p>}
 
-                    <div className="experience-result">
-                      <p>{gameResult.message}</p>
-                      <p>XP ottenuti: {gameResult.xpAwarded}</p>
+                          {experience.revealText && <p className="experience-reveal__text experience-reveal__text--secondary">{experience.revealText}</p>}
+                        </div>
+                      </div>
 
-                      {gameResult.rewardUnlocked && <p className="experience-result__reward">Accesso sbloccato: {gameResult.rewardTitle}</p>}
+                      <div className="experience-reveal__ribbon">
+                        <img src={revealBottom} alt="" className="experience-reveal__ribbon-image" />
+
+                        <div className="experience-reveal__ribbon-content">
+                          {gameResult.message && (
+                            <>
+                              <p className="experience-reveal__result-line">Correct answer.</p>
+                              <p className="experience-reveal__result-line">{gameResult.message.replace("Correct answer.", "").trim()}</p>
+                            </>
+                          )}
+
+                          <p className="experience-reveal__result-line">XP ottenuti: {gameResult.xpAwarded}</p>
+
+                          {gameResult.rewardUnlocked && <p className="experience-reveal__reward">Accesso sbloccato: {gameResult.rewardTitle}</p>}
+                        </div>
+                      </div>
                     </div>
                   </section>
                 ) : (
