@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import { getPublishedCityById, getPublishedPointsByCity } from "../api/publicApi"
 import PointPreviewCard from "../components/citites/PointPreviewCard"
 import CityMap from "../components/citites/CityMap"
+import Loader from "../components/ui/Loader"
 
 function CityDetailPage() {
   const { cityId } = useParams()
@@ -49,7 +50,7 @@ function CityDetailPage() {
   if (!city && !error) {
     return (
       <section className="city-detail-page">
-        <p className="city-detail-message">Caricamento città...</p>
+        <Loader label="Caricamento città…" />
       </section>
     )
   }

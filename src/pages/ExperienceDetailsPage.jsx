@@ -4,6 +4,7 @@ import { getPublishedExperienceById } from "../api/publicApi"
 import { getExperienceCompletion } from "../api/meApi"
 import QuizExperienceGame from "../components/experiences/QuizExperienceGame"
 import UploadExperienceGame from "../components/experiences/UploadExperienceGame"
+import Loader from "../components/ui/Loader"
 import revealCircusBg from "../assets/city/backcircus.jpg"
 import revealMain from "../assets/city/reveal.png"
 import revealBottom from "../assets/city/cartiglionosfondo.png"
@@ -19,7 +20,7 @@ function ExperienceDetailsPage() {
   const [storyStep, setStoryStep] = useState(0)
   const [error, setError] = useState(null)
   const [gameResult, setGameResult] = useState(null)
-  const [isCheckingCompletion, setIsCheckingCompletion] = useState(false)
+  const [isCheckingCompletion, setIsCheckingCompletion] = useState(requestedRevealMode)
 
   function getGameLabel(gameType) {
     if (gameType === "QUIZ") return "Enigma"
@@ -72,9 +73,6 @@ function ExperienceDetailsPage() {
     if (!requestedRevealMode || !experienceId) return
 
     let ignore = false
-
-    setIsCheckingCompletion(true)
-    setError(null)
 
     getExperienceCompletion(experienceId)
       .then((data) => {
@@ -171,7 +169,7 @@ function ExperienceDetailsPage() {
     return (
       <section className="experience-page">
         <div className="experience-panel">
-          <p className="experience-message">Caricamento esperienza...</p>
+          <Loader label="Caricamento esperienza…" />
         </div>
       </section>
     )
@@ -201,7 +199,7 @@ function ExperienceDetailsPage() {
     return (
       <section className="experience-page">
         <div className="experience-panel">
-          <p className="experience-message">Verifico la rivelazione archiviata...</p>
+          <Loader label="Verifico la rivelazione archiviata…" />
         </div>
       </section>
     )

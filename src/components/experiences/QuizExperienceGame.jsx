@@ -5,6 +5,7 @@ import { submitQuizAnswer } from "../../api/gameplayApi"
 import { getPublishedQuizGameByExperience } from "../../api/publicApi"
 import { setCurrentUser } from "../../redux/authSlice"
 import fortuneBoothImage from "../../assets/city/FortuneTeller.png"
+import Loader from "../ui/Loader"
 
 function QuizExperienceGame({ experience, onComplete }) {
   const dispatch = useDispatch()
@@ -90,7 +91,7 @@ function QuizExperienceGame({ experience, onComplete }) {
   }
 
   if (!quizGame) {
-    return <p className="experience-message">Caricamento enigma...</p>
+    return <Loader label="Caricamento enigma…" />
   }
 
   const answers = [

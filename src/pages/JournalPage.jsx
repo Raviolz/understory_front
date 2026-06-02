@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { getMyJournal, updateMyProgressNote } from "../api/meApi"
 import JournalEntryCard from "../components/journal/JournalEntryCard"
+import Loader from "../components/ui/Loader"
 
 function JournalPage() {
   const [entries, setEntries] = useState([])
@@ -10,11 +11,14 @@ function JournalPage() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    setIsLoading(true)
-    setError(null)
+    let ignore = false
 
     getMyJournal({ size: 50 })
       .then((data) => {
+        if (ignore) {
+          return
+        }
+
         const journalEntries = data.content ?? []
 
         setEntries(journalEntries)
@@ -27,12 +31,24 @@ function JournalPage() {
         setNoteDrafts(initialDrafts)
       })
       .catch((error) => {
+        if (ignore) {
+          return
+        }
+
         console.error(error)
         setError("Non riesco a caricare il journal.")
       })
       .finally(() => {
+        if (ignore) {
+          return
+        }
+
         setIsLoading(false)
       })
+
+    return () => {
+      ignore = true
+    }
   }, [])
 
   const sortedEntries = useMemo(() => {
@@ -76,7 +92,13 @@ function JournalPage() {
   }
 
   if (isLoading) {
-    return <p className="text-muted">Caricamento journal...</p>
+    return (
+      <section className="journal-page">
+        <div className="journal-page__panel">
+          <Loader label="Caricamento journal…" />
+        </div>
+      </section>
+    )
   }
 
   if (error) {

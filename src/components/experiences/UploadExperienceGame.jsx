@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { submitUploadSubmission } from "../../api/gameplayApi"
 import { getPublishedUploadGameByExperience } from "../../api/publicApi"
 import fortuneBoothImage from "../../assets/city/FortuneTeller.png"
+import Loader from "../ui/Loader"
 
 function UploadExperienceGame({ experience }) {
   const fileInputRef = useRef(null)
@@ -70,7 +71,7 @@ function UploadExperienceGame({ experience }) {
   }
 
   if (!uploadGame) {
-    return <p className="experience-message">Caricamento upload game...</p>
+    return <Loader label="Preparazione rilevamento…" />
   }
 
   if (submission) {

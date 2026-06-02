@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { getMyBookings, getMyRewards } from "../api/meApi"
 import FindingPass from "../components/findings/FindingPass"
 import MyBookingsList from "../components/findings/MyBookingsList"
+import Loader from "../components/ui/Loader"
 
 function FindingsPage() {
   const [rewards, setRewards] = useState([])
@@ -12,18 +13,36 @@ function FindingsPage() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
+    let ignore = false
+
     Promise.all([getMyRewards({ size: 50 }), getMyBookings({ size: 50 })])
       .then(([rewardsData, bookingsData]) => {
+        if (ignore) {
+          return
+        }
+
         setRewards(rewardsData.content ?? [])
         setBookings(bookingsData.content ?? [])
       })
       .catch((error) => {
+        if (ignore) {
+          return
+        }
+
         console.error(error)
         setError("Non riesco a caricare i tuoi findings.")
       })
       .finally(() => {
+        if (ignore) {
+          return
+        }
+
         setIsLoading(false)
       })
+
+    return () => {
+      ignore = true
+    }
   }, [])
 
   const sortedRewards = useMemo(() => {
@@ -50,7 +69,7 @@ function FindingsPage() {
         <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Access Archive</h1>
 
         <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
-          <p className="text-muted">Caricamento findings...</p>
+          <Loader label="Caricamento findings…" />
         </div>
       </section>
     )

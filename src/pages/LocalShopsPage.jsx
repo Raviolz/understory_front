@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { getMyLocalShops } from "../api/meApi"
 import LocalShopCard from "../components/localShops/LocalShopCard"
-import "../style/shops.css"
+import Loader from "../components/ui/Loader"
 
 const CABINET_SLOT_UNIT = 6
 const MINIMUM_SLOT_COUNT = 6
@@ -13,24 +13,47 @@ function LocalShopsPage() {
 
   const [shops, setShops] = useState([])
   const [selectedSlotIndex, setSelectedSlotIndex] = useState(null)
+  const [hasManualSelection, setHasManualSelection] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    setIsLoading(true)
-    setError(null)
+    let ignore = false
 
     getMyLocalShops()
       .then((data) => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(data)
+          }, 3000)
+        })
+      })
+      .then((data) => {
+        if (ignore) {
+          return
+        }
+
         setShops(data ?? [])
       })
       .catch((error) => {
+        if (ignore) {
+          return
+        }
+
         console.error(error)
         setError("Non riesco a caricare le botteghe scoperte.")
       })
       .finally(() => {
+        if (ignore) {
+          return
+        }
+
         setIsLoading(false)
       })
+
+    return () => {
+      ignore = true
+    }
   }, [])
 
   const uniqueShops = useMemo(() => {
@@ -61,17 +84,20 @@ function LocalShopsPage() {
     return Array.from({ length: slotCount }, (_, index) => sortedShops[index] ?? null)
   }, [sortedShops, slotCount])
 
-  useEffect(() => {
-    if (!highlightedShopId) return
+  const highlightedSlotIndex = useMemo(() => {
+    if (!highlightedShopId) {
+      return null
+    }
 
     const highlightedIndex = cabinetSlots.findIndex((shop) => shop?.businessId === highlightedShopId)
 
-    if (highlightedIndex !== -1) {
-      setSelectedSlotIndex(highlightedIndex)
-    }
+    return highlightedIndex === -1 ? null : highlightedIndex
   }, [highlightedShopId, cabinetSlots])
 
+  const activeSlotIndex = hasManualSelection ? selectedSlotIndex : highlightedSlotIndex
+
   function handleSelectSlot(slotIndex) {
+    setHasManualSelection(true)
     setSelectedSlotIndex((currentSlotIndex) => (currentSlotIndex === slotIndex ? null : slotIndex))
   }
 
@@ -79,7 +105,7 @@ function LocalShopsPage() {
     return (
       <section className="local-shops-page">
         <div className="local-shops-page__panel">
-          <p className="local-shops-page__message">Catalogazione botteghe…</p>
+          <Loader label="Catalogazione botteghe…" />
         </div>
       </section>
     )
@@ -110,7 +136,7 @@ function LocalShopsPage() {
               key={shop ? `${shop.businessId}-${shop.rewardId}` : `empty-${index}`}
               shop={shop}
               slotNumber={index + 1}
-              isSelected={selectedSlotIndex === index}
+              isSelected={activeSlotIndex === index}
               isHighlighted={shop?.businessId === highlightedShopId}
               onSelect={() => handleSelectSlot(index)}
             />

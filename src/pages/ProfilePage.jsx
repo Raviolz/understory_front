@@ -4,10 +4,16 @@ import { getMyCityKnowledge, uploadMyAvatar, updateMyProfile } from "../api/auth
 import { setCurrentUser } from "../redux/authSlice"
 import { useEffect, useRef, useState } from "react"
 import EditProfileForm from "../components/profile/EditProfileForm"
+import Loader from "../components/ui/Loader"
 
 function clampFillPercent(percentage) {
   const value = Number(percentage) || 0
   return Math.min(100, Math.max(0, Math.round(value)))
+}
+
+function vialPaletteFromIndex(index) {
+  const palettes = ["amber", "violet", "emerald", "rose", "azure", "gold"]
+  return palettes[index % palettes.length]
 }
 
 function vialToneFromCompletion(percentage) {
@@ -99,7 +105,7 @@ function ProfilePage() {
   }
 
   if (accessToken && !currentUser) {
-    return <p className="profile-dossier__loading text-muted">Caricamento fascicolo…</p>
+    return <Loader label="Caricamento fascicolo…" />
   }
 
   if (!currentUser) {
@@ -236,7 +242,7 @@ function ProfileCityKnowledge({ cities, isLoading }) {
   }
 
   if (isLoading) {
-    return <p className="profile-city-knowledge__loading">Distillazione sapere…</p>
+    return <Loader label="Distillazione sapere…" />
   }
 
   if (cities.length === 0) {
@@ -257,14 +263,15 @@ function ProfileCityKnowledge({ cities, isLoading }) {
         </button>
 
         <ul ref={vialsRef} className="profile-city-knowledge__grid">
-          {cities.map((city) => {
+          {cities.map((city, index) => {
             const fill = clampFillPercent(city.percentage)
             const tone = vialToneFromCompletion(fill)
+            const palette = vialPaletteFromIndex(index)
 
             return (
               <li key={city.cityId} className="profile-city-knowledge__item">
                 <article
-                  className={`profile-ampoule profile-ampoule--city profile-ampoule--${tone}`}
+                  className={`profile-ampoule profile-ampoule--city profile-ampoule--${tone} profile-ampoule--${palette}`}
                   aria-label={`${city.cityName}: ${fill}%, ${city.completedExperiences}/${city.totalExperiences}`}
                 >
                   <p className="profile-ampoule__label">{city.cityName}</p>
