@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import BackofficePagination from "../BackofficePagination"
 import { getBackofficeUsers, promoteBackofficeUser, downgradeBackofficeUser } from "../../../api/backofficeApi"
+
+const PAGE_SIZE = 15
 
 function UserList() {
   const [users, setUsers] = useState([])
+  const [pageData, setPageData] = useState(null)
+  const [page, setPage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  function handlePageChange(nextPage) {
+    setIsLoading(true)
+    setError(null)
+    setPage(nextPage)
+  }
 
   function handlePromote(userId) {
     promoteBackofficeUser(userId)
@@ -30,18 +41,37 @@ function UserList() {
   }
 
   useEffect(() => {
-    getBackofficeUsers()
+    let ignore = false
+
+    getBackofficeUsers({ page, size: PAGE_SIZE })
       .then((data) => {
+        if (ignore) {
+          return
+        }
+
+        setPageData(data)
         setUsers(data.content || [])
       })
       .catch((error) => {
+        if (ignore) {
+          return
+        }
+
         console.error(error)
         setError("Non riesco a caricare gli utenti.")
       })
       .finally(() => {
+        if (ignore) {
+          return
+        }
+
         setIsLoading(false)
       })
-  }, [])
+
+    return () => {
+      ignore = true
+    }
+  }, [page])
 
   if (isLoading) {
     return <p className="text-muted">Caricamento utenti...</p>
@@ -128,6 +158,8 @@ function UserList() {
           </tbody>
         </table>
       </div>
+
+      <BackofficePagination pageData={pageData} onPageChange={handlePageChange} />
     </section>
   )
 }

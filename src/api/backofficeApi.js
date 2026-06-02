@@ -1,9 +1,22 @@
 import { authenticatedRequest } from "./apiClient"
 
+function buildPageQuery({ page = 0, size = 100, sortBy } = {}) {
+  const params = new URLSearchParams()
+
+  params.set("page", page)
+  params.set("size", size)
+
+  if (sortBy) {
+    params.set("sortBy", sortBy)
+  }
+
+  return params.toString()
+}
+
 // CITIES
 
 export function getBackofficeCities({ page = 0, size = 100, sortBy = "name" } = {}) {
-  return authenticatedRequest(`/backoffice/cities?page=${page}&size=${size}&sortBy=${sortBy}`)
+  return authenticatedRequest(`/backoffice/cities?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function getBackofficeCityById(cityId) {
@@ -36,6 +49,12 @@ export function unpublishBackofficeCity(cityId) {
   })
 }
 
+export function deleteBackofficeCity(cityId) {
+  return authenticatedRequest(`/backoffice/cities/${cityId}`, {
+    method: "DELETE",
+  })
+}
+
 export function uploadBackofficeCityCoverImage(cityId, file) {
   const formData = new FormData()
   formData.append("file", file)
@@ -49,7 +68,7 @@ export function uploadBackofficeCityCoverImage(cityId, file) {
 // POINTS
 
 export function getBackofficePoints({ page = 0, size = 100, sortBy = "name" } = {}) {
-  return authenticatedRequest(`/backoffice/points?page=${page}&size=${size}&sortBy=${sortBy}`)
+  return authenticatedRequest(`/backoffice/points?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function createBackofficePoint(pointData) {
@@ -82,6 +101,12 @@ export function unpublishBackofficePoint(pointId) {
   })
 }
 
+export function deleteBackofficePoint(pointId) {
+  return authenticatedRequest(`/backoffice/points/${pointId}`, {
+    method: "DELETE",
+  })
+}
+
 export function uploadBackofficePointImage(pointId, file) {
   const formData = new FormData()
   formData.append("file", file)
@@ -91,10 +116,11 @@ export function uploadBackofficePointImage(pointId, file) {
     body: formData,
   })
 }
+
 // EXPERIENCES
 
 export function getBackofficeExperiences({ page = 0, size = 100, sortBy = "title" } = {}) {
-  return authenticatedRequest(`/backoffice/experiences?page=${page}&size=${size}&sortBy=${sortBy}`)
+  return authenticatedRequest(`/backoffice/experiences?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function createBackofficeExperience(experienceData) {
@@ -113,6 +139,12 @@ export function publishBackofficeExperience(experienceId) {
 export function unpublishBackofficeExperience(experienceId) {
   return authenticatedRequest(`/backoffice/experiences/${experienceId}/unpublish`, {
     method: "PATCH",
+  })
+}
+
+export function deleteBackofficeExperience(experienceId) {
+  return authenticatedRequest(`/backoffice/experiences/${experienceId}`, {
+    method: "DELETE",
   })
 }
 
@@ -139,8 +171,8 @@ export function uploadBackofficeExperienceRevealImage(experienceId, file) {
 
 // EXPERIENCE CATEGORIES
 
-export function getBackofficeExperienceCategories() {
-  return authenticatedRequest("/backoffice/experience-categories")
+export function getBackofficeExperienceCategories({ page = 0, size = 100, sortBy = "label" } = {}) {
+  return authenticatedRequest(`/backoffice/experience-categories?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function createBackofficeExperienceCategory(categoryData) {
@@ -161,10 +193,16 @@ export function updateBackofficeExperienceCategory(categoryId, categoryData) {
   })
 }
 
+export function deleteBackofficeExperienceCategory(categoryId) {
+  return authenticatedRequest(`/backoffice/experience-categories/${categoryId}`, {
+    method: "DELETE",
+  })
+}
+
 // QUIZ GAMES
 
-export function getBackofficeQuizGames() {
-  return authenticatedRequest("/backoffice/quiz-games")
+export function getBackofficeQuizGames({ page = 0, size = 100, sortBy = "experienceTitle" } = {}) {
+  return authenticatedRequest(`/backoffice/quiz-games?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function createBackofficeQuizGame(quizData) {
@@ -185,10 +223,16 @@ export function updateBackofficeQuizGame(quizGameId, quizData) {
   })
 }
 
+export function deleteBackofficeQuizGame(quizGameId) {
+  return authenticatedRequest(`/backoffice/quiz-games/${quizGameId}`, {
+    method: "DELETE",
+  })
+}
+
 // UPLOAD GAMES
 
-export function getBackofficeUploadGames() {
-  return authenticatedRequest("/backoffice/upload-games")
+export function getBackofficeUploadGames({ page = 0, size = 100, sortBy = "experienceTitle" } = {}) {
+  return authenticatedRequest(`/backoffice/upload-games?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function createBackofficeUploadGame(uploadData) {
@@ -209,6 +253,12 @@ export function updateBackofficeUploadGame(uploadGameId, uploadData) {
   })
 }
 
+export function deleteBackofficeUploadGame(uploadGameId) {
+  return authenticatedRequest(`/backoffice/upload-games/${uploadGameId}`, {
+    method: "DELETE",
+  })
+}
+
 export function uploadBackofficeUploadGameReferenceImage(uploadGameId, file) {
   const formData = new FormData()
   formData.append("file", file)
@@ -221,8 +271,8 @@ export function uploadBackofficeUploadGameReferenceImage(uploadGameId, file) {
 
 // BUSINESS CATEGORIES
 
-export function getBackofficeBusinessCategories() {
-  return authenticatedRequest("/backoffice/business-categories")
+export function getBackofficeBusinessCategories({ page = 0, size = 100, sortBy = "label" } = {}) {
+  return authenticatedRequest(`/backoffice/business-categories?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function createBackofficeBusinessCategory(categoryData) {
@@ -243,10 +293,16 @@ export function updateBackofficeBusinessCategory(categoryId, categoryData) {
   })
 }
 
+export function deleteBackofficeBusinessCategory(categoryId) {
+  return authenticatedRequest(`/backoffice/business-categories/${categoryId}`, {
+    method: "DELETE",
+  })
+}
+
 // LOCAL BUSINESSES
 
-export function getBackofficeLocalBusinesses() {
-  return authenticatedRequest("/backoffice/local-businesses")
+export function getBackofficeLocalBusinesses({ page = 0, size = 100, sortBy = "name" } = {}) {
+  return authenticatedRequest(`/backoffice/local-businesses?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function createBackofficeLocalBusiness(businessData) {
@@ -279,6 +335,12 @@ export function unpublishBackofficeLocalBusiness(businessId) {
   })
 }
 
+export function deleteBackofficeLocalBusiness(businessId) {
+  return authenticatedRequest(`/backoffice/local-businesses/${businessId}`, {
+    method: "DELETE",
+  })
+}
+
 export function uploadBackofficeLocalBusinessImage(businessId, file) {
   const formData = new FormData()
   formData.append("file", file)
@@ -291,8 +353,8 @@ export function uploadBackofficeLocalBusinessImage(businessId, file) {
 
 // REWARDS
 
-export function getBackofficeRewards() {
-  return authenticatedRequest("/backoffice/rewards")
+export function getBackofficeRewards({ page = 0, size = 100, sortBy = "title" } = {}) {
+  return authenticatedRequest(`/backoffice/rewards?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function createBackofficeReward(rewardData) {
@@ -324,9 +386,17 @@ export function unpublishBackofficeReward(rewardId) {
     method: "PATCH",
   })
 }
+
+export function deleteBackofficeReward(rewardId) {
+  return authenticatedRequest(`/backoffice/rewards/${rewardId}`, {
+    method: "DELETE",
+  })
+}
+
 // UPLOAD SUBMISSIONS
-export function getBackofficeUploadSubmissions() {
-  return authenticatedRequest("/backoffice/upload-submissions")
+
+export function getBackofficeUploadSubmissions({ page = 0, size = 100, sortBy = "submittedAt" } = {}) {
+  return authenticatedRequest(`/backoffice/upload-submissions?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function approveBackofficeUploadSubmission(submissionId) {
@@ -341,13 +411,14 @@ export function rejectBackofficeUploadSubmission(submissionId) {
   })
 }
 
-export function getBackofficeUploadSubmissionsByStatus(status) {
-  return authenticatedRequest(`/backoffice/upload-submissions/status/${status}`)
+export function getBackofficeUploadSubmissionsByStatus(status, { page = 0, size = 100, sortBy = "submittedAt" } = {}) {
+  return authenticatedRequest(`/backoffice/upload-submissions/status/${status}?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 // USERS
-export function getBackofficeUsers() {
-  return authenticatedRequest("/backoffice/users")
+
+export function getBackofficeUsers({ page = 0, size = 100, sortBy = "username" } = {}) {
+  return authenticatedRequest(`/backoffice/users?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function promoteBackofficeUser(userId) {
@@ -365,11 +436,11 @@ export function downgradeBackofficeUser(userId) {
 // BOOKING
 
 export function getBookings({ page = 0, size = 50, sortBy = "bookingDate" } = {}) {
-  return authenticatedRequest(`/backoffice/bookings?page=${page}&size=${size}&sortBy=${sortBy}`)
+  return authenticatedRequest(`/backoffice/bookings?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function getBookingsByStatus(status, { page = 0, size = 50, sortBy = "bookingDate" } = {}) {
-  return authenticatedRequest(`/backoffice/bookings/status/${status}?page=${page}&size=${size}&sortBy=${sortBy}`)
+  return authenticatedRequest(`/backoffice/bookings/status/${status}?${buildPageQuery({ page, size, sortBy })}`)
 }
 
 export function confirmBooking(bookingId) {

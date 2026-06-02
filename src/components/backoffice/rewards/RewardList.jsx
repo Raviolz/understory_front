@@ -1,11 +1,26 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeRewards, publishBackofficeReward, unpublishBackofficeReward } from "../../../api/backofficeApi"
+import BackofficePagination from "../BackofficePagination"
+import { deleteBackofficeReward, getBackofficeRewards, publishBackofficeReward, unpublishBackofficeReward } from "../../../api/backofficeApi"
+
+const PAGE_SIZE = 15
 
 function RewardList() {
   const [rewards, setRewards] = useState([])
+  const [pageData, setPageData] = useState(null)
+  const [page, setPage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  function handlePageChange(nextPage) {
+    if (nextPage === page) {
+      return
+    }
+
+    setIsLoading(true)
+    setError(null)
+    setPage(nextPage)
+  }
 
   function handlePublish(rewardId) {
     publishBackofficeReward(rewardId)
@@ -29,19 +44,55 @@ function RewardList() {
       })
   }
 
+  function handleDelete(rewardId) {
+    const confirmed = window.confirm("Eliminare definitivamente questa ricompensa?")
+
+    if (!confirmed) return
+
+    setError(null)
+
+    deleteBackofficeReward(rewardId)
+      .then(() => {
+        setRewards((currentRewards) => currentRewards.filter((reward) => reward.id !== rewardId))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non puoi eliminare questa ricompensa perché è già stata sbloccata da almeno un utente. Usa Unpublish.")
+      })
+  }
+
   useEffect(() => {
-    getBackofficeRewards()
+    let ignore = false
+
+    getBackofficeRewards({ page, size: PAGE_SIZE })
       .then((data) => {
+        if (ignore) {
+          return
+        }
+
+        setPageData(data)
         setRewards(data.content || [])
       })
       .catch((error) => {
+        if (ignore) {
+          return
+        }
+
         console.error(error)
         setError("Non riesco a caricare le ricompense.")
       })
       .finally(() => {
+        if (ignore) {
+          return
+        }
+
         setIsLoading(false)
       })
-  }, [])
+
+    return () => {
+      ignore = true
+    }
+  }, [page])
 
   if (isLoading) {
     return <p className="text-muted">Caricamento ricompense...</p>
@@ -112,20 +163,42 @@ function RewardList() {
                 </td>
 
                 <td className="w-[180px] px-4 py-4">
-                  <div className="flex flex-wrap gap-3">
-                    <Link to={`/backoffice/rewards/${reward.id}/edit`} className="text-accent hover:text-ink">
-                      Edit
+                  <div className="bo-actions">
+                    <Link to={`/backoffice/rewards/${reward.id}/edit`} className="bo-action bo-action--edit" title="Edit" aria-label="Edit reward">
+                      ✎
                     </Link>
 
                     {reward.active ? (
-                      <button type="button" onClick={() => handleUnpublish(reward.id)} className="text-muted hover:text-ink">
-                        Unpublish
+                      <button
+                        type="button"
+                        onClick={() => handleUnpublish(reward.id)}
+                        className="bo-action bo-action--publish"
+                        title="Unpublish"
+                        aria-label="Unpublish reward"
+                      >
+                        ↓
                       </button>
                     ) : (
-                      <button type="button" onClick={() => handlePublish(reward.id)} className="text-muted hover:text-ink">
-                        Publish
+                      <button
+                        type="button"
+                        onClick={() => handlePublish(reward.id)}
+                        className="bo-action bo-action--publish"
+                        title="Publish"
+                        aria-label="Publish reward"
+                      >
+                        ↑
                       </button>
                     )}
+
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(reward.id)}
+                      className="bo-action bo-action--delete"
+                      title="Delete"
+                      aria-label="Delete reward"
+                    >
+                      ×
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -141,6 +214,8 @@ function RewardList() {
           </tbody>
         </table>
       </div>
+
+      <BackofficePagination pageData={pageData} onPageChange={handlePageChange} />
     </section>
   )
 }

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import BackofficeSelect from "../BackofficeSelect"
 
 const emptyForm = {
   experienceId: "",
@@ -58,26 +59,23 @@ function QuizGameForm({ experiences = [], initialValues = emptyForm, submitLabel
       <p className="mt-3 text-sm leading-6 text-muted">Collega il quiz a un'esperienza e imposta domanda, risposte e spiegazione.</p>
 
       <div className="mt-6">
-        <label htmlFor="experienceId" className="mb-2 block text-sm text-muted">
-          Experience
-        </label>
-
-        <select
-          id="experienceId"
-          name="experienceId"
+        <BackofficeSelect
+          inputId="experienceId"
+          label="Experience"
           value={formData.experienceId}
-          onChange={handleChange}
-          className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
           required
-        >
-          <option value="">Select experience</option>
-
-          {experiences.map((experience) => (
-            <option key={experience.id} value={experience.id}>
-              {experience.title} — {experience.gameType}
-            </option>
-          ))}
-        </select>
+          placeholder="Select experience"
+          options={experiences.map((experience) => ({
+            value: experience.id,
+            label: [experience.cityName, experience.pointOfInterestName, experience.title].filter(Boolean).join(" — "),
+          }))}
+          onChange={(value) => {
+            setFormData({
+              ...formData,
+              experienceId: value,
+            })
+          }}
+        />
       </div>
 
       <div className="mt-5">
@@ -159,24 +157,25 @@ function QuizGameForm({ experiences = [], initialValues = emptyForm, submitLabel
       </div>
 
       <div className="mt-5">
-        <label htmlFor="correctAnswer" className="mb-2 block text-sm text-muted">
-          Correct answer
-        </label>
-
-        <select
-          id="correctAnswer"
-          name="correctAnswer"
+        <BackofficeSelect
+          inputId="correctAnswer"
+          label="Correct answer"
           value={formData.correctAnswer}
-          onChange={handleChange}
-          className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
           required
-        >
-          <option value="">Select correct answer</option>
-          <option value="A">A</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-          <option value="D">D</option>
-        </select>
+          placeholder="Select correct answer"
+          options={[
+            { value: "A", label: "A" },
+            { value: "B", label: "B" },
+            { value: "C", label: "C" },
+            { value: "D", label: "D" },
+          ]}
+          onChange={(value) => {
+            setFormData({
+              ...formData,
+              correctAnswer: value,
+            })
+          }}
+        />
       </div>
 
       <div className="mt-5">

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import BackofficeSelect from "../BackofficeSelect"
 
 const emptyForm = {
   cityId: "",
@@ -59,26 +60,23 @@ function PointForm({ cities = [], initialValues = emptyForm, submitLabel, onSubm
       <p className="mt-3 text-sm leading-6 text-muted">Collega il punto di interesse a una città e inserisci coordinate e descrizione breve.</p>
 
       <div className="mt-6">
-        <label htmlFor="cityId" className="mb-2 block text-sm text-muted">
-          City
-        </label>
-
-        <select
-          id="cityId"
-          name="cityId"
+        <BackofficeSelect
+          inputId="cityId"
+          label="City"
           value={formData.cityId}
-          onChange={handleChange}
-          className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
           required
-        >
-          <option value="">Select city</option>
-
-          {cities.map((city) => (
-            <option key={city.id} value={city.id}>
-              {city.name} — {city.country}
-            </option>
-          ))}
-        </select>
+          placeholder="Select city"
+          options={cities.map((city) => ({
+            value: city.id,
+            label: `${city.name} — ${city.country}`,
+          }))}
+          onChange={(value) => {
+            setFormData({
+              ...formData,
+              cityId: value,
+            })
+          }}
+        />
       </div>
 
       <div className="mt-5">

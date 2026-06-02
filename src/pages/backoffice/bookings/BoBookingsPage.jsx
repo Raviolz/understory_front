@@ -1,46 +1,78 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { confirmBooking, getBookings, getBookingsByStatus, rejectBooking } from "../../../api/backofficeApi"
+import BackofficePagination from "../../../components/backoffice/BackofficePagination"
 import BookingList from "../../../components/backoffice/bookings/BookingList"
 
+const PAGE_SIZE = 20
 const bookingStatuses = ["ALL", "PENDING", "CONFIRMED", "REJECTED", "CANCELLED", "COMPLETED"]
 
 function BoBookingsPage() {
   const [bookings, setBookings] = useState([])
+  const [pageData, setPageData] = useState(null)
+  const [page, setPage] = useState(0)
   const [statusFilter, setStatusFilter] = useState("ALL")
   const [isLoading, setIsLoading] = useState(true)
   const [updatingBookingId, setUpdatingBookingId] = useState(null)
   const [error, setError] = useState(null)
 
+  function handlePageChange(nextPage) {
+    if (nextPage === page) {
+      return
+    }
+
+    setIsLoading(true)
+    setError(null)
+    setPage(nextPage)
+  }
+
+  function handleStatusChange(status) {
+    if (status === statusFilter) {
+      return
+    }
+
+    setIsLoading(true)
+    setError(null)
+    setStatusFilter(status)
+    setPage(0)
+  }
+
   useEffect(() => {
     let ignore = false
 
-    const request = statusFilter === "ALL" ? getBookings({ size: 50 }) : getBookingsByStatus(statusFilter, { size: 50 })
+    const request =
+      statusFilter === "ALL"
+        ? getBookings({ page, size: PAGE_SIZE, sortBy: "bookingDate" })
+        : getBookingsByStatus(statusFilter, { page, size: PAGE_SIZE, sortBy: "bookingDate" })
 
     request
       .then((data) => {
-        if (ignore) return
+        if (ignore) {
+          return
+        }
+
+        setPageData(data)
         setBookings(data.content ?? [])
       })
       .catch((error) => {
-        if (ignore) return
+        if (ignore) {
+          return
+        }
+
         console.error(error)
         setError("Unable to load bookings.")
       })
       .finally(() => {
-        if (ignore) return
+        if (ignore) {
+          return
+        }
+
         setIsLoading(false)
       })
 
     return () => {
       ignore = true
     }
-  }, [statusFilter])
-
-  const sortedBookings = useMemo(() => {
-    return [...bookings].sort((firstBooking, secondBooking) => {
-      return new Date(secondBooking.bookingDate) - new Date(firstBooking.bookingDate)
-    })
-  }, [bookings])
+  }, [statusFilter, page])
 
   function replaceBooking(updatedBooking) {
     setBookings((currentBookings) => currentBookings.map((booking) => (booking.bookingId === updatedBooking.bookingId ? updatedBooking : booking)))
@@ -97,11 +129,7 @@ function BoBookingsPage() {
           <button
             key={status}
             type="button"
-            onClick={() => {
-              setStatusFilter(status)
-              setIsLoading(true)
-              setError(null)
-            }}
+            onClick={() => handleStatusChange(status)}
             className={
               statusFilter === status
                 ? "rounded-full bg-accent px-4 py-2 text-sm text-canvas"
@@ -115,7 +143,9 @@ function BoBookingsPage() {
 
       {error && <p className="mt-5 text-sm text-arcane">{error}</p>}
 
-      <BookingList bookings={sortedBookings} onConfirm={handleConfirm} onReject={handleReject} isUpdatingId={updatingBookingId} />
+      <BookingList bookings={bookings} onConfirm={handleConfirm} onReject={handleReject} isUpdatingId={updatingBookingId} />
+
+      <BackofficePagination pageData={pageData} onPageChange={handlePageChange} />
     </section>
   )
 }

@@ -1,11 +1,31 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeLocalBusinesses, publishBackofficeLocalBusiness, unpublishBackofficeLocalBusiness } from "../../../api/backofficeApi"
+import BackofficePagination from "../BackofficePagination"
+import {
+  deleteBackofficeLocalBusiness,
+  getBackofficeLocalBusinesses,
+  publishBackofficeLocalBusiness,
+  unpublishBackofficeLocalBusiness,
+} from "../../../api/backofficeApi"
+
+const PAGE_SIZE = 15
 
 function LocalBusinessList() {
   const [businesses, setBusinesses] = useState([])
+  const [pageData, setPageData] = useState(null)
+  const [page, setPage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  function handlePageChange(nextPage) {
+    if (nextPage === page) {
+      return
+    }
+
+    setIsLoading(true)
+    setError(null)
+    setPage(nextPage)
+  }
 
   function handlePublish(businessId) {
     publishBackofficeLocalBusiness(businessId)
@@ -29,19 +49,55 @@ function LocalBusinessList() {
       })
   }
 
+  function handleDelete(businessId) {
+    const confirmed = window.confirm("Eliminare definitivamente questa attività locale?")
+
+    if (!confirmed) return
+
+    setError(null)
+
+    deleteBackofficeLocalBusiness(businessId)
+      .then(() => {
+        setBusinesses((currentBusinesses) => currentBusinesses.filter((business) => business.id !== businessId))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError("Non puoi eliminare questa attività locale perché ha reward collegati. Rimuovi prima i reward oppure usa Unpublish.")
+      })
+  }
+
   useEffect(() => {
-    getBackofficeLocalBusinesses()
+    let ignore = false
+
+    getBackofficeLocalBusinesses({ page, size: PAGE_SIZE })
       .then((data) => {
+        if (ignore) {
+          return
+        }
+
+        setPageData(data)
         setBusinesses(data.content || [])
       })
       .catch((error) => {
+        if (ignore) {
+          return
+        }
+
         console.error(error)
         setError("Non riesco a caricare le attività locali.")
       })
       .finally(() => {
+        if (ignore) {
+          return
+        }
+
         setIsLoading(false)
       })
-  }, [])
+
+    return () => {
+      ignore = true
+    }
+  }, [page])
 
   if (isLoading) {
     return <p className="text-muted">Caricamento attività locali...</p>
@@ -116,20 +172,47 @@ function LocalBusinessList() {
                 </td>
 
                 <td className="w-[180px] px-4 py-4">
-                  <div className="flex flex-wrap gap-3">
-                    <Link to={`/backoffice/local-businesses/${business.id}/edit`} className="text-accent hover:text-ink">
-                      Edit
+                  <div className="bo-actions">
+                    <Link
+                      to={`/backoffice/local-businesses/${business.id}/edit`}
+                      className="bo-action bo-action--edit"
+                      title="Edit"
+                      aria-label="Edit local business"
+                    >
+                      ✎
                     </Link>
 
                     {business.active ? (
-                      <button type="button" onClick={() => handleUnpublish(business.id)} className="text-muted hover:text-ink">
-                        Unpublish
+                      <button
+                        type="button"
+                        onClick={() => handleUnpublish(business.id)}
+                        className="bo-action bo-action--publish"
+                        title="Unpublish"
+                        aria-label="Unpublish local business"
+                      >
+                        ↓
                       </button>
                     ) : (
-                      <button type="button" onClick={() => handlePublish(business.id)} className="text-muted hover:text-ink">
-                        Publish
+                      <button
+                        type="button"
+                        onClick={() => handlePublish(business.id)}
+                        className="bo-action bo-action--publish"
+                        title="Publish"
+                        aria-label="Publish local business"
+                      >
+                        ↑
                       </button>
                     )}
+
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(business.id)}
+                      className="bo-action bo-action--delete"
+                      title="Delete"
+                      aria-label="Delete local business"
+                    >
+                      ×
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -145,6 +228,8 @@ function LocalBusinessList() {
           </tbody>
         </table>
       </div>
+
+      <BackofficePagination pageData={pageData} onPageChange={handlePageChange} />
     </section>
   )
 }

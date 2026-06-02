@@ -8,8 +8,8 @@ function BookingList({ bookings = [], onConfirm, onReject, isUpdatingId }) {
   }
 
   return (
-    <div className="mt-8 overflow-hidden rounded-2xl border border-border-soft bg-surface">
-      <table className="w-full border-collapse text-left text-sm">
+    <div className="mt-8 overflow-x-auto rounded-2xl border border-border-soft bg-surface">
+      <table className="w-full min-w-[900px] border-collapse text-left text-sm">
         <thead className="border-b border-border-soft text-xs tracking-[0.18em] text-muted">
           <tr>
             <th className="px-4 py-4">USERr</th>

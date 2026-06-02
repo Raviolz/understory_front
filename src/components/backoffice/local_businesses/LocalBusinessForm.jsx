@@ -1,4 +1,5 @@
 import { useState } from "react"
+import BackofficeSelect from "../BackofficeSelect"
 
 const emptyForm = {
   cityId: "",
@@ -66,51 +67,41 @@ function LocalBusinessForm({ cities = [], businessCategories = [], initialValues
       <p className="mt-3 text-sm leading-6 text-muted">Collega l'attività locale a una città e a una categoria business.</p>
 
       <div className="mt-6 grid gap-5 md:grid-cols-2">
-        <div>
-          <label htmlFor="cityId" className="mb-2 block text-sm text-muted">
-            City
-          </label>
+        <BackofficeSelect
+          inputId="cityId"
+          label="City"
+          value={formData.cityId}
+          required
+          placeholder="Select city"
+          options={cities.map((city) => ({
+            value: city.id,
+            label: `${city.name} — ${city.country}`,
+          }))}
+          onChange={(value) => {
+            setFormData({
+              ...formData,
+              cityId: value,
+            })
+          }}
+        />
 
-          <select
-            id="cityId"
-            name="cityId"
-            value={formData.cityId}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
-            required
-          >
-            <option value="">Select city</option>
-
-            {cities.map((city) => (
-              <option key={city.id} value={city.id}>
-                {city.name} — {city.country}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor="businessCategoryId" className="mb-2 block text-sm text-muted">
-            Business category
-          </label>
-
-          <select
-            id="businessCategoryId"
-            name="businessCategoryId"
-            value={formData.businessCategoryId}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
-            required
-          >
-            <option value="">Select category</option>
-
-            {businessCategories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        <BackofficeSelect
+          inputId="businessCategoryId"
+          label="Business category"
+          value={formData.businessCategoryId}
+          required
+          placeholder="Select category"
+          options={businessCategories.map((category) => ({
+            value: category.id,
+            label: category.label,
+          }))}
+          onChange={(value) => {
+            setFormData({
+              ...formData,
+              businessCategoryId: value,
+            })
+          }}
+        />
       </div>
 
       <div className="mt-5">

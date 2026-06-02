@@ -4,7 +4,7 @@ import { getMyProfile } from "../../api/authApi"
 import { submitQuizAnswer } from "../../api/gameplayApi"
 import { getPublishedQuizGameByExperience } from "../../api/publicApi"
 import { setCurrentUser } from "../../redux/authSlice"
-import fortuneBoothImage from "../../assets/city/fortune_teller1.jfif"
+import fortuneBoothImage from "../../assets/city/FortuneTeller.png"
 
 function QuizExperienceGame({ experience, onComplete }) {
   const dispatch = useDispatch()

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import BackofficeSelect from "../BackofficeSelect"
 
 const emptyForm = {
   pointOfInterestId: "",
@@ -77,52 +78,41 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
       <p className="mt-3 text-sm leading-6 text-muted">Collega l'esperienza a un punto di interesse e a una categoria narrativa.</p>
 
       <div className="mt-6 grid gap-5 md:grid-cols-2">
-        <div>
-          <label htmlFor="pointOfInterestId" className="mb-2 block text-sm text-muted">
-            Point of interest
-          </label>
+        <BackofficeSelect
+          inputId="pointOfInterestId"
+          label="Point of interest"
+          value={formData.pointOfInterestId}
+          required
+          placeholder="Select point"
+          options={points.map((point) => ({
+            value: point.id,
+            label: `${point.name}${point.cityName ? ` — ${point.cityName}` : ""}`,
+          }))}
+          onChange={(value) => {
+            setFormData({
+              ...formData,
+              pointOfInterestId: value,
+            })
+          }}
+        />
 
-          <select
-            id="pointOfInterestId"
-            name="pointOfInterestId"
-            value={formData.pointOfInterestId}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
-            required
-          >
-            <option value="">Select point</option>
-
-            {points.map((point) => (
-              <option key={point.id} value={point.id}>
-                {point.name}
-                {point.cityName ? ` — ${point.cityName}` : ""}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor="experienceCategoryId" className="mb-2 block text-sm text-muted">
-            Experience category
-          </label>
-
-          <select
-            id="experienceCategoryId"
-            name="experienceCategoryId"
-            value={formData.experienceCategoryId}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
-            required
-          >
-            <option value="">Select category</option>
-
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        <BackofficeSelect
+          inputId="experienceCategoryId"
+          label="Experience category"
+          value={formData.experienceCategoryId}
+          required
+          placeholder="Select category"
+          options={categories.map((category) => ({
+            value: category.id,
+            label: category.label,
+          }))}
+          onChange={(value) => {
+            setFormData({
+              ...formData,
+              experienceCategoryId: value,
+            })
+          }}
+        />
       </div>
 
       <div className="mt-5 grid gap-5 md:grid-cols-2">
@@ -141,24 +131,23 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
           />
         </div>
 
-        <div>
-          <label htmlFor="gameType" className="mb-2 block text-sm text-muted">
-            Game type
-          </label>
-
-          <select
-            id="gameType"
-            name="gameType"
-            value={formData.gameType}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
-            required
-          >
-            <option value="">Select game type</option>
-            <option value="QUIZ">QUIZ</option>
-            <option value="IMAGE_UPLOAD">IMAGE_UPLOAD</option>
-          </select>
-        </div>
+        <BackofficeSelect
+          inputId="gameType"
+          label="Game type"
+          value={formData.gameType}
+          required
+          placeholder="Select game type"
+          options={[
+            { value: "QUIZ", label: "QUIZ" },
+            { value: "IMAGE_UPLOAD", label: "IMAGE_UPLOAD" },
+          ]}
+          onChange={(value) => {
+            setFormData({
+              ...formData,
+              gameType: value,
+            })
+          }}
+        />
       </div>
 
       <div className="mt-5 grid gap-5 md:grid-cols-2">

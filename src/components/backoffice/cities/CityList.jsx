@@ -1,11 +1,26 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeCities, publishBackofficeCity, unpublishBackofficeCity } from "../../../api/backofficeApi"
+import BackofficePagination from "../BackofficePagination"
+import { deleteBackofficeCity, getBackofficeCities, publishBackofficeCity, unpublishBackofficeCity } from "../../../api/backofficeApi"
+
+const PAGE_SIZE = 15
 
 function CityList() {
   const [cities, setCities] = useState([])
+  const [pageData, setPageData] = useState(null)
+  const [page, setPage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  function handlePageChange(nextPage) {
+    if (nextPage === page) {
+      return
+    }
+
+    setIsLoading(true)
+    setError(null)
+    setPage(nextPage)
+  }
 
   function handlePublish(cityId) {
     publishBackofficeCity(cityId)
@@ -29,19 +44,58 @@ function CityList() {
       })
   }
 
+  function handleDelete(cityId) {
+    const confirmed = window.confirm("Eliminare definitivamente questa città?")
+
+    if (!confirmed) return
+
+    setError(null)
+
+    deleteBackofficeCity(cityId)
+      .then(() => {
+        setCities((currentCities) => currentCities.filter((city) => city.id !== cityId))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError(
+          "Non puoi eliminare questa città perché ha punti di interesse, attività locali o reward collegati. Rimuovi prima quei collegamenti oppure usa Unpublish.",
+        )
+      })
+  }
+
   useEffect(() => {
-    getBackofficeCities()
+    let ignore = false
+
+    getBackofficeCities({ page, size: PAGE_SIZE })
       .then((data) => {
+        if (ignore) {
+          return
+        }
+
+        setPageData(data)
         setCities(data.content || [])
       })
       .catch((error) => {
+        if (ignore) {
+          return
+        }
+
         console.error(error)
         setError("Non riesco a caricare le città.")
       })
       .finally(() => {
+        if (ignore) {
+          return
+        }
+
         setIsLoading(false)
       })
-  }, [])
+
+    return () => {
+      ignore = true
+    }
+  }, [page])
+
   if (isLoading) {
     return <p className="text-muted">Caricamento città...</p>
   }
@@ -73,8 +127,8 @@ function CityList() {
         </Link>
       </div>
 
-      <div className="mt-8 overflow-hidden rounded-2xl border border-border-soft bg-surface">
-        <table className="w-full border-collapse text-left text-sm">
+      <div className="mt-8 overflow-x-auto rounded-2xl border border-border-soft bg-surface">
+        <table className="w-full min-w-[760px] border-collapse text-left text-sm">
           <thead className="border-b border-border-soft text-muted">
             <tr>
               <th className="px-4 py-3 font-normal">Name</th>
@@ -101,20 +155,36 @@ function CityList() {
                 </td>
 
                 <td className="px-4 py-4">
-                  <div className="flex flex-wrap gap-3">
-                    <Link to={`/backoffice/cities/${city.id}/edit`} className="text-accent hover:text-ink">
-                      Edit
+                  <div className="bo-actions">
+                    <Link to={`/backoffice/cities/${city.id}/edit`} className="bo-action bo-action--edit" title="Edit" aria-label="Edit city">
+                      ✎
                     </Link>
 
                     {city.active ? (
-                      <button type="button" onClick={() => handleUnpublish(city.id)} className="text-muted hover:text-ink">
-                        Unpublish
+                      <button
+                        type="button"
+                        onClick={() => handleUnpublish(city.id)}
+                        className="bo-action bo-action--publish"
+                        title="Unpublish"
+                        aria-label="Unpublish city"
+                      >
+                        ↓
                       </button>
                     ) : (
-                      <button type="button" onClick={() => handlePublish(city.id)} className="text-muted hover:text-ink">
-                        Publish
+                      <button
+                        type="button"
+                        onClick={() => handlePublish(city.id)}
+                        className="bo-action bo-action--publish"
+                        title="Publish"
+                        aria-label="Publish city"
+                      >
+                        ↑
                       </button>
                     )}
+
+                    <button type="button" onClick={() => handleDelete(city.id)} className="bo-action bo-action--delete" title="Delete" aria-label="Delete city">
+                      ×
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -130,6 +200,8 @@ function CityList() {
           </tbody>
         </table>
       </div>
+
+      <BackofficePagination pageData={pageData} onPageChange={handlePageChange} />
     </section>
   )
 }

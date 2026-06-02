@@ -1,0 +1,149 @@
+.bo-select__control {
+  min-height: 3rem !important;
+  border: 1px solid var(--border-soft) !important;
+  border-radius: 0.75rem !important;
+  background: var(--canvas) !important;
+  box-shadow: none !important;
+}
+
+.bo-select__control--is-focused {
+  border-color: var(--accent) !important;
+}
+
+.bo-select__value-container {
+  color: var(--ink) !important;
+}
+
+.bo-select__single-value {
+  color: var(--ink) !important;
+}
+
+.bo-select__input-container {
+  color: var(--ink) !important;
+}
+
+.bo-select__input {
+  color: var(--ink) !important;
+}
+
+.bo-select__placeholder {
+  color: var(--muted) !important;
+}
+
+.bo-select__indicator-separator {
+  background-color: var(--border-soft) !important;
+}
+
+.bo-select__dropdown-indicator,
+.bo-select__clear-indicator {
+  color: var(--muted) !important;
+}
+
+.bo-select__dropdown-indicator:hover,
+.bo-select__clear-indicator:hover {
+  color: var(--accent) !important;
+}
+
+.bo-select__menu {
+  z-index: 9999 !important;
+  border: 1px solid var(--border-soft) !important;
+  border-radius: 0.75rem !important;
+  background: var(--surface) !important;
+  overflow: hidden !important;
+  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.36) !important;
+}
+
+.bo-select__menu-list {
+  max-height: 14rem !important;
+  overflow-y: auto !important;
+  background: var(--surface) !important;
+}
+
+.bo-select__option {
+  background: var(--surface) !important;
+  color: var(--muted) !important;
+}
+
+.bo-select__option--is-focused {
+  background: rgba(176, 138, 90, 0.14) !important;
+  color: var(--ink) !important;
+}
+
+.bo-select__option--is-selected {
+  background: rgba(176, 138, 90, 0.22) !important;
+  color: var(--ink) !important;
+}
+
+.bo-select__menu-list {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(176, 138, 90, 0.55) rgba(6, 4, 10, 0.6);
+}
+
+.bo-select__menu-list::-webkit-scrollbar {
+  width: 0.45rem;
+}
+
+.bo-select__menu-list::-webkit-scrollbar-track {
+  background: rgba(6, 4, 10, 0.6);
+}
+
+.bo-select__menu-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(176, 138, 90, 0.55);
+}
+
+.bo-select__menu-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(176, 138, 90, 0.78);
+}
+
+.bo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.bo-action {
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    background-color 160ms ease,
+    opacity 160ms ease;
+}
+
+.bo-action:hover {
+  border-color: var(--accent-soft);
+  color: var(--ink);
+}
+
+.bo-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.bo-action--edit {
+  color: var(--accent);
+}
+
+.bo-action--publish:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.bo-action--delete:hover {
+  border-color: var(--arcane);
+  color: var(--arcane);
+}

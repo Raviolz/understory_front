@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { submitUploadSubmission } from "../../api/gameplayApi"
 import { getPublishedUploadGameByExperience } from "../../api/publicApi"
-import fortuneBoothImage from "../../assets/city/fortune_teller1.jfif"
+import fortuneBoothImage from "../../assets/city/FortuneTeller.png"
 
 function UploadExperienceGame({ experience }) {
   const fileInputRef = useRef(null)

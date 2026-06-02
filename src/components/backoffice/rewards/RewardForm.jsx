@@ -1,4 +1,5 @@
 import { useState } from "react"
+import BackofficeSelect from "../BackofficeSelect"
 
 const emptyForm = {
   businessId: "",
@@ -65,52 +66,41 @@ function RewardForm({ businesses = [], cities = [], initialValues = emptyForm, s
       <p className="mt-3 text-sm leading-6 text-muted">Collega la ricompensa a una città e a un'attività locale.</p>
 
       <div className="mt-6 grid gap-5 md:grid-cols-2">
-        <div>
-          <label htmlFor="cityId" className="mb-2 block text-sm text-muted">
-            City
-          </label>
+        <BackofficeSelect
+          inputId="cityId"
+          label="City"
+          value={formData.cityId}
+          required
+          placeholder="Select city"
+          options={cities.map((city) => ({
+            value: city.id,
+            label: `${city.name} — ${city.country}`,
+          }))}
+          onChange={(value) => {
+            setFormData({
+              ...formData,
+              cityId: value,
+            })
+          }}
+        />
 
-          <select
-            id="cityId"
-            name="cityId"
-            value={formData.cityId}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
-            required
-          >
-            <option value="">Select city</option>
-
-            {cities.map((city) => (
-              <option key={city.id} value={city.id}>
-                {city.name} — {city.country}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor="businessId" className="mb-2 block text-sm text-muted">
-            Local business
-          </label>
-
-          <select
-            id="businessId"
-            name="businessId"
-            value={formData.businessId}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
-            required
-          >
-            <option value="">Select business</option>
-
-            {businesses.map((business) => (
-              <option key={business.id} value={business.id}>
-                {business.name}
-                {business.cityName ? ` — ${business.cityName}` : ""}
-              </option>
-            ))}
-          </select>
-        </div>
+        <BackofficeSelect
+          inputId="businessId"
+          label="Local business"
+          value={formData.businessId}
+          required
+          placeholder="Select business"
+          options={businesses.map((business) => ({
+            value: business.id,
+            label: `${business.name}${business.cityName ? ` — ${business.cityName}` : ""}`,
+          }))}
+          onChange={(value) => {
+            setFormData({
+              ...formData,
+              businessId: value,
+            })
+          }}
+        />
       </div>
 
       <div className="mt-5">
@@ -145,28 +135,23 @@ function RewardForm({ businesses = [], cities = [], initialValues = emptyForm, s
       </div>
 
       <div className="mt-5 grid gap-5 md:grid-cols-2">
-        <div>
-          <label htmlFor="rewardType" className="mb-2 block text-sm text-muted">
-            Reward type
-          </label>
-
-          <select
-            id="rewardType"
-            name="rewardType"
-            value={formData.rewardType}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
-            required
-          >
-            <option value="">Select reward type</option>
-
-            {rewardTypes.map((rewardType) => (
-              <option key={rewardType} value={rewardType}>
-                {rewardType}
-              </option>
-            ))}
-          </select>
-        </div>
+        <BackofficeSelect
+          inputId="rewardType"
+          label="Reward type"
+          value={formData.rewardType}
+          required
+          placeholder="Select reward type"
+          options={rewardTypes.map((rewardType) => ({
+            value: rewardType,
+            label: rewardType,
+          }))}
+          onChange={(value) => {
+            setFormData({
+              ...formData,
+              rewardType: value,
+            })
+          }}
+        />
 
         <div>
           <label htmlFor="discountCode" className="mb-2 block text-sm text-muted">

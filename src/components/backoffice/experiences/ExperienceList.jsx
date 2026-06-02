@@ -1,11 +1,26 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getBackofficeExperiences, publishBackofficeExperience, unpublishBackofficeExperience } from "../../../api/backofficeApi"
+import BackofficePagination from "../BackofficePagination"
+import { deleteBackofficeExperience, getBackofficeExperiences, publishBackofficeExperience, unpublishBackofficeExperience } from "../../../api/backofficeApi"
+
+const PAGE_SIZE = 15
 
 function ExperienceList() {
   const [experiences, setExperiences] = useState([])
+  const [pageData, setPageData] = useState(null)
+  const [page, setPage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  function handlePageChange(nextPage) {
+    if (nextPage === page) {
+      return
+    }
+
+    setIsLoading(true)
+    setError(null)
+    setPage(nextPage)
+  }
 
   function handlePublish(experienceId) {
     publishBackofficeExperience(experienceId)
@@ -33,19 +48,57 @@ function ExperienceList() {
       })
   }
 
+  function handleDelete(experienceId) {
+    const confirmed = window.confirm("Eliminare definitivamente questa esperienza?")
+
+    if (!confirmed) return
+
+    setError(null)
+
+    deleteBackofficeExperience(experienceId)
+      .then(() => {
+        setExperiences((currentExperiences) => currentExperiences.filter((experience) => experience.id !== experienceId))
+      })
+      .catch((error) => {
+        console.error(error)
+        setError(
+          "Non puoi eliminare questa esperienza perché ha progressi utente, submissions o un gioco quiz/upload collegato. Rimuovi prima il gioco collegato se è inutilizzata, oppure usa Unpublish.",
+        )
+      })
+  }
+
   useEffect(() => {
-    getBackofficeExperiences()
+    let ignore = false
+
+    getBackofficeExperiences({ page, size: PAGE_SIZE })
       .then((data) => {
+        if (ignore) {
+          return
+        }
+
+        setPageData(data)
         setExperiences(data.content || [])
       })
       .catch((error) => {
+        if (ignore) {
+          return
+        }
+
         console.error(error)
         setError("Non riesco a caricare le esperienze.")
       })
       .finally(() => {
+        if (ignore) {
+          return
+        }
+
         setIsLoading(false)
       })
-  }, [])
+
+    return () => {
+      ignore = true
+    }
+  }, [page])
 
   if (isLoading) {
     return <p className="text-muted">Caricamento esperienze...</p>
@@ -118,19 +171,42 @@ function ExperienceList() {
                 </td>
 
                 <td className="px-4 py-4">
-                  <div className="flex flex-wrap gap-3">
-                    <Link to={`/backoffice/experiences/${experience.id}/edit`} className="text-accent hover:text-ink">
-                      Edit
+                  <div className="bo-actions">
+                    <Link to={`/backoffice/experiences/${experience.id}/edit`} className="bo-action bo-action--edit" title="Edit" aria-label="Edit experience">
+                      ✎
                     </Link>
+
                     {experience.active ? (
-                      <button type="button" onClick={() => handleUnpublish(experience.id)} className="text-muted hover:text-ink">
-                        Unpublish
+                      <button
+                        type="button"
+                        onClick={() => handleUnpublish(experience.id)}
+                        className="bo-action bo-action--publish"
+                        title="Unpublish"
+                        aria-label="Unpublish experience"
+                      >
+                        ↓
                       </button>
                     ) : (
-                      <button type="button" onClick={() => handlePublish(experience.id)} className="text-muted hover:text-ink">
-                        Publish
+                      <button
+                        type="button"
+                        onClick={() => handlePublish(experience.id)}
+                        className="bo-action bo-action--publish"
+                        title="Publish"
+                        aria-label="Publish experience"
+                      >
+                        ↑
                       </button>
                     )}
+
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(experience.id)}
+                      className="bo-action bo-action--delete"
+                      title="Delete"
+                      aria-label="Delete experience"
+                    >
+                      ×
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -146,6 +222,8 @@ function ExperienceList() {
           </tbody>
         </table>
       </div>
+
+      <BackofficePagination pageData={pageData} onPageChange={handlePageChange} />
     </section>
   )
 }

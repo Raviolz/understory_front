@@ -1,10 +1,22 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import BackofficePagination from "../BackofficePagination"
 import { approveBackofficeUploadSubmission, getBackofficeUploadSubmissionsByStatus, rejectBackofficeUploadSubmission } from "../../../api/backofficeApi"
+
+const PAGE_SIZE = 10
+
 function UploadSubmissionsList() {
   const [submissions, setSubmissions] = useState([])
+  const [pageData, setPageData] = useState(null)
+  const [page, setPage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  function handlePageChange(nextPage) {
+    setIsLoading(true)
+    setError(null)
+    setPage(nextPage)
+  }
 
   function removeSubmissionFromList(reviewResponse) {
     setSubmissions((currentSubmissions) => currentSubmissions.filter((submission) => submission.submissionId !== reviewResponse.submissionId))
@@ -33,18 +45,37 @@ function UploadSubmissionsList() {
   }
 
   useEffect(() => {
-    getBackofficeUploadSubmissionsByStatus("SUBMITTED")
+    let ignore = false
+
+    getBackofficeUploadSubmissionsByStatus("SUBMITTED", { page, size: PAGE_SIZE })
       .then((data) => {
+        if (ignore) {
+          return
+        }
+
+        setPageData(data)
         setSubmissions(data.content || [])
       })
       .catch((error) => {
+        if (ignore) {
+          return
+        }
+
         console.error(error)
         setError("Non riesco a caricare le submission in attesa.")
       })
       .finally(() => {
+        if (ignore) {
+          return
+        }
+
         setIsLoading(false)
       })
-  }, [])
+
+    return () => {
+      ignore = true
+    }
+  }, [page])
 
   if (isLoading) {
     return <p className="text-muted">Caricamento submission upload...</p>
@@ -163,6 +194,8 @@ function UploadSubmissionsList() {
           <div className="rounded-2xl border border-border-soft bg-surface p-8 text-center text-muted">Nessuna submission upload presente.</div>
         )}
       </div>
+
+      <BackofficePagination pageData={pageData} onPageChange={handlePageChange} />
     </section>
   )
 }
