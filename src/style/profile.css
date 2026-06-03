@@ -1,59 +1,268 @@
-/* PROFILE — fascicolo su carta */
-
 .profile-dossier {
-  --folio-paper: #eadcc8;
-  --folio-paper-deep: #dcc8ad;
+  --wood-texture: url("../assets/profile/woodtexture.jpg");
+
+  --folio-paper: #d2bc9a;
+  --folio-paper-deep: #c4aa84;
   --folio-ink: var(--paper-ink);
   --folio-muted: var(--paper-muted);
   --folio-border: var(--paper-border);
-  --folio-accent: #8b6848;
+  --folio-accent: #7d5d3f;
   --folio-burgundy: var(--paper-burgundy);
-  --folio-inkwash: #4a382a;
+  --folio-inkwash: #3e2f22;
+
+  --panel-green: #07140f;
+  --panel-green-soft: #10271d;
+  --panel-border: rgba(210, 176, 116, 0.16);
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
 
   min-height: calc(100vh - 160px);
-  padding: 2.5rem 1rem 4rem;
-  background: #0f0d0b;
+  padding: clamp(1.25rem, 3vw, 2.5rem) 1rem clamp(2.5rem, 5vw, 4rem);
+
+  background:
+    linear-gradient(rgba(8, 6, 4, 0.72), rgba(8, 6, 4, 0.82)),
+    var(--wood-texture) center / cover no-repeat,
+    #0f0d0b;
 }
 
-.profile-dossier__loading {
-  padding: 3rem 1rem;
-  text-align: center;
-  color: var(--muted);
+/* luce calda grande */
+.profile-dossier::before {
+  content: "";
+  position: absolute;
+  top: -8rem;
+  right: -7rem;
+  z-index: 0;
+  width: clamp(24rem, 42vw, 48rem);
+  height: clamp(24rem, 42vw, 48rem);
+  border-radius: 999px;
+  pointer-events: none;
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 226, 159, 0.58) 0%,
+    rgba(255, 181, 91, 0.42) 18%,
+    rgba(255, 132, 54, 0.28) 38%,
+    rgba(255, 96, 35, 0.16) 56%,
+    transparent 74%
+  );
+
+  filter: blur(24px);
+  opacity: 1;
+  mix-blend-mode: screen;
+  animation: profileCandleFlickerWarm 4.2s ease-in-out infinite;
 }
+
+/* luce calda piccola */
+.profile-dossier::after {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  right: 2.5rem;
+  z-index: 0;
+  width: clamp(9rem, 14vw, 15rem);
+  height: clamp(9rem, 14vw, 15rem);
+  border-radius: 999px;
+  pointer-events: none;
+
+  background: radial-gradient(circle, rgba(255, 235, 184, 0.45) 0%, rgba(255, 178, 82, 0.24) 44%, transparent 72%);
+
+  filter: blur(14px);
+  opacity: 0.95;
+  mix-blend-mode: screen;
+  animation: profileCandleFlickerSoft 3.4s ease-in-out infinite;
+}
+
+/*  Pannello verde*/
+
+.profile-dossier__desk {
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+
+  width: min(100%, 1380px);
+  min-height: calc(100vh - 220px);
+  margin: 0 auto;
+  padding: clamp(1.75rem, 5vw, 4rem);
+
+  border-radius: 1.35rem;
+  border: 1px solid var(--panel-border);
+
+  background:
+    radial-gradient(circle at 18% 8%, rgba(32, 84, 58, 0.18), transparent 34%), radial-gradient(circle at 86% 12%, rgba(91, 31, 45, 0.12), transparent 32%),
+    linear-gradient(180deg, rgba(7, 28, 19, 0.96) 0%, rgba(7, 17, 13, 0.98) 100%);
+
+  box-shadow:
+    0 24px 72px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    inset 0 0 70px rgba(0, 0, 0, 0.22);
+}
+
+/* luce calda dentro il pannello */
+.profile-dossier__desk::before {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  right: -20rem;
+  z-index: 0;
+  width: clamp(20rem, 34vw, 38rem);
+  height: clamp(20rem, 34vw, 38rem);
+  border-radius: 999px;
+  pointer-events: none;
+
+  background: radial-gradient(circle, rgba(255, 223, 157, 0.32) 0%, rgba(255, 174, 82, 0.2) 24%, rgba(255, 120, 46, 0.11) 46%, transparent 72%);
+
+  filter: blur(20px);
+  opacity: 0.9;
+  mix-blend-mode: screen;
+  animation: profileCandleFlickerWarm 4.2s ease-in-out infinite;
+}
+
+/* Cover chiusa */
+
+.profile-dossier__cover {
+  position: relative;
+  z-index: 3;
+  display: block;
+  width: min(21rem, 76vw);
+  height: 13rem;
+  margin: clamp(3rem, 8vw, 5rem) auto 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transform: translateX(-16rem) rotate(-14deg) translateY(7rem);
+  filter: drop-shadow(0 28px 34px rgba(0, 0, 0, 0.42));
+
+  transition:
+    transform 220ms ease,
+    filter 220ms ease;
+}
+
+.profile-dossier__cover:hover,
+.profile-dossier__cover:focus-visible {
+  transform: translateX(-16rem) rotate(-12deg) translateY(6.55rem) scale(1.025);
+  filter: drop-shadow(0 34px 42px rgba(0, 0, 0, 0.5));
+  outline: none;
+}
+
+.profile-dossier__cover-paper {
+  position: relative;
+  display: block;
+
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  border-radius: 0.28rem;
+  border: 1px solid rgba(111, 47, 50, 0.52);
+
+  background-size: cover;
+  background-position: center top;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 226, 0.22),
+    inset 0 -18px 34px rgba(84, 52, 30, 0.14);
+}
+
+.profile-dossier__cover-stamp {
+  position: absolute;
+  top: 1.35rem;
+  right: 1.2rem;
+  z-index: 2;
+
+  padding: 0.28rem 0.55rem;
+  border: 2px solid rgba(143, 53, 71, 0.72);
+
+  color: rgba(143, 53, 71, 0.82);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  transform: rotate(-8deg);
+  opacity: 0.88;
+}
+
+.profile-dossier__cover-code {
+  position: absolute;
+  left: 1.15rem;
+  bottom: 1.15rem;
+  z-index: 2;
+
+  color: rgba(74, 56, 42, 0.62);
+  font-size: 0.56rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.profile-dossier__cover-label {
+  position: absolute;
+  left: 50%;
+  bottom: -2.2rem;
+
+  transform: translateX(-50%);
+  white-space: nowrap;
+  pointer-events: none;
+
+  color: rgba(232, 194, 130, 0.86);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.9rem;
+  font-style: italic;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.72);
+}
+
+.profile-dossier__cover:hover .profile-dossier__cover-label,
+.profile-dossier__cover:focus-visible .profile-dossier__cover-label {
+  color: rgba(255, 218, 154, 0.98);
+}
+
+/* Foglio aperto */
 
 .profile-dossier__folio {
   position: relative;
-  max-width: min(52rem, 94vw);
+  z-index: 2;
+
+  max-width: min(34rem, 88vw);
   margin: 0 auto;
-  padding: 2.25rem 1.35rem 2.5rem;
-  border-radius: 1rem;
+  padding: 2rem 1.35rem 2.25rem;
+
+  border-radius: 0.65rem;
   color: var(--folio-ink);
-  background: linear-gradient(168deg, var(--folio-paper) 0%, var(--folio-paper-deep) 100%);
-  border: 1px solid color-mix(in srgb, var(--folio-border) 72%, transparent);
+  background: var(--folio-paper);
+
+  border: 1px solid color-mix(in srgb, var(--folio-border) 68%, transparent);
+
   box-shadow:
-    0 14px 36px rgba(15, 13, 11, 0.42),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    0 28px 60px rgba(0, 0, 0, 0.45),
+    0 7px 0 rgba(74, 38, 22, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+
+  transform: rotate(-0.6deg);
 }
 
+/* righe del foglio */
 .profile-dossier__folio::before {
   content: "";
   position: absolute;
-  top: 1.25rem;
-  bottom: 1.25rem;
-  left: 0.15rem;
-  right: 0.15rem;
+  top: 1.15rem;
+  bottom: 1.15rem;
+  left: 0.18rem;
+  right: 0.18rem;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.46;
+
   background:
-    linear-gradient(90deg, color-mix(in srgb, var(--folio-inkwash) 22%, transparent), transparent 8%) left center / 1px 100% no-repeat,
-    linear-gradient(270deg, color-mix(in srgb, var(--folio-inkwash) 22%, transparent), transparent 8%) right center / 1px 100% no-repeat,
-    repeating-linear-gradient(to bottom, transparent 0 4px, color-mix(in srgb, var(--folio-accent) 28%, var(--folio-paper)) 4px 5px, transparent 5px 11px);
-  background-size:
-    1px 100%,
-    1px 100%,
-    1px 100%;
-  background-position: left, right, left;
+    linear-gradient(90deg, rgba(62, 47, 34, 0.08), transparent 8%) left center / 1px 100% no-repeat,
+    linear-gradient(270deg, rgba(62, 47, 34, 0.08), transparent 8%) right center / 1px 100% no-repeat,
+    repeating-linear-gradient(to bottom, transparent 0 4px, color-mix(in srgb, var(--folio-accent) 22%, var(--folio-paper)) 4px 5px, transparent 5px 11px);
+}
+
+.profile-dossier__folio > * {
+  position: relative;
+  z-index: 1;
 }
 
 .profile-dossier__star {
@@ -74,8 +283,8 @@
 }
 
 .profile-dossier__header {
+  margin-bottom: 1.55rem;
   text-align: center;
-  margin-bottom: 2rem;
 }
 
 .profile-dossier__kicker {
@@ -101,17 +310,79 @@
 
 .profile-dossier__body {
   width: 100%;
-  max-width: 42rem;
+  max-width: 30rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
+.profile-dossier__moniker {
+  margin: 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--folio-accent) 90%, var(--folio-ink));
+}
+
+.profile-dossier__ledger-title {
+  margin: 1.15rem 0 0;
+  max-width: 24rem;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(0.95rem, 2.4vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+
+  color: var(--folio-inkwash);
+}
+
+.profile-dossier__divider {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+
+  width: min(100%, 12rem);
+  margin: 1.1rem 0 1.25rem;
+}
+
+.profile-dossier__divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--folio-border) 90%, transparent), transparent);
+}
+
+.profile-dossier__divider-gem {
+  font-size: 0.45rem;
+  color: color-mix(in srgb, var(--folio-accent) 80%, var(--folio-ink));
+}
+
+.profile-dossier__name {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+  font-style: italic;
+  letter-spacing: 0.04em;
+
+  color: #4a382a;
+}
+
+.profile-dossier__meta {
+  margin: 0.45rem 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--folio-muted);
+}
+
+/* avatar */
+
 .profile-seal {
   position: relative;
-  width: 9.5rem;
-  height: 9.5rem;
+  width: 9rem;
+  height: 9rem;
   margin-bottom: 0.85rem;
 }
 
@@ -145,12 +416,14 @@
   border-radius: 999px;
   pointer-events: none;
   opacity: 0.28;
+
   background: repeating-conic-gradient(
     from 4deg,
     transparent 0deg 7deg,
     color-mix(in srgb, var(--folio-inkwash) 55%, var(--folio-paper-deep)) 7deg 7.5deg,
     transparent 7.5deg 14deg
   );
+
   mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
 }
@@ -159,13 +432,16 @@
   position: absolute;
   inset: 1.15rem;
   z-index: 1;
+
   margin: 0;
   padding: 0;
   border: 0;
   border-radius: 999px;
   overflow: hidden;
   cursor: pointer;
-  background: radial-gradient(circle at 42% 30%, color-mix(in srgb, var(--folio-burgundy) 55%, #6b4a62) 0%, var(--folio-burgundy) 38%, #3d2838 100%);
+
+  background: radial-gradient(circle at 42% 30%, #6b4a62 0%, var(--folio-burgundy) 42%, #3d2838 100%);
+
   box-shadow:
     inset 0 0 20px rgba(45, 28, 38, 0.35),
     0 0 0 1px color-mix(in srgb, var(--folio-border) 80%, transparent);
@@ -176,30 +452,33 @@
   opacity: 0.88;
 }
 
-.profile-seal__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
+.profile-seal__image,
 .profile-seal__void {
   display: block;
   width: 100%;
   height: 100%;
 }
 
+.profile-seal__image {
+  object-fit: cover;
+}
+
 .profile-seal__veil {
   position: absolute;
   inset: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   border-radius: inherit;
   background: color-mix(in srgb, var(--folio-inkwash) 42%, transparent);
+
   font-size: 0.55rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--folio-paper);
+
   opacity: 0;
   transition: opacity 160ms ease;
 }
@@ -209,66 +488,15 @@
   opacity: 1;
 }
 
-.profile-dossier__moniker {
-  margin: 0;
-  font-size: 0.62rem;
-  letter-spacing: 0.42em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--folio-accent) 90%, var(--folio-ink));
-}
-
-.profile-dossier__ledger-title {
-  margin: 1.15rem 0 0;
-  max-width: 24rem;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(0.95rem, 2.4vw, 1.1rem);
-  font-weight: 400;
-  line-height: 1.35;
-  letter-spacing: 0.045em;
-  text-transform: uppercase;
-  color: var(--folio-inkwash);
-}
-
-.profile-dossier__divider {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  margin: 1.1rem 0 1.25rem;
-  width: min(100%, 12rem);
-}
-
-.profile-dossier__divider-line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--folio-border) 90%, transparent), transparent);
-}
-
-.profile-dossier__divider-gem {
-  font-size: 0.45rem;
-  color: color-mix(in srgb, var(--folio-accent) 80%, var(--folio-ink));
-}
-
-.profile-dossier__name {
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1rem;
-  font-style: italic;
-  letter-spacing: 0.04em;
-  color: #4a382a;
-}
-
-.profile-dossier__meta {
-  margin: 0.45rem 0 0;
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  color: var(--folio-muted);
-}
+/* dati */
 
 .profile-dossier__registro {
   width: min(100%, 22rem);
   margin: 1rem auto 0;
+
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+
   border-top: 1px solid color-mix(in srgb, var(--folio-border) 65%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--folio-border) 65%, transparent);
 }
@@ -284,28 +512,30 @@
 
 .profile-dossier__field span {
   display: block;
+
   font-size: 0.5rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+
   color: color-mix(in srgb, var(--folio-burgundy) 55%, var(--folio-muted));
 }
 
 .profile-dossier__field strong {
   display: block;
   margin-top: 0.25rem;
+
   font-family: Georgia, "Times New Roman", serif;
   font-size: 0.95rem;
   font-weight: 400;
+
   color: rgb(101, 12, 43);
 }
 
-.profile-dossier__role {
-  color: color-mix(in srgb, var(--folio-burgundy) 75%, var(--folio-ink));
-}
+/* Ampolle */
 
 .profile-city-knowledge {
-  margin-top: 2.25rem;
   width: 100%;
+  margin-top: 1.85rem;
 }
 
 .profile-city-knowledge__title {
@@ -322,7 +552,6 @@
   color: var(--folio-muted);
 }
 
-.profile-city-knowledge__loading,
 .profile-city-knowledge__empty {
   margin-top: 2rem;
   color: var(--folio-muted);
@@ -341,12 +570,15 @@
 .profile-city-knowledge__arrow {
   border: 0;
   background: transparent;
+
   font-family: Georgia, "Times New Roman", serif;
   font-size: 1.65rem;
   line-height: 1;
+
   color: rgb(101, 12, 43);
   cursor: pointer;
   opacity: 0.72;
+
   transition:
     opacity 160ms ease,
     transform 160ms ease;
@@ -360,12 +592,15 @@
 
 .profile-city-knowledge__grid {
   display: flex;
-  gap: 2.25rem;
+  gap: 1.6rem;
+
   overflow-x: auto;
   scroll-behavior: smooth;
+
   margin: 0;
   padding: 0.5rem 0 1rem;
   list-style: none;
+
   scrollbar-width: none;
 }
 
@@ -374,48 +609,49 @@
 }
 
 .profile-city-knowledge__item {
-  flex: 0 0 7.4rem;
+  flex: 0 0 6.6rem;
 }
 
 .profile-ampoule {
   width: 100%;
 }
 
-.profile-ampoule--city {
-  margin-top: 0;
-}
-
 .profile-ampoule__label {
   min-height: 2.4em;
   margin: 0 0 1.1rem;
+
   font-family: Georgia, "Times New Roman", serif;
   font-size: 0.72rem;
   letter-spacing: 0.06em;
   line-height: 1.35;
+
   color: color-mix(in srgb, var(--folio-burgundy) 55%, var(--folio-muted));
 }
 
 .profile-ampoule__vessel {
   position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 3.85rem;
+
+  width: 3.45rem;
   margin: 0 auto;
+
   filter: drop-shadow(0 6px 14px rgba(74, 56, 42, 0.2));
 }
 
 .profile-ampoule__bulb {
   position: relative;
   width: 100%;
-  height: 8.25rem;
-  border: 1px solid color-mix(in srgb, var(--folio-border) 88%, transparent);
-  border-radius: 0 0 2.4rem 2.4rem;
+  height: 7.25rem;
   overflow: hidden;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.45), transparent 30%, transparent 70%, rgba(255, 255, 255, 0.25)),
-    linear-gradient(180deg, rgba(255, 252, 245, 0.35), rgba(220, 200, 173, 0.15));
-  box-shadow: inset 0 -8px 18px rgba(107, 78, 42, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0 0 2.4rem 2.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.28),
+    inset 0 -10px 18px rgba(0, 0, 0, 0.12);
 }
 
 .profile-ampoule__bulb::after {
@@ -424,8 +660,16 @@
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.38), transparent 24%, transparent 74%, rgba(255, 255, 255, 0.2)),
-    linear-gradient(180deg, rgba(255, 252, 245, 0.22), transparent 42%);
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0.18) 10%,
+      transparent 22%,
+      transparent 72%,
+      rgba(255, 255, 255, 0.16) 88%,
+      rgba(255, 255, 255, 0.3) 100%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, transparent 28%);
 }
 
 .profile-ampoule__fill {
@@ -434,26 +678,21 @@
   right: 0;
   bottom: 0;
   border-radius: 0 0 2.2rem 2.2rem;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--arcane) 35%, #9b7ab8) 0%,
-    color-mix(in srgb, var(--folio-burgundy) 45%, var(--arcane)) 35%,
-    color-mix(in srgb, var(--folio-burgundy) 85%, #3d2838) 100%
-  );
+  background: var(--ampoule-liquid);
   box-shadow:
-    inset 0 6px 14px rgba(255, 255, 255, 0.12),
-    inset 0 -4px 12px rgba(45, 28, 38, 0.2);
+    inset 0 2px 0 rgba(255, 255, 255, 0.14),
+    0 0 14px var(--ampoule-glow);
   transition: height 600ms ease;
 }
 
 .profile-ampoule__meniscus {
   position: absolute;
-  left: 14%;
-  right: 14%;
-  height: 2px;
+  left: 12%;
+  right: 12%;
+  height: 3px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(255, 252, 245, 0.75), transparent);
-  opacity: 0.85;
+  background: rgba(255, 255, 255, 0.75);
+  opacity: 0.9;
   transform: translateY(-50%);
   pointer-events: none;
 }
@@ -476,6 +715,7 @@
   opacity: 0.45;
 }
 
+/* stati completamento */
 .profile-ampoule--dormant .profile-ampoule__fill {
   background: linear-gradient(180deg, rgba(122, 101, 86, 0.2), rgba(90, 70, 53, 0.12));
 }
@@ -497,20 +737,84 @@
   box-shadow: inset 0 4px 12px rgba(255, 255, 255, 0.25);
 }
 
+/* palette */
+.profile-ampoule--amber {
+  --ampoule-liquid: #ff7a00;
+  --ampoule-glow: rgba(255, 122, 0, 0.24);
+}
+
+.profile-ampoule--violet {
+  --ampoule-liquid: #a100ff;
+  --ampoule-glow: rgba(161, 0, 255, 0.24);
+}
+
+.profile-ampoule--emerald {
+  --ampoule-liquid: #7dff00;
+  --ampoule-glow: rgba(125, 255, 0, 0.24);
+}
+
+.profile-ampoule--rose {
+  --ampoule-liquid: #ff2aa6;
+  --ampoule-glow: rgba(255, 42, 166, 0.24);
+}
+
+.profile-ampoule--azure {
+  --ampoule-liquid: #00c8ff;
+  --ampoule-glow: rgba(0, 200, 255, 0.24);
+}
+
+.profile-ampoule--gold {
+  --ampoule-liquid: #ffd400;
+  --ampoule-glow: rgba(255, 212, 0, 0.22);
+}
+
+.profile-ampoule--amber .profile-ampoule__fill,
+.profile-ampoule--violet .profile-ampoule__fill,
+.profile-ampoule--emerald .profile-ampoule__fill,
+.profile-ampoule--rose .profile-ampoule__fill,
+.profile-ampoule--azure .profile-ampoule__fill,
+.profile-ampoule--gold .profile-ampoule__fill {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ampoule-liquid) 55%, #fff6dc) 0%,
+    var(--ampoule-liquid) 42%,
+    color-mix(in srgb, var(--ampoule-liquid) 74%, #2f1d27) 100%
+  );
+
+  box-shadow:
+    inset 0 6px 14px rgba(255, 255, 255, 0.14),
+    inset 0 -4px 12px rgba(45, 28, 38, 0.22),
+    0 0 18px var(--ampoule-glow);
+}
+
+.profile-ampoule--amber .profile-ampoule__meniscus,
+.profile-ampoule--violet .profile-ampoule__meniscus,
+.profile-ampoule--emerald .profile-ampoule__meniscus,
+.profile-ampoule--rose .profile-ampoule__meniscus,
+.profile-ampoule--azure .profile-ampoule__meniscus,
+.profile-ampoule--gold .profile-ampoule__meniscus {
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--ampoule-liquid) 45%, #fff8e8), transparent);
+}
+
+/* Azioni e form modifica profilo */
+
 .profile-dossier__actions {
+  width: 100%;
   margin-top: 1.75rem;
+
   display: flex;
   justify-content: flex-end;
-  width: 100%;
 }
 
 .profile-dossier__edit-note {
   border: 0;
   background: transparent;
   padding: 0;
+
   font-family: Georgia, "Times New Roman", serif;
   font-size: 1rem;
   font-style: italic;
+
   color: rgb(101, 12, 43);
   cursor: pointer;
   opacity: 0.82;
@@ -526,81 +830,51 @@
   color: color-mix(in srgb, var(--folio-burgundy) 90%, #6b2030);
 }
 
-.profile-dossier__footer {
-  margin-top: 2.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid color-mix(in srgb, var(--folio-border) 65%, transparent);
-  text-align: center;
-}
-
-.profile-dossier__note {
-  margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 0.78rem;
-  font-style: italic;
-  line-height: 1.65;
-  color: color-mix(in srgb, var(--folio-muted) 95%, var(--folio-ink));
-}
-
-@media (min-width: 480px) {
-  .profile-dossier__folio {
-    padding: 2.75rem 2rem 3rem;
-  }
-
-  .profile-seal {
-    width: 10.25rem;
-    height: 10.25rem;
-  }
-}
-
-@media (max-width: 520px) {
-  .profile-city-knowledge__carousel {
-    grid-template-columns: 1fr;
-  }
-
-  .profile-city-knowledge__arrow {
-    display: none;
-  }
-}
-
+/* form */
 .edit-profile-form {
   position: relative;
-  width: min(100%, 24rem);
-  margin-top: 1.25rem;
-  padding: 1.25rem;
+  width: min(100%, 26rem);
+  margin-top: 1.35rem;
+  padding: 1.15rem;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--folio-border) 72%, transparent);
-  border-radius: 0.85rem;
-  background: linear-gradient(168deg, var(--folio-paper) 0%, var(--folio-paper-deep) 100%);
-  box-shadow:
-    0 10px 24px rgba(74, 56, 42, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+
+  border: 1px solid color-mix(in srgb, var(--folio-border) 48%, transparent);
+  border-radius: 0.45rem;
+
+  background: rgba(210, 188, 154, 0.16);
+  box-shadow: none;
   text-align: left;
 }
 
 .edit-profile-form__title {
   margin: 0 0 1rem;
+
   font-family: Georgia, "Times New Roman", serif;
   font-style: italic;
+
   color: #6f2f32;
 }
 
 .edit-profile-form label {
   display: block;
   margin-top: 0.85rem;
+
   font-size: 0.62rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+
   color: #6f2f32;
 }
 
 .edit-profile-form input {
   width: 100%;
   margin-top: 0.35rem;
-  border: 1px solid rgba(111, 47, 50, 0.22);
-  border-radius: 0.55rem;
-  background: rgba(255, 252, 245, 0.36);
   padding: 0.55rem 0.7rem;
+
+  border: 1px solid rgba(111, 47, 50, 0.22);
+  border-radius: 0.45rem;
+
+  background: rgba(74, 56, 42, 0.06);
   color: #4a382a;
   outline: none;
 }
@@ -617,6 +891,7 @@
 
 .edit-profile-form__actions {
   margin-top: 1rem;
+
   display: flex;
   justify-content: flex-end;
   gap: 0.65rem;
@@ -626,70 +901,165 @@
   border: 1px solid rgba(111, 47, 50, 0.35);
   border-radius: 999px;
   background: transparent;
+
   padding: 0.45rem 0.85rem;
+
   font-size: 0.7rem;
   color: #6f2f32;
+
   cursor: pointer;
 }
 
 .edit-profile-form__actions button[type="submit"] {
   background: #6f2f32;
-  color: #eadcc8;
+  color: var(--folio-paper);
 }
 
-.profile-ampoule--amber {
-  --ampoule-liquid: rgba(214, 156, 78, 0.78);
-  --ampoule-glow: rgba(214, 156, 78, 0.32);
+/* Footer */
+
+.profile-dossier__footer {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+
+  border-top: 1px solid color-mix(in srgb, var(--folio-border) 65%, transparent);
+  text-align: center;
 }
 
-.profile-ampoule--violet {
-  --ampoule-liquid: rgba(157, 116, 217, 0.78);
-  --ampoule-glow: rgba(157, 116, 217, 0.32);
+.profile-dossier__note {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.78rem;
+  font-style: italic;
+  line-height: 1.65;
+
+  color: color-mix(in srgb, var(--folio-muted) 95%, var(--folio-ink));
 }
 
-.profile-ampoule--emerald {
-  --ampoule-liquid: rgba(93, 174, 136, 0.78);
-  --ampoule-glow: rgba(93, 174, 136, 0.32);
+/* Animazioni luci*/
+
+@keyframes profileCandleFlickerWarm {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.86;
+  }
+
+  20% {
+    transform: translate(-0.35rem, 0.2rem) scale(1.08);
+    opacity: 1;
+  }
+
+  42% {
+    transform: translate(0.3rem, -0.15rem) scale(0.96);
+    opacity: 0.76;
+  }
+
+  65% {
+    transform: translate(-0.2rem, 0.3rem) scale(1.12);
+    opacity: 0.98;
+  }
+
+  82% {
+    transform: translate(0.2rem, -0.1rem) scale(0.98);
+    opacity: 0.8;
+  }
 }
 
-.profile-ampoule--rose {
-  --ampoule-liquid: rgba(205, 112, 128, 0.78);
-  --ampoule-glow: rgba(205, 112, 128, 0.32);
+@keyframes profileCandleFlickerSoft {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.62;
+  }
+
+  30% {
+    transform: scale(1.12) translate(-0.1rem, 0.1rem);
+    opacity: 0.92;
+  }
+
+  58% {
+    transform: scale(0.94) translate(0.1rem, -0.08rem);
+    opacity: 0.55;
+  }
+
+  78% {
+    transform: scale(1.08) translate(-0.08rem, 0.04rem);
+    opacity: 0.84;
+  }
 }
 
-.profile-ampoule--azure {
-  --ampoule-liquid: rgba(104, 156, 206, 0.78);
-  --ampoule-glow: rgba(104, 156, 206, 0.32);
+@media (min-width: 480px) {
+  .profile-dossier__folio {
+    padding: 2.15rem 2rem 2.5rem;
+  }
 }
 
-.profile-ampoule--gold {
-  --ampoule-liquid: rgba(205, 181, 98, 0.78);
-  --ampoule-glow: rgba(205, 181, 98, 0.32);
+@media (max-width: 900px) and (min-width: 721px) {
+  .profile-dossier__cover {
+    transform: translateX(8rem) rotate(-9deg) translateY(4rem);
+  }
+
+  .profile-dossier__cover:hover,
+  .profile-dossier__cover:focus-visible {
+    transform: translateX(8rem) rotate(-7deg) translateY(3.65rem) scale(1.025);
+  }
 }
 
-.profile-ampoule--amber .profile-ampoule__fill,
-.profile-ampoule--violet .profile-ampoule__fill,
-.profile-ampoule--emerald .profile-ampoule__fill,
-.profile-ampoule--rose .profile-ampoule__fill,
-.profile-ampoule--azure .profile-ampoule__fill,
-.profile-ampoule--gold .profile-ampoule__fill {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--ampoule-liquid) 55%, #fff6dc) 0%,
-    var(--ampoule-liquid) 42%,
-    color-mix(in srgb, var(--ampoule-liquid) 74%, #2f1d27) 100%
-  );
-  box-shadow:
-    inset 0 6px 14px rgba(255, 255, 255, 0.14),
-    inset 0 -4px 12px rgba(45, 28, 38, 0.22),
-    0 0 18px var(--ampoule-glow);
-}
+@media (max-width: 720px) {
+  .profile-dossier {
+    min-height: calc(100vh - 120px);
+    padding: 1rem 0.75rem 3rem;
+  }
 
-.profile-ampoule--amber .profile-ampoule__meniscus,
-.profile-ampoule--violet .profile-ampoule__meniscus,
-.profile-ampoule--emerald .profile-ampoule__meniscus,
-.profile-ampoule--rose .profile-ampoule__meniscus,
-.profile-ampoule--azure .profile-ampoule__meniscus,
-.profile-ampoule--gold .profile-ampoule__meniscus {
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--ampoule-liquid) 45%, #fff8e8), transparent);
+  .profile-dossier::before {
+    top: -5rem;
+    right: -8rem;
+    width: 28rem;
+    height: 28rem;
+  }
+
+  .profile-dossier::after {
+    top: 0.75rem;
+    right: 1rem;
+    width: 9rem;
+    height: 9rem;
+  }
+
+  .profile-dossier__desk {
+    margin-top: 1.5rem;
+    min-height: 30rem;
+    padding: 1.5rem 1rem 5.5rem;
+    border-radius: 1rem;
+  }
+
+  .profile-dossier__cover {
+    width: min(19rem, 78vw);
+    height: 11.75rem;
+    margin-top: 2rem;
+    transform: rotate(-8deg) translateY(2rem);
+  }
+
+  .profile-dossier__cover:hover,
+  .profile-dossier__cover:focus-visible {
+    transform: rotate(-6deg) translateY(1.65rem) scale(1.025);
+  }
+
+  .profile-dossier__folio {
+    max-width: min(31rem, 94vw);
+    padding: 1.85rem 1rem 2.15rem;
+    transform: rotate(0deg);
+  }
+
+  .profile-dossier__body {
+    max-width: 100%;
+  }
+
+  .profile-city-knowledge__carousel {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-city-knowledge__arrow {
+    display: none;
+  }
 }

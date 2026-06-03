@@ -5,6 +5,7 @@ import { setCurrentUser } from "../redux/authSlice"
 import { useEffect, useRef, useState } from "react"
 import EditProfileForm from "../components/profile/EditProfileForm"
 import Loader from "../components/ui/Loader"
+import profilePaperImage from "../assets/profile/paper_profile.jpg"
 
 function clampFillPercent(percentage) {
   const value = Number(percentage) || 0
@@ -47,6 +48,7 @@ function ProfilePage() {
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isSavingProfile, setIsSavingProfile] = useState(false)
   const [profileEditError, setProfileEditError] = useState(null)
+  const [isDossierOpen, setIsDossierOpen] = useState(false)
 
   useEffect(() => {
     if (!currentUser) return
@@ -91,7 +93,6 @@ function ProfilePage() {
 
     updateMyProfile(profileData)
       .then((updatedUser) => {
-        console.log("UPDATED USER", updatedUser)
         dispatch(setCurrentUser(updatedUser))
         setIsEditOpen(false)
       })
@@ -116,104 +117,121 @@ function ProfilePage() {
 
   return (
     <section className="profile-dossier" aria-labelledby="profile-dossier-title">
-      <div className="profile-dossier__folio">
-        <span className="profile-dossier__star profile-dossier__star--tl" aria-hidden="true">
-          ✦
-        </span>
+      <div className="profile-dossier__desk">
+        {!isDossierOpen ? (
+          <button type="button" className="profile-dossier__cover" onClick={() => setIsDossierOpen(true)} aria-label="Apri fascicolo personale">
+            <span className="profile-dossier__cover-paper" style={{ backgroundImage: `url(${profilePaperImage})` }}>
+              <span className="profile-dossier__cover-stamp">Confidential</span>
+              <span className="profile-dossier__cover-code">Fascicolo N. {String(currentUser.level ?? 1).padStart(2, "0")}</span>
+            </span>
 
-        <span className="profile-dossier__star profile-dossier__star--tr" aria-hidden="true">
-          ✦
-        </span>
+            <span className="profile-dossier__cover-label">Apri fascicolo →</span>
+          </button>
+        ) : (
+          <div className="profile-dossier__folio">
+            <span className="profile-dossier__star profile-dossier__star--tl" aria-hidden="true">
+              ✦
+            </span>
 
-        <header className="profile-dossier__header">
-          <p className="profile-dossier__kicker">Fascicolo personale</p>
-          <p className="profile-dossier__folio-id">Fascicolo N. {String(currentUser.level ?? 1).padStart(2, "0")}</p>
-        </header>
+            <span className="profile-dossier__star profile-dossier__star--tr" aria-hidden="true">
+              ✦
+            </span>
 
-        <div className="profile-dossier__spread">
-          <div className="profile-dossier__body">
-            <div className="profile-seal">
-              <span className="profile-seal__ring profile-seal__ring--outer" aria-hidden="true" />
-              <span className="profile-seal__ring profile-seal__ring--mid" aria-hidden="true" />
-              <span className="profile-seal__ring profile-seal__ring--inner" aria-hidden="true" />
-              <span className="profile-seal__greek" aria-hidden="true" />
+            <header className="profile-dossier__header">
+              <p className="profile-dossier__kicker">Fascicolo personale</p>
+              <p className="profile-dossier__folio-id">Fascicolo N. {String(currentUser.level ?? 1).padStart(2, "0")}</p>
+            </header>
 
-              <button
-                type="button"
-                onClick={() => avatarInputRef.current?.click()}
-                disabled={isUploadingAvatar}
-                className="profile-seal__portrait"
-                aria-label="Modifica ritratto del fascicolo"
-              >
-                {currentUser.avatarUrl ? <img src={currentUser.avatarUrl} alt="" className="profile-seal__image" /> : <span className="profile-seal__void" />}
+            <div className="profile-dossier__spread">
+              <div className="profile-dossier__body">
+                <div className="profile-seal">
+                  <span className="profile-seal__ring profile-seal__ring--outer" aria-hidden="true" />
+                  <span className="profile-seal__ring profile-seal__ring--mid" aria-hidden="true" />
+                  <span className="profile-seal__ring profile-seal__ring--inner" aria-hidden="true" />
+                  <span className="profile-seal__greek" aria-hidden="true" />
 
-                <span className="profile-seal__veil">{isUploadingAvatar ? "…" : "Ritratto"}</span>
-              </button>
-            </div>
+                  <button
+                    type="button"
+                    onClick={() => avatarInputRef.current?.click()}
+                    disabled={isUploadingAvatar}
+                    className="profile-seal__portrait"
+                    aria-label="Modifica ritratto del fascicolo"
+                  >
+                    {currentUser.avatarUrl ? (
+                      <img src={currentUser.avatarUrl} alt="" className="profile-seal__image" />
+                    ) : (
+                      <span className="profile-seal__void" />
+                    )}
 
-            <p className="profile-dossier__moniker">{moniker}</p>
+                    <span className="profile-seal__veil">{isUploadingAvatar ? "…" : "Ritratto"}</span>
+                  </button>
+                </div>
 
-            <h1 id="profile-dossier-title" className="profile-dossier__ledger-title">
-              L&apos;opera prosegue nel silenzio
-            </h1>
+                <p className="profile-dossier__moniker">{moniker}</p>
 
-            <div className="profile-dossier__divider" aria-hidden="true">
-              <span className="profile-dossier__divider-line" />
-              <span className="profile-dossier__divider-gem">◆</span>
-              <span className="profile-dossier__divider-line" />
-            </div>
+                <h1 id="profile-dossier-title" className="profile-dossier__ledger-title">
+                  L&apos;opera prosegue nel silenzio
+                </h1>
 
-            <p className="profile-dossier__name">
-              {currentUser.name} {currentUser.surname}
-            </p>
+                <div className="profile-dossier__divider" aria-hidden="true">
+                  <span className="profile-dossier__divider-line" />
+                  <span className="profile-dossier__divider-gem">◆</span>
+                  <span className="profile-dossier__divider-line" />
+                </div>
 
-            <p className="profile-dossier__meta">{currentUser.email}</p>
+                <p className="profile-dossier__name">
+                  {currentUser.name} {currentUser.surname}
+                </p>
 
-            <div className="profile-dossier__registro">
-              <div className="profile-dossier__field">
-                <span>Ruolo</span>
-                <strong>{formatRole(currentUser.role)}</strong>
+                <p className="profile-dossier__meta">{currentUser.email}</p>
+
+                <div className="profile-dossier__registro">
+                  <div className="profile-dossier__field">
+                    <span>Ruolo</span>
+                    <strong>{formatRole(currentUser.role)}</strong>
+                  </div>
+
+                  <div className="profile-dossier__field">
+                    <span>Cerchio</span>
+                    <strong>{currentUser.level ?? 0}</strong>
+                  </div>
+
+                  <div className="profile-dossier__field">
+                    <span>Intuizioni</span>
+                    <strong>{currentUser.xp ?? 0}</strong>
+                  </div>
+                </div>
+
+                <ProfileCityKnowledge cities={cityKnowledge} isLoading={isLoadingCityKnowledge} />
+
+                <div className="profile-dossier__actions">
+                  <button type="button" className="profile-dossier__edit-note" onClick={() => setIsEditOpen((value) => !value)}>
+                    {isEditOpen ? "Chiudi modifica ↑" : "Aggiorna fascicolo →"}
+                  </button>
+                </div>
+
+                {isEditOpen && (
+                  <EditProfileForm
+                    currentUser={currentUser}
+                    isSaving={isSavingProfile}
+                    error={profileEditError}
+                    onSubmit={handleProfileUpdate}
+                    onCancel={() => {
+                      setIsEditOpen(false)
+                      setProfileEditError(null)
+                    }}
+                  />
+                )}
+
+                {avatarError && <p className="profile-dossier__error">{avatarError}</p>}
               </div>
-
-              <div className="profile-dossier__field">
-                <span>Cerchio</span>
-                <strong>{currentUser.level ?? 0}</strong>
-              </div>
-
-              <div className="profile-dossier__field">
-                <span>Intuizioni</span>
-                <strong>{currentUser.xp ?? 0}</strong>
-              </div>
             </div>
 
-            <ProfileCityKnowledge cities={cityKnowledge} isLoading={isLoadingCityKnowledge} />
-
-            <div className="profile-dossier__actions">
-              <button type="button" className="profile-dossier__edit-note" onClick={() => setIsEditOpen((value) => !value)}>
-                {isEditOpen ? "Chiudi modifica ↑" : "Aggiorna fascicolo →"}
-              </button>
-            </div>
-
-            {isEditOpen && (
-              <EditProfileForm
-                currentUser={currentUser}
-                isSaving={isSavingProfile}
-                error={profileEditError}
-                onSubmit={handleProfileUpdate}
-                onCancel={() => {
-                  setIsEditOpen(false)
-                  setProfileEditError(null)
-                }}
-              />
-            )}
-
-            {avatarError && <p className="profile-dossier__error">{avatarError}</p>}
+            <footer className="profile-dossier__footer">
+              <p className="profile-dossier__note"> — Annotazione riservata — </p>
+            </footer>
           </div>
-        </div>
-
-        <footer className="profile-dossier__footer">
-          <p className="profile-dossier__note"> — Annotazione riservata — </p>
-        </footer>
+        )}
       </div>
 
       <input
