@@ -63,13 +63,17 @@ function FindingsPage() {
 
   if (isLoading) {
     return (
-      <section>
-        <p className="text-sm tracking-[0.25em] text-accent">RECOVERED FINDINGS</p>
+      <section className="findings-page">
+        <div className="findings-page__panel">
+          <div className="mx-auto max-w-7xl">
+            <h1 className="mt-4 font-serif text-4xl text-accent md:text-5xl">Accessi recuperati</h1>
 
-        <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Access Archive</h1>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-muted md:text-base">Pass, inviti e opportunità sbloccati durante l'esplorazione.</p>
 
-        <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
-          <Loader label="Caricamento findings…" />
+            <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
+              <Loader label="Caricamento accessi…" />
+            </div>
+          </div>
         </div>
       </section>
     )
@@ -77,13 +81,17 @@ function FindingsPage() {
 
   if (error) {
     return (
-      <section>
-        <p className="text-sm tracking-[0.25em] text-accent">RECOVERED FINDINGS</p>
+      <section className="findings-page">
+        <div className="findings-page__panel">
+          <div className="mx-auto max-w-7xl">
+            <h1 className="mt-4 font-serif text-4xl text-accent md:text-5xl">Accessi recuperati</h1>
 
-        <h1 className="mt-4 font-serif text-4xl text-ink md:text-5xl">Access Archive</h1>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-muted md:text-base">Pass, inviti e opportunità sbloccati durante l'esplorazione.</p>
 
-        <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
-          <p className="text-arcane">{error}</p>
+            <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
+              <p className="text-arcane">{error}</p>
+            </div>
+          </div>
         </div>
       </section>
     )
@@ -136,7 +144,7 @@ function FindingsPage() {
                   <p className="text-muted">Non hai ancora sbloccato nessun accesso.</p>
                 </div>
               ) : (
-                <div className="mt-10 grid items-start gap-6 xl:grid-cols-2">
+                <div className="mt-10 grid items-start gap-20 xl:grid-cols-2">
                   {sortedRewards.map((reward) => (
                     <FindingPass key={reward.userRewardId} reward={reward} onBookingCreated={handleBookingCreated} />
                   ))}
