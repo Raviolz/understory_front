@@ -5,7 +5,7 @@ import { getMyProfile, loginUser } from "../api/authApi"
 import AuthCard from "../components/layout/AuthCard"
 import Loader from "../components/ui/Loader"
 import { setCredentials, setCurrentUser } from "../redux/authSlice"
-import mirrorFrame from "../assets/auth/mirror1.png"
+import mirrorFrame from "../assets/auth/MirrorAuth.png"
 
 function LoginPage() {
   const navigate = useNavigate()

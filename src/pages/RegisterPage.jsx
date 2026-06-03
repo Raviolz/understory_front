@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { registerUser } from "../api/authApi"
 import AuthCard from "../components/layout/AuthCard"
 import Loader from "../components/ui/Loader"
-import mirrorFrame from "../assets/auth/mirror1.png"
+import mirrorFrame from "../assets/auth/MirrorAuth.png"
 
 function RegisterPage() {
   const navigate = useNavigate()
