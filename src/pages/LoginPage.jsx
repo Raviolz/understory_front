@@ -61,15 +61,21 @@ function LoginPage() {
   }
 
   return (
-    <section className="auth-page">
+    <section className="auth-page auth-page--login">
       <div className="auth-page__panel">
+        <div className="auth-mobile-heading">
+          <p className="auth-card__label">UNDERSTORY ARCHIVE</p>
+          <h1 className="auth-card__title">Bentornato</h1>
+          <p className="auth-card__description">Accedi per continuare il tuo percorso.</p>
+        </div>
+
         <div className="auth-scene">
           <div className="auth-scene__glass">
             <AuthCard label="UNDERSTORY ARCHIVE" title="Bentornato" description="Accedi per continuare il tuo percorso.">
               {isLoading ? (
                 <Loader label="Accesso in corso…" />
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="auth-form">
                   <div>
                     <label htmlFor="email" className="mb-2 block text-sm text-muted">
                       Email

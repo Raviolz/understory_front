@@ -80,8 +80,8 @@ const DarkGlobe = () => {
   }, [])
 
   return (
-    <section className="relative z-[2] flex h-full w-full items-start justify-center overflow-hidden bg-transparent px-2 pt-8 pb-24 lg:items-center lg:p-4">
-      <div ref={containerRef} className="relative flex aspect-square w-full max-w-[600px] items-center justify-center">
+    <section className="dark-globe-section">
+      <div ref={containerRef} className="dark-globe-stage">
         <div
           className="dark-globe-glow"
           style={{
@@ -153,15 +153,15 @@ const DarkGlobe = () => {
             height: `${dimensions.height}px`,
           }}
         />
+
+        {selectedCity && (
+          <div className="dark-globe-card-shell">
+            <CityPreviewCard city={selectedCity} onClose={() => setSelectedCity(null)} />
+          </div>
+        )}
       </div>
 
-      {selectedCity && (
-        <div className="pointer-events-auto absolute bottom-15 left-1/2 z-20 w-[calc(100%-2.5rem)] max-w-[14.5rem] -translate-x-1/2 md:bottom-6 md:max-w-[18rem] lg:bottom-auto lg:left-1/2 lg:right-auto lg:top-1/2 lg:max-w-xs lg:translate-x-[8rem] lg:-translate-y-1/2 2xl:translate-x-[12rem]">
-          <CityPreviewCard city={selectedCity} onClose={() => setSelectedCity(null)} />
-        </div>
-      )}
-
-      {citiesError && <p className="absolute bottom-4 left-4 text-sm text-arcane">{citiesError}</p>}
+      {citiesError && <p className="dark-globe-error">{citiesError}</p>}
     </section>
   )
 }

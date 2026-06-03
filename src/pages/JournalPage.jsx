@@ -118,7 +118,7 @@ function JournalPage() {
               <p className="text-muted">Non hai ancora completato nessuna esperienza.</p>
             </div>
           ) : (
-            <div className="journal-page__grid mt-10 grid grid-cols-[repeat(auto-fit,minmax(420px,520px))] justify-center gap-x-20 gap-y-32 max-[460px]:grid-cols-[minmax(0,1fr)]">
+            <div className="journal-page__grid">
               {sortedEntries.map((entry) => (
                 <JournalEntryCard
                   key={entry.progressId}

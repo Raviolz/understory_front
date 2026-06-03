@@ -64,9 +64,11 @@ function Navbar() {
           {isAdmin && (
             <NavLink
               to="/backoffice"
-              className={({ isActive }) => (isActive ? "app-nav-link app-nav-link--active hidden md:block" : "app-nav-link hidden md:block")}
+              className={({ isActive }) => (isActive ? "app-nav-link app-nav-link--active app-nav-link--backoffice" : "app-nav-link app-nav-link--backoffice")}
+              onClick={closeProfileMenu}
             >
-              Backoffice
+              <span className="hidden md:inline">Backoffice</span>
+              <span className="md:hidden">Admin</span>
             </NavLink>
           )}
         </div>

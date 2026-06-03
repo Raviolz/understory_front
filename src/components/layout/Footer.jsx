@@ -52,9 +52,8 @@ function Footer() {
           {isDedicationOpen && (
             <div className="app-footer__dedication-card">
               <p>A mia mamma:</p>
-              <p>
-                Grazie. <span className="app-footer__dedication-heart" aria-hidden="true" />
-              </p>
+              <p>Grazie.</p>
+              <span className="app-footer__dedication-heart" aria-hidden="true" />
             </div>
           )}
         </div>

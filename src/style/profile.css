@@ -1027,9 +1027,9 @@
   }
 
   .profile-dossier__desk {
-    margin-top: 1.5rem;
-    min-height: 30rem;
-    padding: 1.5rem 1rem 5.5rem;
+    margin-top: 3rem;
+    min-height: clamp(34rem, 70vh, 42rem);
+    padding: 1.5rem 1rem 6.5rem;
     border-radius: 1rem;
   }
 

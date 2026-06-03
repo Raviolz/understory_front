@@ -50,17 +50,24 @@ function RegisterPage() {
   return (
     <section className="auth-page auth-page--register">
       <div className="auth-page__panel">
+        <div className="auth-mobile-heading">
+          <p className="auth-card__label">UNDERSTORY ARCHIVE</p>
+          <h1 className="auth-card__title">Benvenuto</h1>
+          <p className="auth-card__description">Ottieni un accesso e inizia ad esplorare</p>
+        </div>
+
         <div className="auth-scene">
           <div className="auth-scene__glass">
             <AuthCard label="UNDERSTORY ARCHIVE" title="Benvenuto" description="Ottieni un accesso e inizia ad esplorare">
               {isLoading ? (
                 <Loader label="Creazione accesso…" />
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="auth-form auth-form--register">
                   <div>
                     <label htmlFor="username" className="mb-2 block text-sm text-muted">
                       Username
                     </label>
+
                     <input
                       id="username"
                       name="username"
@@ -72,11 +79,12 @@ function RegisterPage() {
                     />
                   </div>
 
-                  <div className="grid gap-4 md:grid-cols-2">
+                  <div className="auth-form__name-row grid grid-cols-2">
                     <div>
                       <label htmlFor="name" className="mb-2 block text-sm text-muted">
                         Nome
                       </label>
+
                       <input
                         id="name"
                         name="name"
@@ -92,6 +100,7 @@ function RegisterPage() {
                       <label htmlFor="surname" className="mb-2 block text-sm text-muted">
                         Cognome
                       </label>
+
                       <input
                         id="surname"
                         name="surname"
@@ -108,6 +117,7 @@ function RegisterPage() {
                     <label htmlFor="email" className="mb-2 block text-sm text-muted">
                       Email
                     </label>
+
                     <input
                       id="email"
                       name="email"
@@ -123,6 +133,7 @@ function RegisterPage() {
                     <label htmlFor="password" className="mb-2 block text-sm text-muted">
                       Password
                     </label>
+
                     <input
                       id="password"
                       name="password"
