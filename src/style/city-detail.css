@@ -511,8 +511,6 @@
   height: 8px;
 }
 
-/* RESPONSIVE */
-
 @media (max-width: 1180px) {
   .city-detail-grid {
     grid-template-columns: repeat(2, minmax(0, 18rem));

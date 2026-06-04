@@ -23,6 +23,7 @@ import LocalShopsPage from "./pages/LocalShopsPage"
 import ExperienceDetailPage from "./pages/ExperienceDetailsPage"
 import FindingsPage from "./pages/FindingsPage"
 import ProtectedRoute from "./routes/ProtectedRoute"
+import AtlasPage from "./pages/AtlasPage"
 
 function AppShell() {
   const location = useLocation()
@@ -30,6 +31,7 @@ function AppShell() {
   const isLanding = location.pathname === "/" || location.pathname === "/explore"
   const isPanelPage =
     location.pathname === "/journal" ||
+    location.pathname === "/atlas" ||
     location.pathname === "/findings" ||
     location.pathname === "/login" ||
     location.pathname === "/register" ||
@@ -72,6 +74,15 @@ function AppShell() {
             element={
               <ProtectedRoute>
                 <JournalPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/atlas"
+            element={
+              <ProtectedRoute>
+                <AtlasPage />
               </ProtectedRoute>
             }
           />

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
-import { Link, useParams, useSearchParams } from "react-router-dom"
+import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { getPublishedExperienceById } from "../api/publicApi"
 import { getExperienceCompletion } from "../api/meApi"
 import QuizExperienceGame from "../components/experiences/QuizExperienceGame"
@@ -12,6 +12,7 @@ import "../style/games.css"
 
 function ExperienceDetailsPage() {
   const { experienceId } = useParams()
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const requestedRevealMode = searchParams.get("reveal") === "true"
 
@@ -132,6 +133,21 @@ function ExperienceDetailsPage() {
 
   const revealXpText = gameResult ? `XP ottenuti: ${gameResult.xpAwarded}` : `XP registrati: ${experience?.xpReward ?? 0}`
 
+  function handlePageBack() {
+    if (isGameStep && !archivedRevealAllowed && storyPages.length > 0) {
+      setGameResult(null)
+      setStoryStep(storyPages.length - 1)
+      return
+    }
+
+    if (window.history.length > 1) {
+      navigate(-1)
+      return
+    }
+
+    navigate("/explore")
+  }
+
   function goNext() {
     setStoryStep((currentStep) => currentStep + 1)
   }
@@ -208,9 +224,9 @@ function ExperienceDetailsPage() {
   return (
     <section className="experience-page">
       <div className="experience-panel">
-        <Link to="/explore" className="experience-back">
+        <button type="button" onClick={handlePageBack} className="experience-back">
           ← Back
-        </Link>
+        </button>
 
         <section className={isGameStep ? "experience-shell experience-shell--game" : "experience-shell"}>
           {!isGameStep ? (

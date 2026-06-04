@@ -1,6 +1,4 @@
-/* =========================================================
-   NAVBAR
-   ========================================================= */
+/*   NAVBAR */
 
 .app-navbar {
   position: sticky;
@@ -197,7 +195,7 @@
   color: color-mix(in srgb, var(--muted) 75%, transparent);
 }
 
-/* FOOTER CONTACT POPOVER */
+/* FOOTER CONTACT */
 
 .app-footer__contact {
   position: absolute;

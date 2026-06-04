@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
+import { Link } from "react-router-dom"
 import { getMyJournal, updateMyProgressNote } from "../api/meApi"
 import JournalEntryCard from "../components/journal/JournalEntryCard"
 import Loader from "../components/ui/Loader"
@@ -15,9 +16,7 @@ function JournalPage() {
 
     getMyJournal({ size: 50 })
       .then((data) => {
-        if (ignore) {
-          return
-        }
+        if (ignore) return
 
         const journalEntries = data.content ?? []
 
@@ -31,17 +30,13 @@ function JournalPage() {
         setNoteDrafts(initialDrafts)
       })
       .catch((error) => {
-        if (ignore) {
-          return
-        }
+        if (ignore) return
 
         console.error(error)
         setError("Non riesco a caricare il journal.")
       })
       .finally(() => {
-        if (ignore) {
-          return
-        }
+        if (ignore) return
 
         setIsLoading(false)
       })
@@ -102,16 +97,29 @@ function JournalPage() {
   }
 
   if (error) {
-    return <p className="text-arcane">{error}</p>
+    return (
+      <section className="journal-page">
+        <div className="journal-page__panel">
+          <p className="text-arcane">{error}</p>
+        </div>
+      </section>
+    )
   }
 
   return (
     <section className="journal-page">
       <div className="journal-page__panel">
         <div className="mx-auto max-w-7xl">
-          <p className="journal-page__title">Archivio Personale</p>
+          <div className="journal-page__heading">
+            <div>
+              <p className="journal-page__title">Archivio Personale</p>
+              <p className="journal-page__intro">Appunti di viaggio e tracce raccolte lungo il percorso</p>
+            </div>
 
-          <p className="journal-page__intro">Appunti di viaggio e tracce raccolte lungo il percorso</p>
+            <Link to="/atlas" className="journal-page__atlas-link">
+              Atlante
+            </Link>
+          </div>
 
           {sortedEntries.length === 0 ? (
             <div className="journal-page__empty mt-10">

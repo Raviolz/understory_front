@@ -13,6 +13,7 @@ const emptyForm = {
   revealTitle: "",
   revealText: "",
   journalText: "",
+  atlasText: "",
   xpReward: "",
   difficulty: "",
 }
@@ -30,6 +31,7 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
     revealTitle: initialValues.revealTitle || "",
     revealText: initialValues.revealText || "",
     journalText: initialValues.journalText || "",
+    atlasText: initialValues.atlasText || "",
     xpReward: initialValues.xpReward ?? "",
     difficulty: initialValues.difficulty ?? "",
   })
@@ -57,6 +59,7 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
       ...formData,
       contextText: formData.contextText || null,
       leadInText: formData.leadInText || null,
+      atlasText: formData.atlasText || null,
       xpReward: Number(formData.xpReward),
       difficulty: Number(formData.difficulty),
     }
@@ -247,6 +250,24 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
           onChange={handleChange}
           className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
         />
+      </div>
+
+      <div className="mt-5">
+        <label htmlFor="atlasText" className="mb-2 block text-sm text-muted">
+          Atlas text
+        </label>
+
+        <textarea
+          id="atlasText"
+          name="atlasText"
+          rows="7"
+          value={formData.atlasText}
+          onChange={handleChange}
+          className="w-full rounded-xl border border-accent-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
+          placeholder="Testo discorsivo da mostrare nel libro Atlante dopo il completamento dell’esperienza."
+        />
+
+        <p className="mt-2 text-xs leading-5 text-muted">Questo testo viene usato solo nella pagina Atlante. Può restare vuoto per ora.</p>
       </div>
 
       <div className="mt-5">

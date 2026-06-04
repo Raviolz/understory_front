@@ -4,6 +4,10 @@ export function getMyJournal({ page = 0, size = 50, sortBy = "completedAt" } = {
   return authenticatedRequest(`/me/journal?page=${page}&size=${size}&sortBy=${sortBy}`)
 }
 
+export function getMyAtlas({ page = 0, size = 50, sortBy = "completedAt" } = {}) {
+  return authenticatedRequest(`/me/atlas?page=${page}&size=${size}&sortBy=${sortBy}`)
+}
+
 export function updateMyProgressNote(progressId, userNote) {
   return authenticatedRequest(`/me/progress/${progressId}/note`, {
     method: "PATCH",

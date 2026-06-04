@@ -632,8 +632,6 @@
   font-weight: 600;
 }
 
-/* LARGE SCREENS */
-
 @media (min-width: 1400px) {
   .quiz-fortune__booth {
     width: min(100%, 82rem);
@@ -668,7 +666,7 @@
   }
 }
 
-/* TABLET PORTRAIT — game più grande e leggibile */
+/* TABLET game  */
 
 @media (min-width: 761px) and (max-width: 1100px) and (orientation: portrait) {
   .experience-page {
