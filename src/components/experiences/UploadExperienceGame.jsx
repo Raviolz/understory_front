@@ -59,7 +59,7 @@ function UploadExperienceGame({ experience }) {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a inviare l’immagine.")
+        setError("Non riesco a inviare l'immagine.")
       })
       .finally(() => {
         setIsSubmitting(false)
@@ -100,7 +100,7 @@ function UploadExperienceGame({ experience }) {
           </div>
         </div>
 
-        {submission.imageUrl && <p className="quiz-fortune__result">La traccia è stata consegnata. Quando sarà approvata, l’esperienza verrà completata.</p>}
+        {submission.imageUrl && <p className="quiz-fortune__result">La traccia è stata consegnata. Quando sarà approvata, l'esperienza verrà completata.</p>}
       </section>
     )
   }
@@ -128,7 +128,7 @@ function UploadExperienceGame({ experience }) {
               <span className="quiz-fortune-card__symbol">☽</span>
 
               <span className="quiz-fortune-card__text">
-                {selectedFile ? selectedFile.name : uploadGame.targetDescription || "Scegli un’immagine da consegnare."}
+                {selectedFile ? selectedFile.name : uploadGame.targetDescription || "Scegli un'immagine da consegnare."}
               </span>
 
               <span className="quiz-fortune-card__seal">{isSubmitting ? "Consulta…" : selectedFile ? "Sigilla →" : "Carica →"}</span>

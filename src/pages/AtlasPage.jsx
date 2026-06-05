@@ -43,11 +43,11 @@ function AtlasPage() {
 
   const pageHeader = (
     <header className="atlas-page__header">
-      <p className="atlas-page__eyebrow">Understory archives</p>
+      <p className="atlas-page__eyebrow">Memorie ricostruite</p>
 
       <h1 className="atlas-page__title">Opera Omnia</h1>
 
-      <p className="atlas-page__intro">Rileggi le esperienze raccolte lungo il percorso.</p>
+      <p className="atlas-page__intro">Rileggi e sfoglia le storie che hai riportato alla luce.</p>
     </header>
   )
 
@@ -59,7 +59,7 @@ function AtlasPage() {
 
           {isLoading ? (
             <div className="atlas-page__state">
-              <Loader label="Caricamento atlante…" />
+              <Loader label="Aprendo l'atlante…" />
             </div>
           ) : error ? (
             <div className="atlas-page__state">

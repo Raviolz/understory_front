@@ -125,9 +125,9 @@ function LocalShopsPage() {
     <section className="local-shops-page">
       <div className="local-shops-page__panel">
         <header className="local-shops-page__header">
-          <p className="local-shops-page__eyebrow">Collezione locale</p>
+          <p className="local-shops-page__eyebrow">Il mondo e' silenzioso qui</p>
           <h1 className="local-shops-page__title">Botteghe scoperte</h1>
-          <p className="local-shops-page__intro">Un catalogo di insegne, passaggi e favori emersi durante il percorso.</p>
+          <p className="local-shops-page__intro">Una collezione locale di posti in cui rifugiarti</p>
         </header>
 
         <div className="local-shops-drawer-grid">

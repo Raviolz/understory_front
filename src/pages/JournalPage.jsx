@@ -89,11 +89,11 @@ function JournalPage() {
   const pageHeader = (
     <header className="journal-page__header">
       <div className="journal-page__header-copy">
-        <p className="journal-page__eyebrow">Personal archive</p>
+        <p className="journal-page__eyebrow">RICORDI DI VIAGGIO</p>
 
         <h1 className="journal-page__title">Archivio personale</h1>
 
-        <p className="journal-page__intro">Appunti di viaggio e tracce raccolte lungo il percorso.</p>
+        <p className="journal-page__intro">Appunti e tracce raccolte lungo il tuo percorso.</p>
       </div>
 
       <Link to="/atlas" className="journal-page__atlas-link">
@@ -110,7 +110,7 @@ function JournalPage() {
             {pageHeader}
 
             <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
-              <Loader label="Caricamento journal…" />
+              <Loader label="Aprendo l'archivio…" />
             </div>
           </div>
         </div>

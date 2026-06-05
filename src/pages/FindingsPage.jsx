@@ -63,11 +63,11 @@ function FindingsPage() {
 
   const pageHeader = (
     <header className="findings-page__header">
-      <p className="findings-page__eyebrow">Findings archive</p>
+      <p className="findings-page__eyebrow">PASSE-PARTOUT</p>
 
       <h1 className="findings-page__title">Accessi recuperati</h1>
 
-      <p className="findings-page__intro">Pass, inviti e opportunità sbloccati durante l'esplorazione.</p>
+      <p className="findings-page__intro"> Biglietti, opportunità e inviti sbloccati durante l'esplorazione.</p>
     </header>
   )
 
@@ -79,7 +79,7 @@ function FindingsPage() {
             {pageHeader}
 
             <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
-              <Loader label="Caricamento accessi…" />
+              <Loader label="Recuperando i biglietti…" />
             </div>
           </div>
         </div>

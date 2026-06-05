@@ -80,7 +80,7 @@ function ProfilePage() {
       })
       .catch((error) => {
         console.error(error)
-        setAvatarError("Non riesco a caricare l’avatar.")
+        setAvatarError("Non riesco a caricare l'avatar.")
       })
       .finally(() => {
         setIsUploadingAvatar(false)
@@ -170,7 +170,7 @@ function ProfilePage() {
                 <p className="profile-dossier__moniker">{moniker}</p>
 
                 <h1 id="profile-dossier-title" className="profile-dossier__ledger-title">
-                  L&apos;opera prosegue nel silenzio
+                  L'opera prosegue nel silenzio
                 </h1>
 
                 <div className="profile-dossier__divider" aria-hidden="true">
@@ -270,10 +270,10 @@ function ProfileCityKnowledge({ cities, isLoading }) {
   return (
     <section className="profile-city-knowledge" aria-labelledby="profile-city-knowledge-title">
       <p id="profile-city-knowledge-title" className="profile-city-knowledge__title">
-        Ampolle del sapere
+        Distillati:
       </p>
 
-      <p className="profile-city-knowledge__intro">Ogni ampolla raccoglie la parte di città che hai già riportato alla luce.</p>
+      <p className="profile-city-knowledge__intro">Ogni ampolla si riempie con ciò che hai scoperto della città. </p>
 
       <div className="profile-city-knowledge__carousel">
         <button type="button" className="profile-city-knowledge__arrow" onClick={() => scrollVials("left")} aria-label="Scorri ampolle a sinistra">

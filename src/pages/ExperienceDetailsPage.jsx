@@ -230,7 +230,7 @@ function ExperienceDetailsPage() {
     <section className="experience-page">
       <div className="experience-panel">
         <button type="button" onClick={handlePageBack} className="experience-back">
-          ← Back
+          ← Indietro
         </button>
 
         <section className={isGameStep ? "experience-shell experience-shell--game" : "experience-shell"}>
