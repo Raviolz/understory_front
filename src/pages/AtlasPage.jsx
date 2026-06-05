@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react"
-import backgroundAtlas from "../assets/atlas/backgroundAtlas.png"
 import { getMyAtlas } from "../api/meApi"
 import AtlasFlipBook from "../components/journal/AtlasFlipBook"
 import Loader from "../components/ui/Loader"
@@ -13,11 +12,8 @@ function AtlasPage() {
     let ignore = false
 
     getMyAtlas({ size: 50 })
-    getMyAtlas({ size: 50 })
       .then((data) => {
         if (ignore) return
-
-        console.log("ATLAS DATA", data.content)
 
         setEntries(data.content ?? [])
         setError(null)
@@ -45,17 +41,21 @@ function AtlasPage() {
     })
   }, [entries])
 
+  const pageHeader = (
+    <header className="atlas-page__header">
+      <p className="atlas-page__eyebrow">Understory archives</p>
+
+      <h1 className="atlas-page__title">Opera Omnia</h1>
+
+      <p className="atlas-page__intro">Rileggi le esperienze raccolte lungo il percorso.</p>
+    </header>
+  )
+
   return (
     <section className="atlas-page">
       <div className="atlas-page__panel">
-        <img src={backgroundAtlas} alt="" aria-hidden="true" className="atlas-page__background" />
-
         <div className="atlas-page__content">
-          <header className="atlas-page__header">
-            <p className="atlas-page__kicker">UNDERSTORY ARCHIVES</p>
-            <h1 className="atlas-page__title">Atlante</h1>
-            <p className="atlas-page__intro">Rileggi le esperienze raccolte lungo il percorso.</p>
-          </header>
+          {pageHeader}
 
           {isLoading ? (
             <div className="atlas-page__state">

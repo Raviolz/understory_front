@@ -5,9 +5,7 @@ import { getExperienceCompletion } from "../api/meApi"
 import QuizExperienceGame from "../components/experiences/QuizExperienceGame"
 import UploadExperienceGame from "../components/experiences/UploadExperienceGame"
 import Loader from "../components/ui/Loader"
-import revealCircusBg from "../assets/city/backcircus.jpg"
-import revealMain from "../assets/city/reveal.png"
-import revealBottom from "../assets/city/cartiglionosfondo.png"
+import revealPoster from "../assets/city/RevealPosterB.png"
 import "../style/games.css"
 
 function ExperienceDetailsPage() {
@@ -130,7 +128,6 @@ function ExperienceDetailsPage() {
 
   const revealTitle = completion?.revealTitle || experience?.revealTitle || "Rivelazione"
   const explanationText = gameResult?.explanationText || completion?.explanationText || ""
-
   const revealXpText = gameResult ? `XP ottenuti: ${gameResult.xpAwarded}` : `XP registrati: ${experience?.xpReward ?? 0}`
 
   function handlePageBack() {
@@ -185,7 +182,9 @@ function ExperienceDetailsPage() {
     return (
       <section className="experience-page">
         <div className="experience-panel">
-          <Loader label="Caricamento esperienza…" />
+          <div className="experience-state">
+            <Loader label="Caricamento esperienza…" />
+          </div>
         </div>
       </section>
     )
@@ -195,7 +194,9 @@ function ExperienceDetailsPage() {
     return (
       <section className="experience-page">
         <div className="experience-panel">
-          <p className="experience-message experience-message--error">{error}</p>
+          <div className="experience-state">
+            <p className="experience-message experience-message--error">{error}</p>
+          </div>
         </div>
       </section>
     )
@@ -205,7 +206,9 @@ function ExperienceDetailsPage() {
     return (
       <section className="experience-page">
         <div className="experience-panel">
-          <p className="experience-message">Esperienza non trovata.</p>
+          <div className="experience-state">
+            <p className="experience-message">Esperienza non trovata.</p>
+          </div>
         </div>
       </section>
     )
@@ -215,7 +218,9 @@ function ExperienceDetailsPage() {
     return (
       <section className="experience-page">
         <div className="experience-panel">
-          <Loader label="Verifico la rivelazione archiviata…" />
+          <div className="experience-state">
+            <Loader label="Verifico la rivelazione archiviata…" />
+          </div>
         </div>
       </section>
     )
@@ -264,40 +269,49 @@ function ExperienceDetailsPage() {
               <div className="experience-game-stage">
                 {isRevealStep ? (
                   <section className="experience-reveal">
-                    <div
-                      className="experience-reveal__poster"
-                      style={{
-                        backgroundImage: `linear-gradient(rgba(37, 13, 20, 0.12), rgba(17, 10, 14, 0.2)), url(${revealCircusBg})`,
-                      }}
-                    >
-                      <div className="experience-reveal__main-cartouche">
-                        <img src={revealMain} alt="" className="experience-reveal__main-cartouche-image" />
+                    {Array.from({ length: 16 }).map((_, index) => (
+                      <span key={`star-${index}`} className={`experience-reveal__star experience-reveal__star--${index + 1}`} aria-hidden="true">
+                        ✦
+                      </span>
+                    ))}
 
-                        <div className="experience-reveal__main-cartouche-content">
-                          <p className="experience-reveal__kicker">Rivelazione</p>
-
-                          <h2 className="experience-reveal__title">{revealTitle}</h2>
-
-                          {explanationText ? (
-                            <p className="experience-reveal__text">{explanationText}</p>
-                          ) : (
-                            <p className="experience-reveal__text">Rivelazione archiviata nell’Archivio personale.</p>
-                          )}
-                        </div>
+                    <div className="experience-reveal__poster-wrap">
+                      <div className="experience-reveal__side-lights experience-reveal__side-lights--top" aria-hidden="true">
+                        {Array.from({ length: 7 }).map((_, index) => (
+                          <span key={`top-light-${index}`} className="experience-reveal__light" />
+                        ))}
                       </div>
 
-                      <div className="experience-reveal__ribbon">
-                        <img src={revealBottom} alt="" className="experience-reveal__ribbon-image" />
+                      <img src={revealPoster} alt="" className="experience-reveal__poster-image" />
 
-                        <div className="experience-reveal__ribbon-content">
-                          {getRevealMessageLines().map((line) => (
-                            <p key={line}>{line}</p>
+                      <div className="experience-reveal__content">
+                        <p className="experience-reveal__kicker">Rivelazione</p>
+
+                        <h2 className="experience-reveal__title">{revealTitle}</h2>
+
+                        <div className="experience-reveal__divider" />
+
+                        <p className="experience-reveal__text">{explanationText || "Rivelazione archiviata nell’Archivio personale."}</p>
+
+                        <div className="experience-reveal__divider" />
+
+                        <div className="experience-reveal__meta">
+                          {getRevealMessageLines().map((line, index) => (
+                            <p key={line} className={index === 0 ? "experience-reveal__answer-status" : undefined}>
+                              {line}
+                            </p>
                           ))}
 
-                          <p>{revealXpText}</p>
+                          <p className="experience-reveal__xp">{revealXpText}</p>
 
                           {gameResult?.rewardUnlocked && <p className="experience-reveal__reward">Accesso sbloccato: {gameResult.rewardTitle}</p>}
                         </div>
+                      </div>
+
+                      <div className="experience-reveal__side-lights experience-reveal__side-lights--bottom" aria-hidden="true">
+                        {Array.from({ length: 7 }).map((_, index) => (
+                          <span key={`bottom-light-${index}`} className="experience-reveal__light" />
+                        ))}
                       </div>
                     </div>
                   </section>

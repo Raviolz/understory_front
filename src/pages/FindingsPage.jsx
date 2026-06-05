@@ -61,14 +61,22 @@ function FindingsPage() {
     setBookings((currentBookings) => [createdBooking, ...currentBookings])
   }
 
+  const pageHeader = (
+    <header className="findings-page__header">
+      <p className="findings-page__eyebrow">Findings archive</p>
+
+      <h1 className="findings-page__title">Accessi recuperati</h1>
+
+      <p className="findings-page__intro">Pass, inviti e opportunità sbloccati durante l'esplorazione.</p>
+    </header>
+  )
+
   if (isLoading) {
     return (
       <section className="findings-page">
         <div className="findings-page__panel">
           <div className="mx-auto max-w-7xl">
-            <h1 className="mt-4 font-serif text-4xl text-accent md:text-5xl">Accessi recuperati</h1>
-
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-muted md:text-base">Pass, inviti e opportunità sbloccati durante l'esplorazione.</p>
+            {pageHeader}
 
             <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
               <Loader label="Caricamento accessi…" />
@@ -84,9 +92,7 @@ function FindingsPage() {
       <section className="findings-page">
         <div className="findings-page__panel">
           <div className="mx-auto max-w-7xl">
-            <h1 className="mt-4 font-serif text-4xl text-accent md:text-5xl">Accessi recuperati</h1>
-
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-muted md:text-base">Pass, inviti e opportunità sbloccati durante l'esplorazione.</p>
+            {pageHeader}
 
             <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
               <p className="text-arcane">{error}</p>
@@ -101,20 +107,14 @@ function FindingsPage() {
     <section className="findings-page">
       <div className="findings-page__panel">
         <div className="mx-auto max-w-7xl">
-          <h1 className="mt-4 font-serif text-4xl text-accent md:text-5xl">Accessi recuperati</h1>
-
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-muted md:text-base">Pass, inviti e opportunità sbloccati durante l'esplorazione.</p>
+          {pageHeader}
 
           <div className="findings-page__controls">
-            <div className="inline-flex rounded-full border border-border-soft bg-surface p-1">
+            <div className="findings-page__tabs">
               <button
                 type="button"
                 onClick={() => setActiveView("recovered")}
-                className={
-                  activeView === "recovered"
-                    ? "rounded-full bg-accent px-5 py-2 text-sm text-canvas"
-                    : "rounded-full px-5 py-2 text-sm text-muted transition hover:text-ink"
-                }
+                className={activeView === "recovered" ? "findings-page__tab findings-page__tab--active" : "findings-page__tab"}
               >
                 Recuperati {sortedRewards.length}
               </button>
@@ -122,11 +122,7 @@ function FindingsPage() {
               <button
                 type="button"
                 onClick={() => setActiveView("scheduled")}
-                className={
-                  activeView === "scheduled"
-                    ? "rounded-full bg-accent px-5 py-2 text-sm text-canvas"
-                    : "rounded-full px-5 py-2 text-sm text-muted transition hover:text-ink"
-                }
+                className={activeView === "scheduled" ? "findings-page__tab findings-page__tab--active" : "findings-page__tab"}
               >
                 Archiviati {sortedBookings.length}
               </button>

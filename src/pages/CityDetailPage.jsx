@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { getPublishedCityById, getPublishedPointsByCity } from "../api/publicApi"
 import PointPreviewCard from "../components/citites/PointPreviewCard"
 import CityMap from "../components/citites/CityMap"
@@ -50,7 +50,11 @@ function CityDetailPage() {
   if (!city && !error) {
     return (
       <section className="city-detail-page">
-        <Loader label="Caricamento città…" />
+        <div className="city-detail-panel">
+          <div className="city-detail-state">
+            <Loader label="Caricamento città…" />
+          </div>
+        </div>
       </section>
     )
   }
@@ -58,7 +62,9 @@ function CityDetailPage() {
   if (error) {
     return (
       <section className="city-detail-page">
-        <p className="city-detail-message city-detail-message--error">{error}</p>
+        <div className="city-detail-panel">
+          <p className="city-detail-message city-detail-message--error">{error}</p>
+        </div>
       </section>
     )
   }
@@ -66,7 +72,9 @@ function CityDetailPage() {
   if (!city) {
     return (
       <section className="city-detail-page">
-        <p className="city-detail-message">Città non trovata.</p>
+        <div className="city-detail-panel">
+          <p className="city-detail-message">Città non trovata.</p>
+        </div>
       </section>
     )
   }
@@ -74,12 +82,8 @@ function CityDetailPage() {
   return (
     <section className="city-detail-page">
       <div className="city-detail-panel">
-        <Link to="/" className="city-detail-back">
-          ← Back to globe
-        </Link>
-
         <section className="city-detail-hero">
-          <p className="city-detail-kicker">{city.country}</p>
+          <p className="city-detail-eyebrow">{city.country}</p>
 
           <h1 className="city-detail-title">{city.name}</h1>
 
@@ -92,6 +96,7 @@ function CityDetailPage() {
               <span className="city-map-card__star" aria-hidden="true">
                 ✦
               </span>
+
               <div className="city-map-card__header">
                 <p className="city-map-card__title">City map</p>
               </div>
@@ -107,11 +112,9 @@ function CityDetailPage() {
           <section className="city-detail-cards">
             <div className="city-detail-cards__header">
               <div>
-                <p className="city-detail-kicker">La città ricorda più di quanto mostri</p>
+                <p className="city-detail-eyebrow">La città ricorda più di quanto mostri</p>
                 <h2 className="city-detail-section-title">Scegli la tua prossima carta</h2>
               </div>
-
-              <p className="city-detail-count">{points.length} published points</p>
             </div>
 
             <div className="city-detail-grid">

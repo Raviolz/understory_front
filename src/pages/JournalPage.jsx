@@ -86,11 +86,33 @@ function JournalPage() {
       })
   }
 
+  const pageHeader = (
+    <header className="journal-page__header">
+      <div className="journal-page__header-copy">
+        <p className="journal-page__eyebrow">Personal archive</p>
+
+        <h1 className="journal-page__title">Archivio personale</h1>
+
+        <p className="journal-page__intro">Appunti di viaggio e tracce raccolte lungo il percorso.</p>
+      </div>
+
+      <Link to="/atlas" className="journal-page__atlas-link">
+        Atlante
+      </Link>
+    </header>
+  )
+
   if (isLoading) {
     return (
       <section className="journal-page">
         <div className="journal-page__panel">
-          <Loader label="Caricamento journal…" />
+          <div className="mx-auto max-w-7xl">
+            {pageHeader}
+
+            <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
+              <Loader label="Caricamento journal…" />
+            </div>
+          </div>
         </div>
       </section>
     )
@@ -100,7 +122,13 @@ function JournalPage() {
     return (
       <section className="journal-page">
         <div className="journal-page__panel">
-          <p className="text-arcane">{error}</p>
+          <div className="mx-auto max-w-7xl">
+            {pageHeader}
+
+            <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
+              <p className="text-arcane">{error}</p>
+            </div>
+          </div>
         </div>
       </section>
     )
@@ -110,16 +138,7 @@ function JournalPage() {
     <section className="journal-page">
       <div className="journal-page__panel">
         <div className="mx-auto max-w-7xl">
-          <div className="journal-page__heading">
-            <div>
-              <p className="journal-page__title">Archivio Personale</p>
-              <p className="journal-page__intro">Appunti di viaggio e tracce raccolte lungo il percorso</p>
-            </div>
-
-            <Link to="/atlas" className="journal-page__atlas-link">
-              Atlante
-            </Link>
-          </div>
+          {pageHeader}
 
           {sortedEntries.length === 0 ? (
             <div className="journal-page__empty mt-10">
