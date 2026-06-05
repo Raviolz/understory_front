@@ -51,7 +51,7 @@ function GameList() {
       .catch((error) => {
         console.error(error)
         setError(
-          "Non puoi eliminare questo quiz game perché l’esperienza collegata ha già progressi o submissions. Usa la modifica o controlla l’esperienza collegata.",
+          "Non puoi eliminare questo quiz game perché l'esperienza collegata ha già progressi o submissions. Usa la modifica o controlla l'esperienza collegata.",
         )
       })
   }
@@ -70,7 +70,7 @@ function GameList() {
       .catch((error) => {
         console.error(error)
         setError(
-          "Non puoi eliminare questo upload game perché l’esperienza collegata ha già progressi o submissions. Usa la modifica o controlla l’esperienza collegata.",
+          "Non puoi eliminare questo upload game perché l'esperienza collegata ha già progressi o submissions. Usa la modifica o controlla l'esperienza collegata.",
         )
       })
   }

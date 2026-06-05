@@ -208,7 +208,7 @@ function LocalBusinessForm({ cities = [], businessCategories = [], initialValues
           className="block w-full text-sm text-muted file:mr-4 file:rounded-full file:border file:border-accent-soft file:bg-transparent file:px-4 file:py-2 file:text-sm file:text-accent"
         />
 
-        <p className="mt-2 text-xs text-muted">Se selezioni un file, verrà caricato dopo il salvataggio dell’attività locale.</p>
+        <p className="mt-2 text-xs text-muted">Se selezioni un file, verrà caricato dopo il salvataggio dell'attività locale.</p>
       </div>
 
       <div className="mt-5">

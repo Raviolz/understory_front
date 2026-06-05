@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import { getMyAtlas } from "../api/meApi"
 import AtlasFlipBook from "../components/journal/AtlasFlipBook"
 import Loader from "../components/ui/Loader"
+import ErrorLoader from "../components/ui/ErrorLoader"
 
 function AtlasPage() {
   const [entries, setEntries] = useState([])
@@ -22,7 +23,7 @@ function AtlasPage() {
         if (ignore) return
 
         console.error(error)
-        setError("Non riesco a caricare l'atlante.")
+        setError("Impossibile caricare l'atlante.")
       })
       .finally(() => {
         if (ignore) return
@@ -63,7 +64,7 @@ function AtlasPage() {
             </div>
           ) : error ? (
             <div className="atlas-page__state">
-              <p className="text-arcane">{error}</p>
+              <ErrorLoader message={error} />
             </div>
           ) : (
             <AtlasFlipBook entries={sortedEntries} />

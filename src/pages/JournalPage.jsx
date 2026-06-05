@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { getMyJournal, updateMyProgressNote } from "../api/meApi"
 import JournalEntryCard from "../components/journal/JournalEntryCard"
 import Loader from "../components/ui/Loader"
+import ErrorLoader from "../components/ui/ErrorLoader"
 
 function JournalPage() {
   const [entries, setEntries] = useState([])
@@ -33,7 +34,7 @@ function JournalPage() {
         if (ignore) return
 
         console.error(error)
-        setError("Non riesco a caricare il journal.")
+        setError("Impossibile caricare il journal.")
       })
       .finally(() => {
         if (ignore) return
@@ -78,7 +79,7 @@ function JournalPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a salvare la nota.")
+        setError("Impossibile salvare la nota.")
         throw error
       })
       .finally(() => {
@@ -126,7 +127,7 @@ function JournalPage() {
             {pageHeader}
 
             <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
-              <p className="text-arcane">{error}</p>
+              <ErrorLoader message={error} />
             </div>
           </div>
         </div>

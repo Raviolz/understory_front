@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom"
 import { getMyLocalShops } from "../api/meApi"
 import LocalShopCard from "../components/localShops/LocalShopCard"
 import Loader from "../components/ui/Loader"
+import ErrorLoader from "../components/ui/ErrorLoader"
 
 const CABINET_SLOT_UNIT = 6
 const MINIMUM_SLOT_COUNT = 6
@@ -41,7 +42,7 @@ function LocalShopsPage() {
         }
 
         console.error(error)
-        setError("Non riesco a caricare le botteghe scoperte.")
+        setError("Impossibile caricare le botteghe scoperte.")
       })
       .finally(() => {
         if (ignore) {
@@ -115,7 +116,7 @@ function LocalShopsPage() {
     return (
       <section className="local-shops-page">
         <div className="local-shops-page__panel">
-          <p className="local-shops-page__message local-shops-page__message--error">{error}</p>
+          <ErrorLoader message={error} />
         </div>
       </section>
     )

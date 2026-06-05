@@ -3,6 +3,7 @@ import { submitUploadSubmission } from "../../api/gameplayApi"
 import { getPublishedUploadGameByExperience } from "../../api/publicApi"
 import fortuneBoothImage from "../../assets/city/FortuneTeller.png"
 import Loader from "../ui/Loader"
+import ErrorLoader from "../ui/ErrorLoader"
 
 function UploadExperienceGame({ experience }) {
   const fileInputRef = useRef(null)
@@ -26,7 +27,7 @@ function UploadExperienceGame({ experience }) {
       .catch((error) => {
         console.error(error)
         setUploadGame(null)
-        setError("Non riesco a caricare il gioco upload.")
+        setError("Impossibile caricare la prova")
       })
   }, [experience?.id])
 
@@ -59,7 +60,7 @@ function UploadExperienceGame({ experience }) {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a inviare l'immagine.")
+        setError("Errore durante l'invio dell'immagine.")
       })
       .finally(() => {
         setIsSubmitting(false)
@@ -67,18 +68,18 @@ function UploadExperienceGame({ experience }) {
   }
 
   if (error) {
-    return <p className="experience-message experience-message--error">{error}</p>
+    return <ErrorLoader message={error} />
   }
 
   if (!uploadGame) {
-    return <Loader label="Preparazione rilevamento…" />
+    return <Loader label="Preparazione prova ..." />
   }
 
   if (submission) {
     return (
       <section className="quiz-fortune">
         <div className="quiz-fortune__question">
-          <span className="quiz-fortune__question-label">Traccia ricevuta</span>
+          <span className="quiz-fortune__question-label">Rilevamento ricevuta</span>
           <h2 className="quiz-fortune__question-text">La tua immagine attende il responso.</h2>
         </div>
 
@@ -100,7 +101,9 @@ function UploadExperienceGame({ experience }) {
           </div>
         </div>
 
-        {submission.imageUrl && <p className="quiz-fortune__result">La traccia è stata consegnata. Quando sarà approvata, l'esperienza verrà completata.</p>}
+        {submission.imageUrl && (
+          <p className="quiz-fortune__result">Il tuo rilevamento è stato consegnato. Quando sarà approvato, l'esperienza verrà completata.</p>
+        )}
       </section>
     )
   }

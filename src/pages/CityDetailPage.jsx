@@ -4,6 +4,7 @@ import { getPublishedCityById, getPublishedPointsByCity } from "../api/publicApi
 import PointPreviewCard from "../components/citites/PointPreviewCard"
 import CityMap from "../components/citites/CityMap"
 import Loader from "../components/ui/Loader"
+import ErrorLoader from "../components/ui/ErrorLoader"
 
 function CityDetailPage() {
   const { cityId } = useParams()
@@ -43,7 +44,7 @@ function CityDetailPage() {
         setCity(null)
         setPoints([])
         setSelectedPoint(null)
-        setError("Non riesco a caricare i dati della città.")
+        setError("Impossibile caricare i dati della città.")
       })
   }, [cityId])
 
@@ -63,7 +64,9 @@ function CityDetailPage() {
     return (
       <section className="city-detail-page">
         <div className="city-detail-panel">
-          <p className="city-detail-message city-detail-message--error">{error}</p>
+          <div className="city-detail-state">
+            <ErrorLoader message={error} />
+          </div>
         </div>
       </section>
     )

@@ -264,7 +264,7 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
           value={formData.atlasText}
           onChange={handleChange}
           className="w-full rounded-xl border border-accent-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
-          placeholder="Testo discorsivo da mostrare nel libro Atlante dopo il completamento dell’esperienza."
+          placeholder="Testo discorsivo da mostrare nel libro Atlante dopo il completamento dell'esperienza."
         />
 
         <p className="mt-2 text-xs leading-5 text-muted">Questo testo viene usato solo nella pagina Atlante. Può restare vuoto per ora.</p>
@@ -304,7 +304,7 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
           className="block w-full text-sm text-muted file:mr-4 file:rounded-full file:border file:border-accent-soft file:bg-transparent file:px-4 file:py-2 file:text-sm file:text-accent"
         />
 
-        <p className="mt-2 text-xs text-muted">Se selezioni un file, verrà caricato dopo il salvataggio dell’esperienza.</p>
+        <p className="mt-2 text-xs text-muted">Se selezioni un file, verrà caricato dopo il salvataggio dell'esperienza.</p>
       </div>
 
       <div className="mt-5">

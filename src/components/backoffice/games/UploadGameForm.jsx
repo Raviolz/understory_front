@@ -160,7 +160,7 @@ function UploadGameForm({ experiences = [], initialValues = emptyForm, submitLab
           className="block w-full text-sm text-muted file:mr-4 file:rounded-full file:border file:border-accent-soft file:bg-transparent file:px-4 file:py-2 file:text-sm file:text-accent"
         />
 
-        <p className="mt-2 text-xs text-muted">Se selezioni un file, verrà caricato dopo il salvataggio dell’upload game.</p>
+        <p className="mt-2 text-xs text-muted">Se selezioni un file, verrà caricato dopo il salvataggio dell'upload game.</p>
       </div>
 
       {error && <p className="mt-5 text-sm text-arcane">{error}</p>}

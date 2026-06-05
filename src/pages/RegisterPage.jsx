@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { registerUser } from "../api/authApi"
 import AuthCard from "../components/layout/AuthCard"
 import Loader from "../components/ui/Loader"
+import ErrorLoader from "../components/ui/ErrorLoader"
 import mirrorFrame from "../assets/auth/MirrorAuth.png"
 
 function RegisterPage() {
@@ -40,7 +41,7 @@ function RegisterPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Registrazione non riuscita. Controlla i dati inseriti.")
+        setError("Impossibile completare la registrazione. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsLoading(false)
@@ -146,8 +147,6 @@ function RegisterPage() {
                     />
                   </div>
 
-                  {error && <p className="text-sm text-arcane">{error}</p>}
-
                   <button
                     type="submit"
                     disabled={isLoading}
@@ -169,6 +168,8 @@ function RegisterPage() {
 
           <img src={mirrorFrame} alt="" aria-hidden="true" className="auth-scene__mirror" />
         </div>
+
+        {error && <ErrorLoader message={error} />}
       </div>
     </section>
   )

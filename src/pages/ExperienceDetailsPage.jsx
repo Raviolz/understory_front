@@ -5,6 +5,7 @@ import { getExperienceCompletion } from "../api/meApi"
 import QuizExperienceGame from "../components/experiences/QuizExperienceGame"
 import UploadExperienceGame from "../components/experiences/UploadExperienceGame"
 import Loader from "../components/ui/Loader"
+import ErrorLoader from "../components/ui/ErrorLoader"
 import revealPoster from "../assets/city/RevealPosterB.png"
 import "../style/games.css"
 
@@ -64,7 +65,7 @@ function ExperienceDetailsPage() {
         console.error(error)
         setExperience(null)
         setCompletion(null)
-        setError("Non riesco a caricare l’esperienza.")
+        setError("Impossibile caricare l'esperienza.")
       })
   }, [experienceId])
 
@@ -82,7 +83,7 @@ function ExperienceDetailsPage() {
         if (ignore) return
         console.error(error)
         setCompletion(null)
-        setError("Non riesco a verificare la rivelazione archiviata.")
+        setError("Impossibile verificare la rivelazione archiviata.")
       })
       .finally(() => {
         if (ignore) return
@@ -162,7 +163,7 @@ function ExperienceDetailsPage() {
     setGameResult(result)
 
     loadCompletion().catch(() => {
-      setError("Esperienza completata, ma non riesco a caricare la rivelazione.")
+      setError("Impossibile caricare la rivelazione.")
     })
   }
 
@@ -195,7 +196,7 @@ function ExperienceDetailsPage() {
       <section className="experience-page">
         <div className="experience-panel">
           <div className="experience-state">
-            <p className="experience-message experience-message--error">{error}</p>
+            <ErrorLoader message={error} />
           </div>
         </div>
       </section>
@@ -291,7 +292,7 @@ function ExperienceDetailsPage() {
 
                         <div className="experience-reveal__divider" />
 
-                        <p className="experience-reveal__text">{explanationText || "Rivelazione archiviata nell’Archivio personale."}</p>
+                        <p className="experience-reveal__text">{explanationText || "Rivelazione archiviata nell'Archivio personale."}</p>
 
                         <div className="experience-reveal__divider" />
 

@@ -5,6 +5,7 @@ import { setCurrentUser } from "../redux/authSlice"
 import { useEffect, useRef, useState } from "react"
 import EditProfileForm from "../components/profile/EditProfileForm"
 import Loader from "../components/ui/Loader"
+import ErrorLoader from "../components/ui/ErrorLoader"
 import profilePaperImage from "../assets/profile/paper_profile.jpg"
 
 function clampFillPercent(percentage) {
@@ -80,7 +81,7 @@ function ProfilePage() {
       })
       .catch((error) => {
         console.error(error)
-        setAvatarError("Non riesco a caricare l'avatar.")
+        setAvatarError("Impossibile caricare l'avatar.")
       })
       .finally(() => {
         setIsUploadingAvatar(false)
@@ -98,7 +99,7 @@ function ProfilePage() {
       })
       .catch((error) => {
         console.error(error)
-        setProfileEditError("Non riesco ad aggiornare il fascicolo.")
+        setProfileEditError("Impossibile aggiornare il fascicolo.")
       })
       .finally(() => {
         setIsSavingProfile(false)
@@ -223,7 +224,7 @@ function ProfilePage() {
                   />
                 )}
 
-                {avatarError && <p className="profile-dossier__error">{avatarError}</p>}
+                {avatarError && <ErrorLoader message={avatarError} />}
               </div>
             </div>
 

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux"
 import { getMyProfile, loginUser } from "../api/authApi"
 import AuthCard from "../components/layout/AuthCard"
 import Loader from "../components/ui/Loader"
+import ErrorLoader from "../components/ui/ErrorLoader"
 import { setCredentials, setCurrentUser } from "../redux/authSlice"
 import mirrorFrame from "../assets/auth/MirrorAuth.png"
 
@@ -53,7 +54,7 @@ function LoginPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Accesso non riuscito. Controlla email e password.")
+        setError("Impossibile accedere. Controlla email e password.")
       })
       .finally(() => {
         setIsLoading(false)
@@ -108,8 +109,6 @@ function LoginPage() {
                     />
                   </div>
 
-                  {error && <p className="text-sm text-arcane">{error}</p>}
-
                   <button
                     type="submit"
                     disabled={isLoading}
@@ -131,6 +130,8 @@ function LoginPage() {
 
           <img src={mirrorFrame} alt="" aria-hidden="true" className="auth-scene__mirror" />
         </div>
+
+        {error && <ErrorLoader message={error} />}
       </div>
     </section>
   )

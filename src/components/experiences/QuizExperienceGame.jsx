@@ -6,6 +6,7 @@ import { getPublishedQuizGameByExperience } from "../../api/publicApi"
 import { setCurrentUser } from "../../redux/authSlice"
 import fortuneBoothImage from "../../assets/city/FortuneTeller.png"
 import Loader from "../ui/Loader"
+import ErrorLoader from "../ui/ErrorLoader"
 
 function QuizExperienceGame({ experience, onComplete }) {
   const dispatch = useDispatch()
@@ -29,7 +30,7 @@ function QuizExperienceGame({ experience, onComplete }) {
       .catch((error) => {
         console.error(error)
         setQuizGame(null)
-        setError("Non riesco a caricare l'enigma.")
+        setError("Impossibile caricare l'enigma.")
       })
   }, [experience?.id])
 
@@ -79,7 +80,7 @@ function QuizExperienceGame({ experience, onComplete }) {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a inviare la risposta.")
+        setError("Impossibile inviare la risposta.")
       })
       .finally(() => {
         setIsSubmitting(false)
@@ -87,7 +88,7 @@ function QuizExperienceGame({ experience, onComplete }) {
   }
 
   if (error) {
-    return <p className="experience-message experience-message--error">{error}</p>
+    return <ErrorLoader message={error} />
   }
 
   if (!quizGame) {
@@ -138,7 +139,7 @@ function QuizExperienceGame({ experience, onComplete }) {
                   <span className="quiz-fortune-card__symbol">{answer.symbol}</span>
                   <span className="quiz-fortune-card__text">{answer.label}</span>
 
-                  {isSelected && <span className="quiz-fortune-card__seal">{isSubmitting ? "Consulta…" : "Sigilla →"}</span>}
+                  {isSelected && <span className="quiz-fortune-card__seal">{isSubmitting ? "Consultandoci…" : "Sigilla →"}</span>}
                 </button>
               )
             })}
@@ -146,7 +147,7 @@ function QuizExperienceGame({ experience, onComplete }) {
         </div>
       </div>
 
-      {result && !result.completed && <p className="quiz-fortune__result">{result.message || "La carta non risponde. Scegline un’altra."}</p>}
+      {result && !result.completed && <p className="quiz-fortune__result">{result.message || "La carta non custodisce questa verità. Scegline un'altra."}</p>}
     </section>
   )
 }

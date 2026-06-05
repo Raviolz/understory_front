@@ -4,6 +4,7 @@ import { getMyBookings, getMyRewards } from "../api/meApi"
 import FindingPass from "../components/findings/FindingPass"
 import MyBookingsList from "../components/findings/MyBookingsList"
 import Loader from "../components/ui/Loader"
+import ErrorLoader from "../components/ui/ErrorLoader"
 
 function FindingsPage() {
   const [rewards, setRewards] = useState([])
@@ -30,7 +31,7 @@ function FindingsPage() {
         }
 
         console.error(error)
-        setError("Non riesco a caricare i tuoi findings.")
+        setError("Impossibile caricare i tuoi findings.")
       })
       .finally(() => {
         if (ignore) {
@@ -95,7 +96,7 @@ function FindingsPage() {
             {pageHeader}
 
             <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
-              <p className="text-arcane">{error}</p>
+              <ErrorLoader message={error} />
             </div>
           </div>
         </div>

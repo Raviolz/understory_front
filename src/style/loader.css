@@ -34,6 +34,45 @@
   text-transform: uppercase;
 }
 
+.loader--error {
+  min-height: 12rem;
+}
+
+.loader--error .loader__stage {
+  width: 5.4rem;
+  height: 5.4rem;
+}
+
+.loader--error .loader__label {
+  max-width: 28rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.loader--error {
+  min-height: 12rem;
+}
+
+.loader--error .loader__stage {
+  width: 5.4rem;
+  height: 5.4rem;
+}
+
+.loader--error .loader__label {
+  max-width: 34rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.loader__label--error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.18rem;
+}
+
 @keyframes loader-stamp-spin {
   from {
     transform: rotateY(0deg);
