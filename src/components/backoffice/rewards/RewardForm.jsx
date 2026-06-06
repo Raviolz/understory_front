@@ -52,7 +52,7 @@ function RewardForm({ businesses = [], cities = [], initialValues = emptyForm, s
     onSubmit(rewardData)
       .catch((error) => {
         console.error(error)
-        setError(error.message || "Non riesco a salvare la ricompensa. Controlla i dati inseriti.")
+        setError(error.message || "Impossibile salvare la ricompensa. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)

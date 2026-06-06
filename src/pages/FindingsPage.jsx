@@ -31,7 +31,7 @@ function FindingsPage() {
         }
 
         console.error(error)
-        setError("Impossibile caricare i tuoi findings.")
+        setError("Impossibile caricare i tuoi biglietti.")
       })
       .finally(() => {
         if (ignore) {
@@ -95,9 +95,7 @@ function FindingsPage() {
           <div className="mx-auto max-w-7xl">
             {pageHeader}
 
-            <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
-              <ErrorLoader message={error} />
-            </div>
+            <ErrorLoader message={error} />
           </div>
         </div>
       </section>

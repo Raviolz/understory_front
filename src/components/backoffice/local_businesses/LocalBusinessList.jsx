@@ -34,7 +34,7 @@ function LocalBusinessList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a pubblicare l'attività locale.")
+        setError("Impossibile pubblicare l'attività locale.")
       })
   }
 
@@ -45,7 +45,7 @@ function LocalBusinessList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a rimettere l'attività locale in bozza.")
+        setError("Impossibile rimettere l'attività locale in bozza.")
       })
   }
 
@@ -84,7 +84,7 @@ function LocalBusinessList() {
         }
 
         console.error(error)
-        setError("Non riesco a caricare le attività locali.")
+        setError("Impossibile caricare le attività locali.")
       })
       .finally(() => {
         if (ignore) {

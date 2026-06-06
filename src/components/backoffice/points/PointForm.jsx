@@ -46,7 +46,7 @@ function PointForm({ cities = [], initialValues = emptyForm, submitLabel, onSubm
     onSubmit(pointData, imageFile)
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a salvare il punto di interesse. Controlla i dati inseriti.")
+        setError("Impossibile salvare il punto di interesse. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)

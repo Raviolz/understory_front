@@ -19,7 +19,7 @@ function BoUploadGameCreatePage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare le esperienze per il form.")
+        setError("Impossibile caricare le esperienze per il form.")
       })
       .finally(() => {
         setIsLoading(false)

@@ -38,7 +38,7 @@ function ExperienceCategoryForm({ initialValues = emptyForm, submitLabel, onSubm
     onSubmit(formData)
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a salvare la categoria. Controlla i dati inseriti.")
+        setError("Impossibile salvare la categoria. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)

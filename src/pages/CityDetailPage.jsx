@@ -44,7 +44,7 @@ function CityDetailPage() {
         setCity(null)
         setPoints([])
         setSelectedPoint(null)
-        setError("Impossibile caricare i dati della città.")
+        setError("Impossibile caricare la città e i suoi luoghi.")
       })
   }, [cityId])
 

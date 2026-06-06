@@ -28,7 +28,7 @@ function BoExperienceEditPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare l'esperienza.")
+        setError("Impossibile caricare l'esperienza.")
       })
       .finally(() => {
         setIsLoading(false)

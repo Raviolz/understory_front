@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux"
 import { getMyProfile, loginUser } from "../api/authApi"
 import AuthCard from "../components/layout/AuthCard"
 import Loader from "../components/ui/Loader"
-import ErrorLoader from "../components/ui/ErrorLoader"
 import { setCredentials, setCurrentUser } from "../redux/authSlice"
 import mirrorFrame from "../assets/auth/MirrorAuth.png"
 
@@ -129,9 +128,9 @@ function LoginPage() {
           </div>
 
           <img src={mirrorFrame} alt="" aria-hidden="true" className="auth-scene__mirror" />
-        </div>
 
-        {error && <ErrorLoader message={error} />}
+          {error && <p className="auth-page-error">{error}</p>}
+        </div>
       </div>
     </section>
   )

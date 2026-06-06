@@ -16,7 +16,7 @@ function LocalShopsPage() {
   const [selectedSlotIndex, setSelectedSlotIndex] = useState(null)
   const [hasManualSelection, setHasManualSelection] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [pageError, setPageError] = useState(null)
 
   useEffect(() => {
     let ignore = false
@@ -42,7 +42,7 @@ function LocalShopsPage() {
         }
 
         console.error(error)
-        setError("Impossibile caricare le botteghe scoperte.")
+        setPageError("Impossibile caricare le botteghe scoperte.")
       })
       .finally(() => {
         if (ignore) {
@@ -112,11 +112,11 @@ function LocalShopsPage() {
     )
   }
 
-  if (error) {
+  if (pageError) {
     return (
       <section className="local-shops-page">
         <div className="local-shops-page__panel">
-          <ErrorLoader message={error} />
+          <ErrorLoader message={pageError} />
         </div>
       </section>
     )
@@ -126,7 +126,7 @@ function LocalShopsPage() {
     <section className="local-shops-page">
       <div className="local-shops-page__panel">
         <header className="local-shops-page__header">
-          <p className="local-shops-page__eyebrow">Il mondo e' silenzioso qui</p>
+          <p className="local-shops-page__eyebrow">Il mondo è silenzioso qui</p>
           <h1 className="local-shops-page__title">Botteghe scoperte</h1>
           <p className="local-shops-page__intro">Una collezione locale di posti in cui rifugiarti</p>
         </header>

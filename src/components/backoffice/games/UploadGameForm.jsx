@@ -46,7 +46,7 @@ function UploadGameForm({ experiences = [], initialValues = emptyForm, submitLab
     onSubmit(uploadData, imageFile)
       .catch((error) => {
         console.error(error)
-        setError(error.message || "Non riesco a salvare l'upload game. Controlla i dati inseriti.")
+        setError(error.message || "Impossibile salvare l'upload game. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)

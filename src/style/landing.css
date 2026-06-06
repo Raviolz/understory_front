@@ -351,10 +351,10 @@
   display: -webkit-box;
   overflow: hidden;
 
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
 
-  font-size: 0.875rem;
+  font-size: 0.775rem;
   line-height: 1.65;
   color: color-mix(in srgb, var(--paper-muted) 92%, var(--paper-ink));
 }
@@ -383,6 +383,18 @@
   color: var(--paper-ink);
 }
 
+.dark-globe-status,
+.dark-globe-error {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #8e7559;
+  opacity: 0.82;
+}
+
+.dark-globe-error {
+  opacity: 0.9;
+}
 /* desktop: card a destra, sovrapposta al globo */
 @media (min-width: 1024px) {
   .dark-globe-card-shell {
@@ -474,9 +486,9 @@
   }
 
   .city-preview-card__desc {
-    font-size: 0.82rem;
+    font-size: 0.72rem;
     line-height: 1.55;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 5;
   }
 }
 
@@ -500,6 +512,6 @@
   }
 
   .city-preview-card__desc {
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 5;
   }
 }

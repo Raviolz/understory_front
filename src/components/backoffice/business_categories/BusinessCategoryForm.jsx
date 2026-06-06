@@ -36,7 +36,7 @@ function BusinessCategoryForm({ initialValues = emptyForm, submitLabel, onSubmit
     onSubmit(formData)
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a salvare la categoria business. Controlla i dati inseriti.")
+        setError("Impossibile salvare la categoria business. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)

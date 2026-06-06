@@ -53,7 +53,7 @@ function LocalBusinessForm({ cities = [], businessCategories = [], initialValues
     onSubmit(businessData, imageFile)
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a salvare l'attività locale. Controlla i dati inseriti.")
+        setError("Impossibile salvare l'attività locale. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)

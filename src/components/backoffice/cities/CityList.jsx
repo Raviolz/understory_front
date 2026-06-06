@@ -29,7 +29,7 @@ function CityList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a pubblicare la città.")
+        setError("Impossibile pubblicare la città.")
       })
   }
 
@@ -40,7 +40,7 @@ function CityList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a rimettere la città in bozza.")
+        setError("Impossibile rimettere la città in bozza.")
       })
   }
 
@@ -81,7 +81,7 @@ function CityList() {
         }
 
         console.error(error)
-        setError("Non riesco a caricare le città.")
+        setError("Impossibile caricare le città.")
       })
       .finally(() => {
         if (ignore) {

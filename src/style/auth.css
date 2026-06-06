@@ -197,6 +197,25 @@
   gap: 1rem;
 }
 
+.auth-scene {
+  position: relative;
+}
+
+.auth-page-error {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 0.55rem);
+  transform: translateX(-50%);
+  width: min(420px, 90vw);
+  margin: 0;
+  color: #f4ead8;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  text-align: center;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
 @media (max-width: 700px) {
   .auth-page {
     min-height: auto;

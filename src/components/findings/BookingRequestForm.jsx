@@ -25,7 +25,7 @@ function BookingRequestForm({ reward, onBookingCreated, onCancel }) {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a inviare la richiesta di prenotazione.")
+        setError("Impossibile inviare la richiesta di prenotazione.")
       })
       .finally(() => {
         setIsSubmitting(false)

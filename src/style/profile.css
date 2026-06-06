@@ -936,6 +936,15 @@
   color: color-mix(in srgb, var(--folio-muted) 95%, var(--folio-ink));
 }
 
+.profile-dossier__soft-error {
+  margin-top: 1rem;
+  color: #430722;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  text-align: center;
+  opacity: 0.9;
+}
+
 /* Animazioni luci*/
 
 @keyframes profileCandleFlickerWarm {

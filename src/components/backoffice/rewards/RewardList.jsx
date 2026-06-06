@@ -29,7 +29,7 @@ function RewardList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a pubblicare la ricompensa.")
+        setError("Impossibile pubblicare la ricompensa.")
       })
   }
 
@@ -40,7 +40,7 @@ function RewardList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a rimettere la ricompensa in bozza.")
+        setError("Impossibile rimettere la ricompensa in bozza.")
       })
   }
 
@@ -79,7 +79,7 @@ function RewardList() {
         }
 
         console.error(error)
-        setError("Non riesco a caricare le ricompense.")
+        setError("Impossibile caricare le ricompense.")
       })
       .finally(() => {
         if (ignore) {

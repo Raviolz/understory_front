@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom"
 import { registerUser } from "../api/authApi"
 import AuthCard from "../components/layout/AuthCard"
 import Loader from "../components/ui/Loader"
-import ErrorLoader from "../components/ui/ErrorLoader"
 import mirrorFrame from "../assets/auth/MirrorAuth.png"
 
 function RegisterPage() {
@@ -167,9 +166,9 @@ function RegisterPage() {
           </div>
 
           <img src={mirrorFrame} alt="" aria-hidden="true" className="auth-scene__mirror" />
-        </div>
 
-        {error && <ErrorLoader message={error} />}
+          {error && <p className="auth-page-error">{error}</p>}
+        </div>
       </div>
     </section>
   )

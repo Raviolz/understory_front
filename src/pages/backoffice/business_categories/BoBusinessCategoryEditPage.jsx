@@ -18,7 +18,7 @@ function BoBusinessCategoryEditPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare la categoria business.")
+        setError("Impossibile caricare la categoria business.")
       })
       .finally(() => {
         setIsLoading(false)

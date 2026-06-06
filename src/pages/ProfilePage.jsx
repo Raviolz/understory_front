@@ -5,7 +5,6 @@ import { setCurrentUser } from "../redux/authSlice"
 import { useEffect, useRef, useState } from "react"
 import EditProfileForm from "../components/profile/EditProfileForm"
 import Loader from "../components/ui/Loader"
-import ErrorLoader from "../components/ui/ErrorLoader"
 import profilePaperImage from "../assets/profile/paper_profile.jpg"
 
 function clampFillPercent(percentage) {
@@ -224,7 +223,7 @@ function ProfilePage() {
                   />
                 )}
 
-                {avatarError && <ErrorLoader message={avatarError} />}
+                {avatarError && <p className="profile-dossier__soft-error">{avatarError}</p>}
               </div>
             </div>
 

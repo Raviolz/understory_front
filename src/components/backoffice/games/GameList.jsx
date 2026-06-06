@@ -96,7 +96,7 @@ function GameList() {
         }
 
         console.error(error)
-        setError("Non riesco a caricare i giochi.")
+        setError("Impossibile caricare i giochi.")
       })
       .finally(() => {
         if (ignore) {

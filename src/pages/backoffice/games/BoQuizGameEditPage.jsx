@@ -22,7 +22,7 @@ function BoQuizGameEditPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare il quiz.")
+        setError("Impossibile caricare il quiz.")
       })
       .finally(() => {
         setIsLoading(false)

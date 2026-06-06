@@ -10,7 +10,8 @@ function JournalPage() {
   const [noteDrafts, setNoteDrafts] = useState({})
   const [savingNoteId, setSavingNoteId] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [pageError, setPageError] = useState(null)
+  const [noteError, setNoteError] = useState(null)
 
   useEffect(() => {
     let ignore = false
@@ -34,7 +35,7 @@ function JournalPage() {
         if (ignore) return
 
         console.error(error)
-        setError("Impossibile caricare il journal.")
+        setPageError("Impossibile caricare l'archivio.")
       })
       .finally(() => {
         if (ignore) return
@@ -62,7 +63,7 @@ function JournalPage() {
 
   function handleSaveNote(entry) {
     setSavingNoteId(entry.progressId)
-    setError(null)
+    setNoteError(null)
 
     return updateMyProgressNote(entry.progressId, noteDrafts[entry.progressId] || "")
       .then((updatedProgress) => {
@@ -79,8 +80,7 @@ function JournalPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Impossibile salvare la nota.")
-        throw error
+        setNoteError("Impossibile salvare la nota. Riprova tra poco.")
       })
       .finally(() => {
         setSavingNoteId(null)
@@ -119,15 +119,15 @@ function JournalPage() {
     )
   }
 
-  if (error) {
+  if (pageError) {
     return (
       <section className="journal-page">
         <div className="journal-page__panel">
           <div className="mx-auto max-w-7xl">
             {pageHeader}
 
-            <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
-              <ErrorLoader message={error} />
+            <div className="mt-10 rounded-3xl p-6">
+              <ErrorLoader message={pageError} />
             </div>
           </div>
         </div>
@@ -140,6 +140,8 @@ function JournalPage() {
       <div className="journal-page__panel">
         <div className="mx-auto max-w-7xl">
           {pageHeader}
+
+          {noteError && <p className="mt-6 rounded-2xl border border-border-soft bg-surface/70 px-5 py-4 text-sm text-[#f4ead8]">{noteError}</p>}
 
           {sortedEntries.length === 0 ? (
             <div className="journal-page__empty mt-10">

@@ -24,7 +24,7 @@ function BoExperienceCreatePage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare i dati per il form.")
+        setError("Impossibile caricare i dati per il form.")
       })
       .finally(() => {
         setIsLoading(false)

@@ -27,7 +27,7 @@ function BoUploadGameEditPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare l'upload game.")
+        setError("Impossibile caricare l'upload game.")
       })
       .finally(() => {
         setIsLoading(false)

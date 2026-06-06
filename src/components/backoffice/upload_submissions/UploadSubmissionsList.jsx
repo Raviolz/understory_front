@@ -29,7 +29,7 @@ function UploadSubmissionsList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco ad approvare la submission.")
+        setError("Impossibile approvare la submission.")
       })
   }
 
@@ -40,7 +40,7 @@ function UploadSubmissionsList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a rifiutare la submission.")
+        setError("Impossibile rifiutare la submission.")
       })
   }
 
@@ -62,7 +62,7 @@ function UploadSubmissionsList() {
         }
 
         console.error(error)
-        setError("Non riesco a caricare le submission in attesa.")
+        setError("Impossibile caricare le submission in attesa.")
       })
       .finally(() => {
         if (ignore) {

@@ -29,7 +29,7 @@ function PointList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a pubblicare il punto di interesse.")
+        setError("Impossibile pubblicare il punto di interesse.")
       })
   }
 
@@ -40,7 +40,7 @@ function PointList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a rimettere il punto di interesse in bozza.")
+        setError("Impossibile rimettere il punto di interesse in bozza.")
       })
   }
 
@@ -79,7 +79,7 @@ function PointList() {
         }
 
         console.error(error)
-        setError("Non riesco a caricare i punti di interesse.")
+        setError("Impossibile caricare i punti di interesse.")
       })
       .finally(() => {
         if (ignore) {

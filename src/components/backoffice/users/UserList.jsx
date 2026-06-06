@@ -25,7 +25,7 @@ function UserList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a promuovere l'utente ad admin.")
+        setError("Impossibile promuovere l'utente ad admin.")
       })
   }
 
@@ -36,7 +36,7 @@ function UserList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a riportare l'utente a user.")
+        setError("Impossibile riportare l'utente a user.")
       })
   }
 
@@ -58,7 +58,7 @@ function UserList() {
         }
 
         console.error(error)
-        setError("Non riesco a caricare gli utenti.")
+        setError("Impossibile caricare gli utenti.")
       })
       .finally(() => {
         if (ignore) {

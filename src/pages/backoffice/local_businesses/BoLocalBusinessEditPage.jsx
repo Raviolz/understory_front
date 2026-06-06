@@ -28,7 +28,7 @@ function BoLocalBusinessEditPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare l'attività locale.")
+        setError("Impossibile caricare l'attività locale.")
       })
       .finally(() => {
         setIsLoading(false)

@@ -57,7 +57,7 @@ function ExperienceCategoryList() {
         }
 
         console.error(error)
-        setError("Non riesco a caricare le categorie esperienze.")
+        setError("Impossibile caricare le categorie esperienze.")
       })
       .finally(() => {
         if (ignore) {

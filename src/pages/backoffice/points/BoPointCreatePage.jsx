@@ -17,7 +17,7 @@ function BoPointCreatePage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare le città per il form.")
+        setError("Impossibile caricare le città per il form.")
       })
       .finally(() => {
         setIsLoading(false)

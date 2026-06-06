@@ -22,7 +22,7 @@ function BoRewardEditPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare la ricompensa.")
+        setError("Impossibile caricare la ricompensa.")
       })
       .finally(() => {
         setIsLoading(false)

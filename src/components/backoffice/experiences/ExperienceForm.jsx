@@ -67,7 +67,7 @@ function ExperienceForm({ points = [], categories = [], initialValues = emptyFor
     onSubmit(experienceData, imageFile)
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a salvare l'esperienza. Controlla i dati inseriti.")
+        setError("Impossibile salvare l'esperienza. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)

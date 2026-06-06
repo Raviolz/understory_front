@@ -57,7 +57,7 @@ function BusinessCategoryList() {
         }
 
         console.error(error)
-        setError("Non riesco a caricare le categorie business.")
+        setError("Impossibile caricare le categorie business.")
       })
       .finally(() => {
         if (ignore) {

@@ -7,7 +7,7 @@ import ErrorLoader from "../components/ui/ErrorLoader"
 function AtlasPage() {
   const [entries, setEntries] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [pageError, setPageError] = useState(null)
 
   useEffect(() => {
     let ignore = false
@@ -17,13 +17,13 @@ function AtlasPage() {
         if (ignore) return
 
         setEntries(data.content ?? [])
-        setError(null)
+        setPageError(null)
       })
       .catch((error) => {
         if (ignore) return
 
         console.error(error)
-        setError("Impossibile caricare l'atlante.")
+        setPageError("Impossibile caricare l'atlante.")
       })
       .finally(() => {
         if (ignore) return
@@ -62,9 +62,9 @@ function AtlasPage() {
             <div className="atlas-page__state">
               <Loader label="Aprendo l'atlante…" />
             </div>
-          ) : error ? (
+          ) : pageError ? (
             <div className="atlas-page__state">
-              <ErrorLoader message={error} />
+              <ErrorLoader message={pageError} />
             </div>
           ) : (
             <AtlasFlipBook entries={sortedEntries} />

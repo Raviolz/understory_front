@@ -17,6 +17,7 @@ const DarkGlobe = () => {
 
   const [cities, setCities] = useState([])
   const [selectedCity, setSelectedCity] = useState(null)
+  const [isLoadingCities, setIsLoadingCities] = useState(true)
   const [citiesError, setCitiesError] = useState(null)
 
   useEffect(() => {
@@ -72,10 +73,16 @@ const DarkGlobe = () => {
 
         setCities(publishedCities)
         setSelectedCity(null)
+        setCitiesError(null)
       })
       .catch((err) => {
         console.error(err)
-        setCitiesError("Impossibile caricare le città")
+        setCities([])
+        setSelectedCity(null)
+        setCitiesError("Impossibile mostrare le città in questo momento.")
+      })
+      .finally(() => {
+        setIsLoadingCities(false)
       })
   }, [])
 
@@ -160,6 +167,8 @@ const DarkGlobe = () => {
           </div>
         )}
       </div>
+
+      {isLoadingCities && !citiesError && <p className="dark-globe-status">Caricando le città…</p>}
 
       {citiesError && <p className="dark-globe-error">{citiesError}</p>}
     </section>

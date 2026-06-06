@@ -18,7 +18,7 @@ function BoCityEditPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare la città.")
+        setError("Impossibile caricare la città.")
       })
       .finally(() => {
         setIsLoading(false)

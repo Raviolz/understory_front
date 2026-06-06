@@ -45,7 +45,7 @@ function QuizGameForm({ experiences = [], initialValues = emptyForm, submitLabel
     onSubmit(formData)
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a salvare il quiz. Controlla i dati inseriti.")
+        setError("Impossibile salvare il quiz. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)

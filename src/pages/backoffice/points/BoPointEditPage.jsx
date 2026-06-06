@@ -20,7 +20,7 @@ function BoPointEditPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare il punto di interesse.")
+        setError("Impossibile caricare il punto di interesse.")
       })
       .finally(() => {
         setIsLoading(false)

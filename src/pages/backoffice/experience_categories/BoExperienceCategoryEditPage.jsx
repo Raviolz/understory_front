@@ -18,7 +18,7 @@ function BoExperienceCategoryEditPage() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a caricare la categoria.")
+        setError("Impossibile caricare la categoria.")
       })
       .finally(() => {
         setIsLoading(false)

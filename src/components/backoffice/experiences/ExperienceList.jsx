@@ -31,7 +31,7 @@ function ExperienceList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a pubblicare l'esperienza.")
+        setError("Impossibile pubblicare l'esperienza.")
       })
   }
 
@@ -44,7 +44,7 @@ function ExperienceList() {
       })
       .catch((error) => {
         console.error(error)
-        setError("Non riesco a rimettere l'esperienza in bozza.")
+        setError("Impossibile rimettere l'esperienza in bozza.")
       })
   }
 
@@ -85,7 +85,7 @@ function ExperienceList() {
         }
 
         console.error(error)
-        setError("Non riesco a caricare le esperienze.")
+        setError("Impossibile caricare le esperienze.")
       })
       .finally(() => {
         if (ignore) {
