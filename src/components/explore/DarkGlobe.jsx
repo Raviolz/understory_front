@@ -3,7 +3,7 @@ import Globe from "react-globe.gl"
 import { getPublishedCities } from "../../api/publicApi"
 import CityPreviewCard from "./CityPreviewCard"
 
-const countriesUrl = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson"
+const countriesGeoJsonPath = `${import.meta.env.BASE_URL}data/countries.geojson`
 
 const DarkGlobe = () => {
   const globeRef = useRef(null)
@@ -20,7 +20,7 @@ const DarkGlobe = () => {
   const [citiesError, setCitiesError] = useState(null)
 
   useEffect(() => {
-    fetch(countriesUrl)
+    fetch(countriesGeoJsonPath)
       .then((res) => res.json())
       .then((data) => setCountries(data.features))
       .catch((err) => console.error("Errore caricamento mappa:", err))
