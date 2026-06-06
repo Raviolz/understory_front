@@ -12,7 +12,8 @@ function UploadExperienceGame({ experience }) {
   const [selectedFile, setSelectedFile] = useState(null)
   const [submission, setSubmission] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState(null)
+  const [pageError, setPageError] = useState(null)
+  const [submitError, setSubmitError] = useState(null)
 
   useEffect(() => {
     if (!experience?.id) return
@@ -22,12 +23,13 @@ function UploadExperienceGame({ experience }) {
         setUploadGame(data)
         setSelectedFile(null)
         setSubmission(null)
-        setError(null)
+        setPageError(null)
+        setSubmitError(null)
       })
       .catch((error) => {
         console.error(error)
         setUploadGame(null)
-        setError("Impossibile caricare la prova")
+        setPageError("Impossibile caricare la prova.")
       })
   }, [experience?.id])
 
@@ -51,7 +53,7 @@ function UploadExperienceGame({ experience }) {
     if (!selectedFile || isSubmitting) return
 
     setIsSubmitting(true)
-    setError(null)
+    setSubmitError(null)
 
     submitUploadSubmission(experience.id, selectedFile)
       .then((data) => {
@@ -60,19 +62,25 @@ function UploadExperienceGame({ experience }) {
       })
       .catch((error) => {
         console.error(error)
-        setError("Errore durante l'invio dell'immagine.")
+        setSubmitError("Impossibile inviare l'immagine.")
       })
       .finally(() => {
         setIsSubmitting(false)
       })
   }
 
-  if (error) {
-    return <ErrorLoader message={error} />
+  function handleFileChange(event) {
+    setSelectedFile(event.target.files[0] || null)
+    setSubmitError(null)
+    event.target.value = ""
+  }
+
+  if (pageError) {
+    return <ErrorLoader message={pageError} />
   }
 
   if (!uploadGame) {
-    return <Loader label="Preparazione prova ..." />
+    return <Loader label="Preparazione prova…" />
   }
 
   if (submission) {
@@ -139,17 +147,10 @@ function UploadExperienceGame({ experience }) {
           </div>
         </div>
 
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={(event) => {
-            setSelectedFile(event.target.files[0] || null)
-            event.target.value = ""
-          }}
-          className="hidden"
-        />
+        <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
       </div>
+
+      {submitError && <p className="quiz-fortune__soft-error">{submitError}</p>}
 
       {uploadGame.validationHint && !selectedFile && <p className="quiz-fortune__result">{uploadGame.validationHint}</p>}
     </section>

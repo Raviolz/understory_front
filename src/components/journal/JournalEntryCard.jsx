@@ -27,13 +27,11 @@ function JournalEntryCard({ entry, noteValue, isSaving, onNoteChange, onSaveNote
       return
     }
 
-    onSaveNote(entry)
-      .then(() => {
+    onSaveNote(entry).then((wasSaved) => {
+      if (wasSaved) {
         setIsEditingNote(false)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+      }
+    })
   }
 
   return (

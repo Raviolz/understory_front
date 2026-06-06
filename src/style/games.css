@@ -214,6 +214,15 @@
   color: var(--arcane);
 }
 
+.quiz-fortune__soft-error {
+  margin-top: 1rem;
+  color: #f4ead8;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  text-align: center;
+  opacity: 0.9;
+}
+
 .experience-game-stage {
   position: relative;
   min-height: 25rem;

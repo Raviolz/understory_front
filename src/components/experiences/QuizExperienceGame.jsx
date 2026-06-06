@@ -15,7 +15,8 @@ function QuizExperienceGame({ experience, onComplete }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null)
   const [result, setResult] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState(null)
+  const [pageError, setPageError] = useState(null)
+  const [submitError, setSubmitError] = useState(null)
 
   useEffect(() => {
     if (!experience?.id) return
@@ -25,18 +26,20 @@ function QuizExperienceGame({ experience, onComplete }) {
         setQuizGame(data)
         setSelectedAnswer(null)
         setResult(null)
-        setError(null)
+        setPageError(null)
+        setSubmitError(null)
       })
       .catch((error) => {
         console.error(error)
         setQuizGame(null)
-        setError("Impossibile caricare l'enigma.")
+        setPageError("Impossibile caricare l'enigma.")
       })
   }, [experience?.id])
 
   function handleSelectAnswer(answerValue) {
     setSelectedAnswer(answerValue)
     setResult(null)
+    setSubmitError(null)
   }
 
   function handleCardClick(answerValue) {
@@ -54,7 +57,7 @@ function QuizExperienceGame({ experience, onComplete }) {
     if (!selectedAnswer || isSubmitting) return
 
     setIsSubmitting(true)
-    setError(null)
+    setSubmitError(null)
 
     submitQuizAnswer({
       experienceId: experience.id,
@@ -80,15 +83,15 @@ function QuizExperienceGame({ experience, onComplete }) {
       })
       .catch((error) => {
         console.error(error)
-        setError("Impossibile inviare la risposta.")
+        setSubmitError("Impossibile inviare la risposta.")
       })
       .finally(() => {
         setIsSubmitting(false)
       })
   }
 
-  if (error) {
-    return <ErrorLoader message={error} />
+  if (pageError) {
+    return <ErrorLoader message={pageError} />
   }
 
   if (!quizGame) {
@@ -146,6 +149,8 @@ function QuizExperienceGame({ experience, onComplete }) {
           </div>
         </div>
       </div>
+
+      {submitError && <p className="quiz-fortune__soft-error">{submitError}</p>}
 
       {result && !result.completed && <p className="quiz-fortune__result">{result.message || "La carta non custodisce questa verità. Scegline un'altra."}</p>}
     </section>

@@ -146,6 +146,19 @@
 
 /* CITY MAP */
 
+.city-map-error {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  color: #f4ead8;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  text-align: center;
+  opacity: 0.9;
+}
+
 .city-map-card {
   position: relative;
   overflow: hidden;

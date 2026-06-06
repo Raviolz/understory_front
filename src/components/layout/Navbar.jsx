@@ -43,7 +43,7 @@ function Navbar() {
             </div>
           )}
 
-          {currentUser ? (
+          {currentUser && (
             <button
               type="button"
               onClick={() => setIsProfileMenuOpen((currentValue) => !currentValue)}
@@ -57,8 +57,6 @@ function Navbar() {
                 <span>{currentUser.username?.charAt(0)?.toUpperCase() || "U"}</span>
               )}
             </button>
-          ) : (
-            <Link to="/login" className="app-navbar__avatar app-navbar__avatar--empty" aria-label="Vai al login" title="Accedi" />
           )}
 
           {isAdmin && (

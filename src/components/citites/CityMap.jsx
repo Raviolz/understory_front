@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import mapboxgl from "mapbox-gl"
 import "mapbox-gl/dist/mapbox-gl.css"
 
@@ -9,12 +9,20 @@ function CityMap({ city, points = [], selectedPoint, onSelectPoint }) {
   const mapContainerRef = useRef(null)
   const mapRef = useRef(null)
   const markersRef = useRef([])
+  const [mapboxError, setMapboxError] = useState(null)
+
+  const mapError = useMemo(() => {
+    if (!mapboxToken) {
+      return "Mappa non disponibile in questo momento."
+    }
+
+    return mapboxError
+  }, [mapboxError])
 
   useEffect(() => {
     if (!city) return
     if (!mapContainerRef.current) return
     if (mapRef.current) return
-
     if (!mapboxToken) {
       console.error("Missing VITE_MAPBOX_TOKEN in .env")
       return
@@ -34,6 +42,7 @@ function CityMap({ city, points = [], selectedPoint, onSelectPoint }) {
 
     map.on("error", (event) => {
       console.error("Mapbox error:", event.error)
+      setMapboxError("Mappa non disponibile in questo momento.")
     })
 
     return () => {
@@ -60,6 +69,7 @@ function CityMap({ city, points = [], selectedPoint, onSelectPoint }) {
 
   useEffect(() => {
     if (!mapRef.current) return
+    if (mapError) return
 
     markersRef.current.forEach((marker) => marker.remove())
     markersRef.current = []
@@ -91,11 +101,13 @@ function CityMap({ city, points = [], selectedPoint, onSelectPoint }) {
 
       markersRef.current.push(marker)
     })
-  }, [points, selectedPoint, onSelectPoint])
+  }, [points, selectedPoint, onSelectPoint, mapError])
 
   return (
     <div className="overflow-hidden rounded-2xl border border-border-soft bg-canvas">
-      <div ref={mapContainerRef} className="h-[300px] w-full lg:h-[360px]" />
+      <div ref={mapContainerRef} className="relative h-[300px] w-full lg:h-[360px]">
+        {mapError && <p className="city-map-error">{mapError}</p>}
+      </div>
     </div>
   )
 }

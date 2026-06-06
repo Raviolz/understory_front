@@ -132,7 +132,7 @@ function CityDetailPage() {
                 </div>
               ))}
 
-              {points.length === 0 && <p className="city-detail-message">Nessun point pubblicato per questa città.</p>}
+              {points.length === 0 && <p className="city-detail-message">Nessun luogo pubblicato per questa città.</p>}
             </div>
           </section>
         </section>
