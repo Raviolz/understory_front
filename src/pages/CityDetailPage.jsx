@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import { getPublishedCityById, getPublishedPointsByCity } from "../api/publicApi"
 import PointPreviewCard from "../components/citites/PointPreviewCard"
@@ -6,15 +6,52 @@ import CityMap from "../components/citites/CityMap"
 import Loader from "../components/ui/Loader"
 import ErrorLoader from "../components/ui/ErrorLoader"
 
+const mapLegendItems = [
+  {
+    code: "ALL",
+    label: "TUTTE LE TRACCE",
+    color: "#d4a359",
+  },
+  {
+    code: "BURIED_FOLKLORE",
+    label: "BURIED FOLKLORE",
+    color: "#0D9488",
+  },
+  {
+    code: "HIDDEN_HISTORY",
+    label: "HIDDEN HISTORY",
+    color: "#d4a359",
+  },
+  {
+    code: "URBAN_MYSTERY",
+    label: "URBAN MYSTERY",
+    color: "#a855f7",
+  },
+]
+
+function getPointCategoryCode(point) {
+  return point.primaryExperienceCategoryCode || null
+}
+
 function CityDetailPage() {
   const { cityId } = useParams()
 
   const [city, setCity] = useState(null)
   const [points, setPoints] = useState([])
   const [selectedPoint, setSelectedPoint] = useState(null)
+  const [activeCategory, setActiveCategory] = useState("ALL")
   const [error, setError] = useState(null)
+  const [isLegendOpen, setIsLegendOpen] = useState(false)
 
   const pointCardRefs = useRef({})
+
+  const filteredPoints = useMemo(() => {
+    if (activeCategory === "ALL") {
+      return points
+    }
+
+    return points.filter((point) => getPointCategoryCode(point) === activeCategory)
+  }, [points, activeCategory])
 
   function handleSelectPoint(point) {
     setSelectedPoint(point)
@@ -24,6 +61,19 @@ function CityDetailPage() {
         behavior: "smooth",
         block: "center",
       })
+    })
+  }
+
+  function handleSelectCategory(categoryCode) {
+    setActiveCategory(categoryCode)
+
+    setSelectedPoint((currentPoint) => {
+      if (!currentPoint) return null
+      if (categoryCode === "ALL") return currentPoint
+
+      const currentPointCategory = getPointCategoryCode(currentPoint)
+
+      return currentPointCategory === categoryCode ? currentPoint : null
     })
   }
 
@@ -37,6 +87,7 @@ function CityDetailPage() {
         setCity(cityData)
         setPoints(publishedPoints)
         setSelectedPoint(null)
+        setActiveCategory("ALL")
         setError(null)
       })
       .catch((error) => {
@@ -44,6 +95,7 @@ function CityDetailPage() {
         setCity(null)
         setPoints([])
         setSelectedPoint(null)
+        setActiveCategory("ALL")
         setError("Impossibile caricare la città e i suoi luoghi.")
       })
   }, [cityId])
@@ -107,7 +159,39 @@ function CityDetailPage() {
               <div className="city-map-card__ornament" aria-hidden="true" />
 
               <div className="city-map-card__frame">
-                <CityMap city={city} points={points} selectedPoint={selectedPoint} onSelectPoint={handleSelectPoint} />
+                <CityMap city={city} points={filteredPoints} selectedPoint={selectedPoint} onSelectPoint={handleSelectPoint} />
+              </div>
+
+              <div className="city-map-legend">
+                <button
+                  type="button"
+                  className="city-map-legend__toggle"
+                  onClick={() => setIsLegendOpen((currentValue) => !currentValue)}
+                  aria-expanded={isLegendOpen}
+                >
+                  Legenda/Filtri {isLegendOpen ? "↑" : "↓"}
+                </button>
+
+                {isLegendOpen && (
+                  <ul className="city-map-legend__list" aria-label="Legenda categorie esperienze">
+                    {mapLegendItems.map((item) => {
+                      const isActive = activeCategory === item.code
+
+                      return (
+                        <li key={item.code} className="city-map-legend__item">
+                          <button
+                            type="button"
+                            onClick={() => handleSelectCategory(item.code)}
+                            className={isActive ? "city-map-legend__button city-map-legend__button--active" : "city-map-legend__button"}
+                          >
+                            <span className="city-map-legend__dot" style={{ "--legend-color": item.color }} aria-hidden="true" />
+                            <span className="city-map-legend__label uppercase">{item.label}</span>
+                          </button>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                )}
               </div>
             </div>
           </aside>
@@ -121,7 +205,7 @@ function CityDetailPage() {
             </div>
 
             <div className="city-detail-grid">
-              {points.map((point) => (
+              {filteredPoints.map((point) => (
                 <div
                   key={point.id}
                   ref={(element) => {
@@ -133,6 +217,8 @@ function CityDetailPage() {
               ))}
 
               {points.length === 0 && <p className="city-detail-message">Nessun luogo pubblicato per questa città.</p>}
+
+              {points.length > 0 && filteredPoints.length === 0 && <p className="city-detail-message">Nessuna carta trovata per questa categoria.</p>}
             </div>
           </section>
         </section>

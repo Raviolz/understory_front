@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react"
 import EditProfileForm from "../components/profile/EditProfileForm"
 import Loader from "../components/ui/Loader"
 import profilePaperImage from "../assets/profile/paper_profile.jpg"
+import deskBackgroundImage from "../assets/profile/greendeskbig.png"
 
 function clampFillPercent(percentage) {
   const value = Number(percentage) || 0
@@ -117,16 +118,20 @@ function ProfilePage() {
 
   return (
     <section className="profile-dossier" aria-labelledby="profile-dossier-title">
-      <div className="profile-dossier__desk">
+      <div className="profile-dossier__desk" style={{ "--desk-bg-image": `url(${deskBackgroundImage})` }}>
         {!isDossierOpen ? (
-          <button type="button" className="profile-dossier__cover" onClick={() => setIsDossierOpen(true)} aria-label="Apri fascicolo personale">
-            <span className="profile-dossier__cover-paper" style={{ backgroundImage: `url(${profilePaperImage})` }}>
-              <span className="profile-dossier__cover-stamp">Confidential</span>
-              <span className="profile-dossier__cover-code">Fascicolo N. {String(currentUser.level ?? 1).padStart(2, "0")}</span>
-            </span>
+          <>
+            <button type="button" className="profile-dossier__cover" onClick={() => setIsDossierOpen(true)} aria-label="Apri fascicolo personale">
+              <span className="profile-dossier__cover-paper" style={{ backgroundImage: `url(${profilePaperImage})` }}>
+                <span className="profile-dossier__cover-stamp">Confidential</span>
+                <span className="profile-dossier__cover-code">Fascicolo N. {String(currentUser.level ?? 1).padStart(2, "0")}</span>
+              </span>
+            </button>
 
-            <span className="profile-dossier__cover-label">Apri fascicolo →</span>
-          </button>
+            <button type="button" className="profile-dossier__cover-label" onClick={() => setIsDossierOpen(true)}>
+              Apri fascicolo →
+            </button>
+          </>
         ) : (
           <div className="profile-dossier__folio">
             <span className="profile-dossier__star profile-dossier__star--tl" aria-hidden="true">
@@ -273,7 +278,7 @@ function ProfileCityKnowledge({ cities, isLoading }) {
         Distillati:
       </p>
 
-      <p className="profile-city-knowledge__intro">Ogni ampolla si riempie con ciò che hai scoperto della città. </p>
+      <p className="profile-city-knowledge__intro">Ogni ampolla si riempie con ciò che hai scoperto della città.</p>
 
       <div className="profile-city-knowledge__carousel">
         <button type="button" className="profile-city-knowledge__arrow" onClick={() => scrollVials("left")} aria-label="Scorri ampolle a sinistra">

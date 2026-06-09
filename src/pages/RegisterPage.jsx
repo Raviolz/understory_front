@@ -2,7 +2,6 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { registerUser } from "../api/authApi"
 import AuthCard from "../components/layout/AuthCard"
-import Loader from "../components/ui/Loader"
 import mirrorFrame from "../assets/auth/MirrorAuth.png"
 
 function RegisterPage() {
@@ -17,7 +16,11 @@ function RegisterPage() {
   })
 
   const [error, setError] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [registerStatus, setRegisterStatus] = useState("idle")
+
+  const isLoading = registerStatus === "loading"
+  const isSuccess = registerStatus === "success"
+  const isFormDisabled = isLoading || isSuccess
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -28,23 +31,31 @@ function RegisterPage() {
     })
   }
 
-  function handleSubmit(event) {
+  function wait(milliseconds) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, milliseconds)
+    })
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault()
 
-    setIsLoading(true)
+    setRegisterStatus("loading")
     setError(null)
 
-    registerUser(formData)
-      .then(() => {
-        navigate("/login")
-      })
-      .catch((error) => {
-        console.error(error)
-        setError("Impossibile completare la registrazione. Controlla i dati inseriti.")
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+    try {
+      await registerUser(formData)
+
+      setRegisterStatus("success")
+
+      await wait(800)
+
+      navigate("/login", { replace: true })
+    } catch (error) {
+      console.error(error)
+      setError("Impossibile completare la registrazione. Controlla i dati inseriti.")
+      setRegisterStatus("idle")
+    }
   }
 
   return (
@@ -59,109 +70,114 @@ function RegisterPage() {
         <div className="auth-scene">
           <div className="auth-scene__glass">
             <AuthCard label="UNDERSTORY ARCHIVE" title="Benvenuto" description="Ottieni un accesso e inizia ad esplorare">
-              {isLoading ? (
-                <Loader label="Creazione accesso…" />
-              ) : (
-                <form onSubmit={handleSubmit} className="auth-form auth-form--register">
+              <form onSubmit={handleSubmit} className="auth-form auth-form--register">
+                <div>
+                  <label htmlFor="username" className="mb-2 block text-sm text-muted">
+                    Username
+                  </label>
+
+                  <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    value={formData.username}
+                    onChange={handleChange}
+                    className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent disabled:cursor-not-allowed disabled:opacity-60"
+                    required
+                    disabled={isFormDisabled}
+                  />
+                </div>
+
+                <div className="auth-form__name-row grid grid-cols-2">
                   <div>
-                    <label htmlFor="username" className="mb-2 block text-sm text-muted">
-                      Username
+                    <label htmlFor="name" className="mb-2 block text-sm text-muted">
+                      Nome
                     </label>
 
                     <input
-                      id="username"
-                      name="username"
+                      id="name"
+                      name="name"
                       type="text"
-                      value={formData.username}
+                      value={formData.name}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
+                      className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent disabled:cursor-not-allowed disabled:opacity-60"
                       required
-                    />
-                  </div>
-
-                  <div className="auth-form__name-row grid grid-cols-2">
-                    <div>
-                      <label htmlFor="name" className="mb-2 block text-sm text-muted">
-                        Nome
-                      </label>
-
-                      <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="surname" className="mb-2 block text-sm text-muted">
-                        Cognome
-                      </label>
-
-                      <input
-                        id="surname"
-                        name="surname"
-                        type="text"
-                        value={formData.surname}
-                        onChange={handleChange}
-                        className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="email" className="mb-2 block text-sm text-muted">
-                      Email
-                    </label>
-
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
-                      required
+                      disabled={isFormDisabled}
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="password" className="mb-2 block text-sm text-muted">
-                      Password
+                    <label htmlFor="surname" className="mb-2 block text-sm text-muted">
+                      Cognome
                     </label>
 
                     <input
-                      id="password"
-                      name="password"
-                      type="password"
-                      value={formData.password}
+                      id="surname"
+                      name="surname"
+                      type="text"
+                      value={formData.surname}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent"
+                      className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent disabled:cursor-not-allowed disabled:opacity-60"
                       required
-                      minLength={6}
+                      disabled={isFormDisabled}
                     />
                   </div>
+                </div>
 
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full rounded-full border border-accent-soft px-5 py-3 text-sm text-accent transition hover:border-accent hover:bg-accent hover:text-canvas disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    Crea accesso
-                  </button>
+                <div>
+                  <label htmlFor="email" className="mb-2 block text-sm text-muted">
+                    Email
+                  </label>
 
-                  <p className="text-center text-sm text-muted">
-                    Hai già un accesso?{" "}
-                    <Link to="/login" className="text-accent hover:text-ink">
-                      Entra nell'archivio
-                    </Link>
-                  </p>
-                </form>
-              )}
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent disabled:cursor-not-allowed disabled:opacity-60"
+                    required
+                    disabled={isFormDisabled}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="password" className="mb-2 block text-sm text-muted">
+                    Password
+                  </label>
+
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="w-full rounded-xl border border-border-soft bg-canvas px-4 py-3 text-ink outline-none focus:border-accent disabled:cursor-not-allowed disabled:opacity-60"
+                    required
+                    minLength={6}
+                    disabled={isFormDisabled}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isFormDisabled}
+                  className="w-full rounded-full border border-accent-soft px-5 py-3 text-sm text-accent transition hover:border-accent hover:bg-accent hover:text-canvas disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isLoading ? "Creazione accesso…" : isSuccess ? "Accesso creato…" : "Crea accesso"}
+                </button>
+
+                {isLoading && <p className="auth-form__status">Preparazione del tuo accesso all’archivio…</p>}
+
+                {isSuccess && <p className="auth-form__status auth-form__status--success">Accesso registrato. Ora puoi entrare nell’archivio.</p>}
+
+                <p className="text-center text-sm text-muted">
+                  Hai già un accesso?{" "}
+                  <Link to="/login" className="text-accent hover:text-ink">
+                    Entra nell'archivio
+                  </Link>
+                </p>
+              </form>
             </AuthCard>
           </div>
 

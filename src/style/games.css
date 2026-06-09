@@ -127,11 +127,11 @@
 .experience-title {
   position: relative;
   z-index: 1;
-  max-width: 36rem;
+  max-width: 38rem;
   margin: 1.2rem 0 0;
   color: #2f1812;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+  font-size: clamp(1.6rem, 3.2vw, 2.8rem);
   line-height: 1.02;
   text-shadow: 0 1px 0 rgba(255, 238, 196, 0.2);
 }
@@ -277,6 +277,7 @@
   text-shadow:
     0 2px 14px rgba(0, 0, 0, 0.62),
     0 0 28px rgba(111, 42, 56, 0.24);
+  font-size: 1rem;
 }
 
 .quiz-fortune__booth {
@@ -519,7 +520,7 @@
 }
 
 .experience-reveal__title {
-  max-width: 100%;
+  max-width: 85%;
   margin: 0.65rem 0 0;
 
   overflow: visible;
@@ -795,6 +796,56 @@
 .experience-reveal__light:nth-child(7) {
   animation-delay: 0.3s;
 }
+/* Piccola X di reset integrata a destra del Sigilla */
+.quiz-fortune-card__cancel-x {
+  position: absolute;
+  right: 9rem;
+  bottom: 0.58rem;
+  z-index: 12;
+
+  color: #8f3547;
+  font-size: 0.65rem;
+  line-height: 1;
+  padding: 2px 6px;
+
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    color 160ms ease;
+}
+
+.quiz-fortune-card__cancel-x:hover {
+  color: #4b241f;
+  transform: scale(1.2);
+}
+
+/* Allineamento messaggio d'errore e link inferiore */
+.quiz-fortune__error-wrap {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.quiz-fortune__reset-trigger {
+  display: inline-block;
+  margin-top: 0.4rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-transform: uppercase;
+  color: rgba(214, 174, 98, 0.85);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.quiz-fortune__reset-trigger:hover {
+  color: #f4ead8;
+}
 
 /* ANIMATIONS */
 
@@ -917,7 +968,7 @@
   }
 
   .quiz-fortune__question-text {
-    font-size: clamp(1.75rem, 3.8vw, 2.5rem);
+    font-size: clamp(1rem, 3.8vw, 1.5rem);
   }
 
   .quiz-fortune__booth {
@@ -960,6 +1011,24 @@
 
   .quiz-fortune-card--upload {
     width: clamp(12rem, 26vw, 17rem);
+  }
+
+  .quiz-fortune-card__cancel-x {
+    position: absolute;
+    right: 14rem;
+    bottom: 0.48rem;
+    z-index: 12;
+
+    color: #8f3547;
+    font-size: 0.75rem;
+
+    line-height: 1;
+    padding: 2px 6px;
+
+    cursor: pointer;
+    transition:
+      transform 160ms ease,
+      color 160ms ease;
   }
 
   .quiz-fortune__result {
@@ -1048,6 +1117,11 @@
   .experience-reveal__light:nth-child(5) {
     width: 0.54rem;
     height: 0.54rem;
+  }
+
+  .quiz-fortune-card__text {
+    font-size: 1rem;
+    line-height: 1.18;
   }
 }
 
@@ -1171,7 +1245,7 @@
   }
 
   .quiz-fortune__question-text {
-    font-size: clamp(1.1rem, 6vw, 1.55rem);
+    font-size: clamp(0.8rem, 6vw, 0.5rem);
   }
 
   .quiz-fortune__booth {
@@ -1224,6 +1298,23 @@
     transform: translate(-50%, -50%) rotate(-4deg);
   }
 
+  .quiz-fortune-card__cancel-x {
+    position: absolute;
+    right: 8.8rem;
+    bottom: 0.28rem;
+    z-index: 12;
+
+    color: #8f3547;
+    font-size: 0.65rem;
+    line-height: 1;
+    padding: 2px 6px;
+
+    cursor: pointer;
+    transition:
+      transform 160ms ease,
+      color 160ms ease;
+  }
+
   .quiz-fortune-card:hover {
     transform: translateY(-0.25rem) rotate(var(--card-rotation));
   }
@@ -1249,6 +1340,11 @@
     right: 0.5rem;
     bottom: 0.5rem;
     font-size: 0.5rem;
+  }
+
+  .quiz-fortune__result {
+    max-width: 34rem;
+    font-size: 0.55rem;
   }
   /* Reveal mobile */
 
@@ -1380,5 +1476,122 @@
   .experience-reveal__star--15,
   .experience-reveal__star--16 {
     display: none;
+  }
+}
+
+/* =========================
+   REVEAL TUNING - LIGHT PASS
+   da incollare in fondo al css
+   ========================= */
+
+.experience-reveal__poster-wrap {
+  filter: drop-shadow(0 22px 36px rgba(0, 0, 0, 0.3));
+}
+
+.experience-reveal__poster-image {
+  filter: brightness(0.93) saturate(0.84) sepia(0.1);
+}
+
+.experience-reveal__content {
+  color: #37241c;
+}
+
+.experience-reveal__kicker {
+  color: rgba(146, 67, 58, 0.88);
+}
+
+.experience-reveal__title {
+  color: #7b332e;
+  text-shadow: 0 1px 0 rgba(255, 240, 210, 0.16);
+}
+
+.experience-reveal__divider {
+  border-top: 1px dotted rgba(74, 48, 38, 0.42);
+}
+
+.experience-reveal__text {
+  color: #4b3429;
+}
+
+.experience-reveal__meta p {
+  color: #4d362b;
+}
+
+.experience-reveal__answer-status {
+  color: #732d31 !important;
+}
+
+.experience-reveal__xp {
+  color: #7f342c !important;
+}
+
+.experience-reveal__reward {
+  color: #6f2f32 !important;
+}
+
+/* STELLINE: un pelo più morbide */
+
+.experience-reveal__star {
+  color: rgba(243, 215, 154, 0.82);
+  text-shadow:
+    0 0 0.2rem rgba(255, 241, 198, 0.82),
+    0 0 0.6rem rgba(255, 207, 112, 0.34),
+    0 0 0.95rem rgba(184, 62, 47, 0.12);
+  animation: reveal-star-flicker 3.8s infinite ease-in-out;
+}
+
+/* LUCI: più piccole, più calde, senza bordo rosso */
+
+.experience-reveal__side-lights {
+  gap: 0.46rem;
+  width: 42%;
+}
+
+.experience-reveal__light {
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 0;
+  border-radius: 50%;
+  opacity: 0.92;
+
+  background: radial-gradient(circle at 50% 45%, rgba(255, 250, 231, 0.98) 0%, #ffe7ad 30%, #e9b75f 62%, rgba(156, 95, 36, 0.9) 100%);
+
+  box-shadow:
+    0 0 0.12rem rgba(255, 246, 214, 0.95),
+    0 0 0.38rem rgba(255, 218, 120, 0.65),
+    0 0 0.72rem rgba(226, 155, 59, 0.34);
+
+  animation: reveal-light-flicker 2.8s infinite ease-in-out;
+}
+
+.experience-reveal__light:nth-child(2),
+.experience-reveal__light:nth-child(6) {
+  width: 0.72rem;
+  height: 0.72rem;
+}
+
+.experience-reveal__light:nth-child(3),
+.experience-reveal__light:nth-child(5) {
+  width: 0.58rem;
+  height: 0.58rem;
+}
+
+/* le due estreme un po' più discrete */
+.experience-reveal__light:nth-child(1),
+.experience-reveal__light:nth-child(7) {
+  opacity: 0.74;
+}
+
+/* anche in tablet/mobile manteniamo lo stesso mood */
+
+@media (min-width: 761px) and (max-width: 1100px) and (orientation: portrait) {
+  .experience-reveal__light {
+    border: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .experience-reveal__light {
+    border: 0;
   }
 }

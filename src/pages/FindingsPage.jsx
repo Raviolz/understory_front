@@ -58,6 +58,40 @@ function FindingsPage() {
     })
   }, [bookings])
 
+  const archivedBookings = useMemo(() => {
+    const now = new Date()
+
+    return sortedBookings.filter((booking) => {
+      return new Date(booking.bookingDate) < now
+    })
+  }, [sortedBookings])
+
+  const bookingByUserRewardId = useMemo(() => {
+    const map = new Map()
+
+    bookings.forEach((booking) => {
+      if (booking.userRewardId) {
+        map.set(booking.userRewardId, booking)
+      }
+    })
+
+    return map
+  }, [bookings])
+
+  const recoveredRewards = useMemo(() => {
+    const now = new Date()
+
+    return sortedRewards.filter((reward) => {
+      const relatedBooking = bookingByUserRewardId.get(reward.userRewardId)
+
+      if (!relatedBooking) {
+        return true
+      }
+
+      return new Date(relatedBooking.bookingDate) >= now
+    })
+  }, [sortedRewards, bookingByUserRewardId])
+
   function handleBookingCreated(createdBooking) {
     setBookings((currentBookings) => [createdBooking, ...currentBookings])
   }
@@ -68,7 +102,7 @@ function FindingsPage() {
 
       <h1 className="findings-page__title">Accessi recuperati</h1>
 
-      <p className="findings-page__intro"> Biglietti, opportunità e inviti sbloccati durante l'esplorazione.</p>
+      <p className="findings-page__intro">Biglietti, opportunità e inviti sbloccati durante l'esplorazione.</p>
     </header>
   )
 
@@ -115,7 +149,7 @@ function FindingsPage() {
                 onClick={() => setActiveView("recovered")}
                 className={activeView === "recovered" ? "findings-page__tab findings-page__tab--active" : "findings-page__tab"}
               >
-                Recuperati {sortedRewards.length}
+                Recuperati {recoveredRewards.length}
               </button>
 
               <button
@@ -123,7 +157,7 @@ function FindingsPage() {
                 onClick={() => setActiveView("scheduled")}
                 className={activeView === "scheduled" ? "findings-page__tab findings-page__tab--active" : "findings-page__tab"}
               >
-                Archiviati {sortedBookings.length}
+                Archiviati {archivedBookings.length}
               </button>
             </div>
 
@@ -134,14 +168,19 @@ function FindingsPage() {
 
           {activeView === "recovered" && (
             <>
-              {sortedRewards.length === 0 ? (
-                <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
+              {recoveredRewards.length === 0 ? (
+                <div className="mt-10 rounded-3xl p-6">
                   <p className="text-muted">Non hai ancora sbloccato nessun accesso.</p>
                 </div>
               ) : (
                 <div className="mt-10 grid items-start gap-20 xl:grid-cols-2">
-                  {sortedRewards.map((reward) => (
-                    <FindingPass key={reward.userRewardId} reward={reward} onBookingCreated={handleBookingCreated} />
+                  {recoveredRewards.map((reward) => (
+                    <FindingPass
+                      key={reward.userRewardId}
+                      reward={reward}
+                      booking={bookingByUserRewardId.get(reward.userRewardId)}
+                      onBookingCreated={handleBookingCreated}
+                    />
                   ))}
                 </div>
               )}
@@ -150,7 +189,7 @@ function FindingsPage() {
 
           {activeView === "scheduled" && (
             <div className="mt-10">
-              <MyBookingsList bookings={sortedBookings} />
+              <MyBookingsList bookings={archivedBookings} />
             </div>
           )}
         </div>

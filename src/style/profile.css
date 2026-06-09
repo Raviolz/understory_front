@@ -9,7 +9,7 @@
   --folio-accent: #7d5d3f;
   --folio-burgundy: var(--paper-burgundy);
   --folio-inkwash: #3e2f22;
-
+  --paper-texture: url("../assets/profile/paper_profile.jpg");
   --panel-green: #07140f;
   --panel-green-soft: #10271d;
   --panel-border: rgba(210, 176, 116, 0.16);
@@ -90,8 +90,11 @@
   border: 1px solid var(--panel-border);
 
   background:
-    radial-gradient(circle at 18% 8%, rgba(32, 84, 58, 0.18), transparent 34%), radial-gradient(circle at 86% 12%, rgba(91, 31, 45, 0.12), transparent 32%),
-    linear-gradient(180deg, rgba(7, 28, 19, 0.96) 0%, rgba(7, 17, 13, 0.98) 100%);
+    radial-gradient(circle at 18% 8%, rgba(32, 84, 58, 0.18), transparent 34%),
+    radial-gradient(circle at 86% 12%, rgba(91, 31, 45, 0.12), transparent 32%),
+    linear-gradient(180deg, rgba(7, 28, 19, 0.78) 0%, rgba(7, 17, 13, 0.88) 100%),
+    var(--desk-bg-image) center / cover no-repeat,
+    #07140f;
 
   box-shadow:
     0 24px 72px rgba(0, 0, 0, 0.34),
@@ -127,12 +130,11 @@
   display: block;
   width: min(21rem, 76vw);
   height: 13rem;
-  margin: clamp(3rem, 8vw, 5rem) auto 0;
+  margin: clamp(4rem, 12vw, 8rem) auto 0;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
-  transform: translateX(-16rem) rotate(-14deg) translateY(7rem);
   filter: drop-shadow(0 28px 34px rgba(0, 0, 0, 0.42));
 
   transition:
@@ -142,7 +144,7 @@
 
 .profile-dossier__cover:hover,
 .profile-dossier__cover:focus-visible {
-  transform: translateX(-16rem) rotate(-12deg) translateY(6.55rem) scale(1.025);
+  transform: rotate(-2deg) scale(1.025);
   filter: drop-shadow(0 34px 42px rgba(0, 0, 0, 0.5));
   outline: none;
 }
@@ -158,12 +160,23 @@
   border-radius: 0.28rem;
   border: 1px solid rgba(111, 47, 50, 0.52);
 
-  background-size: cover;
-  background-position: center top;
+  background:
+    var(--paper-texture) center top / cover no-repeat,
+    var(--folio-paper);
 
   box-shadow:
     inset 0 0 0 1px rgba(255, 248, 226, 0.22),
     inset 0 -18px 34px rgba(84, 52, 30, 0.14);
+}
+
+.profile-dossier__cover-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  background: rgba(210, 188, 154, 0.26);
 }
 
 .profile-dossier__cover-stamp {
@@ -200,11 +213,16 @@
 .profile-dossier__cover-label {
   position: absolute;
   left: 50%;
-  bottom: -2.2rem;
+  bottom: 2rem;
+  z-index: 4;
 
   transform: translateX(-50%);
+  padding: 0;
+  border: 0;
+  background: transparent;
+
   white-space: nowrap;
-  pointer-events: none;
+  cursor: pointer;
 
   color: rgba(232, 194, 130, 0.86);
   font-family: Georgia, "Times New Roman", serif;
@@ -213,9 +231,10 @@
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.72);
 }
 
-.profile-dossier__cover:hover .profile-dossier__cover-label,
-.profile-dossier__cover:focus-visible .profile-dossier__cover-label {
+.profile-dossier__cover-label:hover,
+.profile-dossier__cover-label:focus-visible {
   color: rgba(255, 218, 154, 0.98);
+  outline: none;
 }
 
 /* Foglio aperto */
@@ -230,7 +249,11 @@
 
   border-radius: 0.65rem;
   color: var(--folio-ink);
-  background: var(--folio-paper);
+
+  background:
+    linear-gradient(rgba(210, 188, 154, 0.52), rgba(210, 188, 154, 0.52)),
+    var(--paper-texture) center top / cover no-repeat,
+    var(--folio-paper);
 
   border: 1px solid color-mix(in srgb, var(--folio-border) 68%, transparent);
 

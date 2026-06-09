@@ -45,7 +45,7 @@ function CityForm({ initialValues = emptyForm, submitLabel, onSubmit, onCancel }
     onSubmit(cityData, imageFile)
       .catch((error) => {
         console.error(error)
-        setError(error.message || "Non riesco a salvare la città. Controlla i dati inseriti.")
+        setError(error.message || "Impossibile salvare la città. Controlla i dati inseriti.")
       })
       .finally(() => {
         setIsSaving(false)

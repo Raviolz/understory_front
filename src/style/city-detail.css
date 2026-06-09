@@ -211,6 +211,8 @@
   color: var(--city-gold-soft);
   font-size: 0.74rem;
   letter-spacing: 0.28em;
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
   text-transform: uppercase;
 }
 
@@ -220,6 +222,92 @@
   height: 1px;
   margin: 0.9rem 0 1rem;
   background: linear-gradient(90deg, transparent, rgba(194, 145, 80, 0.42), transparent);
+}
+
+.city-map-legend {
+  margin-top: 0.9rem;
+  padding-top: 0.8rem;
+  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
+  border-top: 1px solid rgba(185, 133, 69, 0.18);
+}
+
+.city-map-legend__toggle {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(185, 133, 69, 0.55);
+  text-underline-offset: 0.18em;
+  transition:
+    color 160ms ease,
+    text-decoration-color 160ms ease,
+    opacity 160ms ease;
+}
+
+.city-map-legend__toggle:hover,
+.city-map-legend__toggle:focus-visible {
+  color: var(--ink);
+  text-decoration-color: rgba(214, 174, 98, 0.85);
+  outline: none;
+}
+
+.city-map-legend__list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.65rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.city-map-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.city-map-legend__label {
+  color: var(--muted);
+  font-size: 0.56rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 0.8;
+}
+
+.city-map-legend__dot {
+  --legend-color: var(--arcane);
+
+  position: relative;
+  width: 0.62rem;
+  height: 0.62rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--legend-color);
+  border: 1px solid rgba(255, 238, 190, 0.72);
+  box-shadow:
+    0 0 0 0.18rem color-mix(in srgb, var(--legend-color) 24%, transparent),
+    0 0 0.65rem color-mix(in srgb, var(--legend-color) 82%, transparent),
+    inset 0 0 0.18rem rgba(255, 255, 255, 0.45);
+}
+
+.city-map-legend__dot::after {
+  content: "";
+  position: absolute;
+  inset: -0.32rem;
+  border-radius: inherit;
+  border: 1px solid color-mix(in srgb, var(--legend-color) 45%, transparent);
+  opacity: 0.75;
 }
 
 .city-map-card__frame {
@@ -266,7 +354,7 @@
 .tarot-shell {
   width: 100%;
   max-width: 18rem;
-  min-height: 26rem;
+  min-height: 22rem;
   border-radius: 16px;
   border: 1px solid rgba(176, 138, 90, 0.16);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.025), transparent 24%), rgba(14, 10, 12, 0.84);
@@ -437,7 +525,7 @@
   font-size: 0.84rem;
   line-height: 1.58;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 5;
 }
 
 .tarot-front__experience {
@@ -594,4 +682,49 @@
   .tarot-card__inner {
     min-height: calc(27.5rem - 32px);
   }
+}
+
+.city-map-legend__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  background: transparent;
+
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.city-map-legend__button:hover,
+.city-map-legend__button:focus-visible {
+  opacity: 1;
+  transform: translateX(0.12rem);
+  outline: none;
+}
+
+.city-map-legend__button:not(.city-map-legend__button--active) {
+  opacity: 0.62;
+}
+
+.city-map-legend__button--active {
+  opacity: 1;
+}
+
+.city-map-legend__button--active .city-map-legend__label {
+  color: var(--accent);
+}
+
+.city-map-legend__button--active .city-map-legend__dot {
+  box-shadow:
+    0 0 0 0.16rem color-mix(in srgb, var(--legend-color) 42%, transparent),
+    0 0 0.9rem color-mix(in srgb, var(--legend-color) 100%, transparent),
+    inset 0 0 0.16rem rgba(255, 255, 255, 0.42);
 }

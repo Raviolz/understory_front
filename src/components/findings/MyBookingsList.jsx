@@ -64,7 +64,7 @@ function MyBookingsList({ bookings = [] }) {
 
   if (bookings.length === 0) {
     return (
-      <div className="mt-6 rounded-3xl border border-border-soft bg-surface p-5">
+      <div className="mt-6 rounded-3xl p-5">
         <p className="text-sm text-muted">Non hai ancora accessi archiviati.</p>
       </div>
     )

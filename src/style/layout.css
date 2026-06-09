@@ -1,5 +1,13 @@
 /*   NAVBAR */
 
+@font-face {
+  font-family: "BritneyTest";
+  src: url("../assets/fonts/Britney-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 .app-navbar {
   position: sticky;
   top: 0;
@@ -20,8 +28,9 @@
 }
 
 .app-navbar__brand {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "BritneyTest", Georgia, "Times New Roman", serif !important;
   font-size: 1rem;
+  font-weight: 400;
   letter-spacing: 0.3em;
   color: var(--accent);
   text-decoration: none;
@@ -42,7 +51,7 @@
 }
 
 .app-navbar__meta {
-  font-size: 10px;
+  font-size: 8px;
   line-height: 1.35;
   letter-spacing: 0.04em;
   color: var(--muted);
@@ -67,7 +76,7 @@
 .app-navbar__profile-menu {
   position: absolute;
   top: calc(100% - 3rem);
-  right: -6.5rem;
+  right: -12.5rem;
   z-index: 80;
 
   width: 13.5rem;
@@ -175,8 +184,9 @@
 }
 
 .app-footer__brand {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "BritneyTest", Georgia, "Times New Roman", serif;
   font-size: 10px;
+  font-weight: 400;
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--accent);
@@ -439,4 +449,32 @@
   .app-navbar__profile-link:disabled:hover {
     padding-left: 0.9rem;
   }
+}
+
+@media (min-width: 768px) and (max-width: 1679px) {
+  .app-navbar__profile-menu {
+    top: calc(100% + 0.55rem);
+    right: 2rem;
+    width: 13.5rem;
+  }
+}
+
+.app-navbar__stats {
+  grid-template-columns: 1fr;
+  gap: 0.08rem;
+  min-width: 5.7rem;
+}
+
+.app-navbar__meta {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 0.35rem;
+  align-items: baseline;
+
+  margin: 0;
+
+  font-size: 10px;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--accent) 68%, var(--muted));
 }

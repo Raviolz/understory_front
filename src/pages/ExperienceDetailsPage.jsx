@@ -304,8 +304,6 @@ function ExperienceDetailsPage() {
                           ))}
 
                           <p className="experience-reveal__xp">{revealXpText}</p>
-
-                          {gameResult?.rewardUnlocked && <p className="experience-reveal__reward">Accesso sbloccato: {gameResult.rewardTitle}</p>}
                         </div>
                       </div>
 

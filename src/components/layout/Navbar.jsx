@@ -22,6 +22,36 @@ function Navbar() {
     setIsProfileMenuOpen(false)
   }
 
+  function toRomanNumber(number) {
+    const romanNumbers = [
+      { value: 1000, symbol: "M" },
+      { value: 900, symbol: "CM" },
+      { value: 500, symbol: "D" },
+      { value: 400, symbol: "CD" },
+      { value: 100, symbol: "C" },
+      { value: 90, symbol: "XC" },
+      { value: 50, symbol: "L" },
+      { value: 40, symbol: "XL" },
+      { value: 10, symbol: "X" },
+      { value: 9, symbol: "IX" },
+      { value: 5, symbol: "V" },
+      { value: 4, symbol: "IV" },
+      { value: 1, symbol: "I" },
+    ]
+
+    let result = ""
+    let remainingNumber = Number(number) || 1
+
+    romanNumbers.forEach((romanNumber) => {
+      while (remainingNumber >= romanNumber.value) {
+        result += romanNumber.symbol
+        remainingNumber -= romanNumber.value
+      }
+    })
+
+    return result
+  }
+
   return (
     <header className="app-navbar">
       <div className="app-navbar__inner">
@@ -29,6 +59,16 @@ function Navbar() {
           <NavItem to="/explore">Esplora</NavItem>
           <NavItem to="/journal">Archivio</NavItem>
           <NavItem to="/findings">Accessi</NavItem>
+
+          {isAdmin && (
+            <NavLink
+              to="/backoffice"
+              className={({ isActive }) => (isActive ? "app-nav-link app-nav-link--active app-nav-link--backoffice" : "app-nav-link app-nav-link--backoffice")}
+              onClick={closeProfileMenu}
+            >
+              Backoffice
+            </NavLink>
+          )}
         </nav>
 
         <Link to="/" className="app-navbar__brand">
@@ -36,13 +76,6 @@ function Navbar() {
         </Link>
 
         <div className="flex items-center gap-3">
-          {currentUser && (
-            <div className="hidden text-right md:block">
-              <p className="app-navbar__meta text-accent">Intuizioni {currentUser.xp}</p>
-              <p className="app-navbar__meta">Cerchia {currentUser.level}</p>
-            </div>
-          )}
-
           {currentUser && (
             <button
               type="button"
@@ -59,14 +92,35 @@ function Navbar() {
             </button>
           )}
 
+          {currentUser && (
+            <div className="app-navbar__stats hidden md:grid">
+              <p className="app-navbar__meta">
+                <span>CERCHIA</span>
+                <span>{toRomanNumber(currentUser.level)}</span>
+              </p>
+
+              <p className="app-navbar__meta">
+                <span>INTUIZIONI</span>
+                <span>{currentUser.xp}</span>
+              </p>
+            </div>
+          )}
+
+          {!currentUser && (
+            <Link to="/login" className="app-nav-link">
+              Accedi
+            </Link>
+          )}
+
           {isAdmin && (
             <NavLink
               to="/backoffice"
-              className={({ isActive }) => (isActive ? "app-nav-link app-nav-link--active app-nav-link--backoffice" : "app-nav-link app-nav-link--backoffice")}
+              className={({ isActive }) =>
+                isActive ? "app-nav-link app-nav-link--active app-nav-link--backoffice md:hidden" : "app-nav-link app-nav-link--backoffice md:hidden"
+              }
               onClick={closeProfileMenu}
             >
-              <span className="hidden md:inline">Backoffice</span>
-              <span className="md:hidden">Admin</span>
+              Admin
             </NavLink>
           )}
         </div>

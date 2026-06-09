@@ -75,6 +75,17 @@ function UploadExperienceGame({ experience }) {
     event.target.value = ""
   }
 
+  // Funzione per resettare il file e sbloccare la schermata
+  function handleResetFile(e) {
+    e.stopPropagation() // Impedisce di far partire l'upload cliccando sulla X
+    if (isSubmitting) return
+    setSelectedFile(null)
+    setSubmitError(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
+  }
+
   if (pageError) {
     return <ErrorLoader message={pageError} />
   }
@@ -142,6 +153,13 @@ function UploadExperienceGame({ experience }) {
                 {selectedFile ? selectedFile.name : uploadGame.targetDescription || "Scegli un'immagine da consegnare."}
               </span>
 
+              {/* Tasto X in basso a destra, posizionato sopra il sigillo */}
+              {selectedFile && !isSubmitting && (
+                <span className="quiz-fortune-card__cancel-x" onClick={handleResetFile} title="Rimuovi immagine">
+                  ✕
+                </span>
+              )}
+
               <span className="quiz-fortune-card__seal">{isSubmitting ? "Consulta…" : selectedFile ? "Sigilla →" : "Carica →"}</span>
             </button>
           </div>
@@ -150,7 +168,14 @@ function UploadExperienceGame({ experience }) {
         <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
       </div>
 
-      {submitError && <p className="quiz-fortune__soft-error">{submitError}</p>}
+      {submitError && (
+        <div className="quiz-fortune__error-wrap">
+          <p className="quiz-fortune__soft-error">{submitError}</p>
+          <button type="button" className="quiz-fortune__reset-trigger" onClick={handleResetFile}>
+            Cambia immagine
+          </button>
+        </div>
+      )}
 
       {uploadGame.validationHint && !selectedFile && <p className="quiz-fortune__result">{uploadGame.validationHint}</p>}
     </section>

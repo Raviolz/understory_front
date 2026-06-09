@@ -5,6 +5,10 @@ function JournalEntryCard({ entry, noteValue, isSaving, onNoteChange, onSaveNote
   const [isEditingNote, setIsEditingNote] = useState(false)
   const noteInputRef = useRef(null)
 
+  const journalImageUrl = entry.pointCoverImageUrl || entry.pointImageUrl || entry.pointOfInterestImageUrl || entry.coverImageUrl || entry.revealImageUrl
+
+  const journalImageAlt = entry.pointOfInterestName || entry.revealTitle || entry.experienceTitle || "Immagine archivio"
+
   const completedDate = entry.completedAt
     ? new Date(entry.completedAt).toLocaleDateString("it-IT", {
         day: "2-digit",
@@ -27,11 +31,14 @@ function JournalEntryCard({ entry, noteValue, isSaving, onNoteChange, onSaveNote
       return
     }
 
-    onSaveNote(entry).then((wasSaved) => {
-      if (wasSaved) {
+    onSaveNote(entry)
+      .then(() => {
         setIsEditingNote(false)
-      }
-    })
+      })
+      .catch(() => {
+        // L'errore viene già gestito dalla JournalPage.
+        // Lasciamo aperta la modifica così l'utente non perde la nota.
+      })
   }
 
   return (
@@ -55,8 +62,8 @@ function JournalEntryCard({ entry, noteValue, isSaving, onNoteChange, onSaveNote
       <div className="journal-card__content mt-4 grid grid-cols-[120px_1fr] items-start gap-4 min-[430px]:grid-cols-[150px_1fr]">
         <div className="journal-card__left">
           <div className="journal-card__media overflow-hidden rounded-2xl border bg-canvas">
-            {entry.revealImageUrl ? (
-              <img src={entry.revealImageUrl} alt={entry.revealTitle} className="h-28 w-full object-cover" />
+            {journalImageUrl ? (
+              <img src={journalImageUrl} alt={journalImageAlt} className="h-28 w-full object-cover" />
             ) : (
               <div className="flex h-28 w-full items-center justify-center px-4 text-center text-[10px] uppercase tracking-[0.2em] text-muted">No image</div>
             )}
