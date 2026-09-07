@@ -110,7 +110,7 @@ function JournalPage() {
           <div className="mx-auto max-w-7xl">
             {pageHeader}
 
-            <div className="mt-10 rounded-3xl border border-border-soft bg-surface p-6">
+            <div className="mt-10 p-6 text-center">
               <Loader label="Aprendo l'archivio…" />
             </div>
           </div>
