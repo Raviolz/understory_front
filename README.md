@@ -55,8 +55,8 @@ ma come una scoperta o un premio guadagnato attraverso l'esplorazione stessa.
 
 ## Come funziona
 
-Dopo la registrazione e la conferma dell'account tramite email, l'utente può
-effettuare il login e accedere alla pagina principale di esplorazione.
+Dopo la registrazione, l’utente riceve un’email di conferma dell’avvenuta registrazione,
+può effettuare il login e accedere alla pagina principale di esplorazione.
 
 ### 🌍 Esplorazione delle città
 
